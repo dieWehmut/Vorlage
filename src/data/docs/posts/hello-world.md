@@ -6,7 +6,7 @@ tags: [intro, welcome]
 
 # Hello World
 
-Welcome to your new Nexus site! Edit or replace this post to get started.
+Welcome to your new diesuwa-starter site! Edit or replace this post to get started.
 
 ## Markdown Features
 
