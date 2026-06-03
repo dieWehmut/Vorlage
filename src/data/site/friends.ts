@@ -6,7 +6,7 @@ export const friends: FriendLink[] = [
     name: 'diesw',
     description: 'Nexus template author',
     url: 'https://diesw.tech',
-    avatar: 'https://github.com/dieWehmut.png',
+    avatar: 'https://avatars.githubusercontent.com/dieWehmut',
   },
   // Add your friend links here:
   // {
@@ -14,6 +14,6 @@ export const friends: FriendLink[] = [
   //   name: 'Friend Name',
   //   description: 'A short description',
   //   url: 'https://friend-site.com',
-  //   avatar: 'https://github.com/friend-username.png',
+  //   avatar: 'https://avatars.githubusercontent.com/friend-username',
   // },
 ]
