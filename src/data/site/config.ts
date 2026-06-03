@@ -16,7 +16,7 @@ export const siteConfig = {
   title: 'my-nexus',
   subtitle: 'my-nexus',
   description: 'Hi! This is my personal site.',
-  siteUrl: 'https://example.com',
+  siteUrl: 'https://your-github-username.github.io/your-repo/',
   startedAt: '2026-05-01T00:00:00+08:00',
 
   // --- External Services ---
@@ -33,7 +33,7 @@ export const siteConfig = {
   // --- Social Links ---
   links: [
     { label: 'GitHub', url: 'https://github.com/your-github-username' },
-    { label: 'Website', url: 'https://example.com' },
+    { label: 'Website', url: 'https://your-github-username.github.io/your-repo/' },
   ],
 }
 

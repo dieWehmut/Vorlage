@@ -40,7 +40,16 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: pnpm run build
+        shell: bash
+        run: |
+          repo_name="${GITHUB_REPOSITORY#*/}"
+          if [ "$repo_name" = "${GITHUB_REPOSITORY_OWNER}.github.io" ]; then
+            export BASE_PATH="/"
+          else
+            export BASE_PATH="/${repo_name}/"
+          fi
+          echo "BASE_PATH=$BASE_PATH"
+          pnpm run build
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

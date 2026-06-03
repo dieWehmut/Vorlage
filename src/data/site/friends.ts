@@ -5,7 +5,7 @@ export const friends: FriendLink[] = [
     id: 'nexus-author',
     name: 'diesw',
     description: 'Nexus template author',
-    url: 'https://diesw.tech',
+    url: 'https://diewehmut.github.io/',
     avatar: 'https://avatars.githubusercontent.com/dieWehmut',
   },
   // Add your friend links here:
