@@ -1,4 +1,14 @@
-import type { ArchivePost, NoteEntry, ProjectEntry, SearchDocument } from '../types/content'
+import type {
+  ArchiveGroup,
+  ArchivePost,
+  InfraEntry,
+  NoteEntry,
+  NoteGroup,
+  ProjectEntry,
+  SearchDocument,
+  SiteProjectItem,
+  TagGroup,
+} from '../types/content'
 import { pages } from './site/page'
 import { games } from './site/game'
 import { apps } from './site/app'
@@ -7,29 +17,33 @@ import { infra } from './site/infra'
 import { getDocPosts, getDocNotes } from './docs'
 import { friends } from './site/friends'
 import { siteProfile } from './site/profile'
+import { getDateSortTimestamp, getTimelineYear } from '../utils/date'
 
 function timestamp(date?: string) {
-  return Date.parse(date || '') || 0
+  return getDateSortTimestamp(date)
 }
 
 function sortByDate<T extends { date?: string }>(items: T[]) {
   return items.slice().sort((a, b) => timestamp(b.date) - timestamp(a.date))
 }
 
-function projectUrl(item: any) {
+function projectUrl(item: SiteProjectItem): string {
   return item?.url || item?.html_url || item?.repoUrl || item?.repo_url || ''
 }
 
-function projectRepo(item: any) {
+function projectRepo(item: SiteProjectItem): string {
   return item?.repoUrl || item?.repo_url || item?.html_url || item?.url || ''
 }
 
+const posts = sortByDate(getDocPosts())
+const notes = sortByDate(getDocNotes())
+
 export function getPosts(): ArchivePost[] {
-  return sortByDate(getDocPosts())
+  return posts
 }
 
 export function getNotes(): NoteEntry[] {
-  return sortByDate(getDocNotes())
+  return notes
 }
 
 export function getProjectEntries(): ProjectEntry[] {
@@ -46,7 +60,7 @@ export function getProjectEntries(): ProjectEntry[] {
   }))
 
   const gameEntries: ProjectEntry[] = (games.value || []).flatMap((group) =>
-    (group.manualItems || []).map((item: any, index: number) => ({
+    (group.manualItems || []).map((item: SiteProjectItem, index: number) => ({
       id: `game:${item.name || index}`,
       name: item.name || `Game ${index + 1}`,
       category: 'games',
@@ -60,7 +74,7 @@ export function getProjectEntries(): ProjectEntry[] {
   )
 
   const appEntries: ProjectEntry[] = (apps.value || []).flatMap((group) =>
-    (group.manualItems || []).map((item: any, index: number) => ({
+    (group.manualItems || []).map((item: SiteProjectItem, index: number) => ({
       id: `app:${item.name || index}`,
       name: item.name || `App ${index + 1}`,
       category: 'apps',
@@ -74,7 +88,7 @@ export function getProjectEntries(): ProjectEntry[] {
   )
 
   const toolEntries: ProjectEntry[] = (tools.value || []).flatMap((group) =>
-    (group.manualItems || []).map((item: any, index: number) => ({
+    (group.manualItems || []).map((item: SiteProjectItem, index: number) => ({
       id: `tool:${item.name || index}`,
       name: item.name || `Tool ${index + 1}`,
       category: 'tools',
@@ -90,7 +104,7 @@ export function getProjectEntries(): ProjectEntry[] {
   return sortByDate([...websiteEntries, ...gameEntries, ...appEntries, ...toolEntries])
 }
 
-export function getTagGroups() {
+export function getTagGroups(): TagGroup[] {
   const groups = new Map<string, ArchivePost[]>()
   for (const post of getPosts()) {
     for (const tag of post.tags || []) {
@@ -113,10 +127,10 @@ export function getTagGroups() {
     .sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag))
 }
 
-export function getNoteGroups() {
+export function getNoteGroups(): NoteGroup[] {
   const groups = new Map<string, NoteEntry[]>()
   for (const note of getNotes()) {
-    const year = new Date(note.date).getFullYear().toString()
+    const year = getTimelineYear(note.date)
     groups.set(year, [...(groups.get(year) || []), note])
   }
 
@@ -125,10 +139,10 @@ export function getNoteGroups() {
     .sort((a, b) => Number(b.year) - Number(a.year))
 }
 
-export function getArchiveGroups() {
+export function getArchiveGroups(): ArchiveGroup[] {
   const groups = new Map<string, ArchivePost[]>()
   for (const post of getPosts()) {
-    const year = new Date(post.date).getFullYear().toString()
+    const year = getTimelineYear(post.date)
     groups.set(year, [...(groups.get(year) || []), post])
   }
 
@@ -176,7 +190,7 @@ export function getSearchDocuments(): SearchDocument[] {
     tags: [project.categoryLabel],
   }))
 
-  const infraDocs: SearchDocument[] = (infra.value || []).map((item: any) => ({
+  const infraDocs: SearchDocument[] = (infra.value || []).map((item: InfraEntry) => ({
     id: `infra:${item.key || item.name}`,
     type: 'infra',
     title: item.name,

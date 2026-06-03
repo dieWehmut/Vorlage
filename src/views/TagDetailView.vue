@@ -2,9 +2,23 @@
   <section class="page-surface">
     <PageHeading :title="tag" :icon="PriceTag" />
 
-    <div class="tag-detail__count">{{ posts.length }} {{ posts.length === 1 ? 'entry' : 'entries' }}</div>
+    <div class="tag-detail__count">
+      {{ totalCount }} {{ totalCount === 1 ? 'entry' : 'entries' }}
+    </div>
 
-    <div class="tag-detail__list">
+    <div v-if="captures.length" class="tag-detail__capture-section">
+      <h2 class="tag-detail__section-title">Capture</h2>
+      <div class="tag-detail__capture-grid">
+        <CaptureAssetCard
+          v-for="capture in captures"
+          :key="capture.id"
+          :asset="capture"
+          @preview="openCapture(capture)"
+        />
+      </div>
+    </div>
+
+    <div v-if="posts.length" class="tag-detail__list">
       <article v-for="post in posts" :key="post.id" class="tag-detail__item">
         <div class="tag-detail__item-body">
           <h2>
@@ -19,42 +33,67 @@
       </article>
     </div>
 
-    <div v-if="!posts.length" class="tag-detail__empty">
-      No posts found for this tag.
+    <div v-if="!totalCount" class="tag-detail__empty">
+      No entries found for this tag.
     </div>
   </section>
 </template>
 
-<script setup>
-import { computed } from 'vue'
+<script setup lang="ts">
+import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import { PriceTag, Calendar } from '@element-plus/icons-vue'
+import CaptureAssetCard from '../components/capture/CaptureAssetCard.vue'
 import PageHeading from '../components/content/PageHeading.vue'
 import { getPosts, getNotes } from '../data'
+import type { CaptureAsset, TagContentEntry } from '../types/content'
+import { formatTimelineDate, getDateSortTimestamp } from '../utils/date'
+import { openImagePreviewGallery } from '../utils/imagePreview'
 
 const route = useRoute()
 const tag = computed(() => decodeURIComponent(String(route.params.tag || '')))
+const captures = ref<CaptureAsset[]>([])
+const totalCount = computed(() => posts.value.length + captures.value.length)
 
-const posts = computed(() => {
-  const matchTag = (tags) => (tags || []).some((t) => t.toLowerCase() === tag.value.toLowerCase())
+const posts = computed<TagContentEntry[]>(() => {
+  const matchTag = (tags: string[]) => tags.some((t) => t.toLowerCase() === tag.value.toLowerCase())
   const matchedPosts = getPosts().filter((post) => matchTag(post.tags))
   const matchedNotes = getNotes()
     .filter((note) => matchTag(note.tags))
-    .map((note) => ({ id: note.id, title: note.title, date: note.date, tags: note.tags, summary: note.summary, _isNote: true }))
-  return [...matchedPosts, ...matchedNotes].sort((a, b) => Date.parse(b.date || '') - Date.parse(a.date || ''))
+    .map((note): TagContentEntry => ({
+      id: note.id,
+      title: note.title,
+      date: note.date,
+      tags: note.tags,
+      summary: note.summary,
+      _isNote: true,
+    }))
+  return [...matchedPosts, ...matchedNotes].sort((a, b) => getDateSortTimestamp(b.date) - getDateSortTimestamp(a.date))
 })
 
-function postUrl(post) {
+async function loadCaptures() {
+  const { getCaptureAssetsByTag } = await import('../data/capture')
+  captures.value = getCaptureAssetsByTag(tag.value)
+}
+
+function postUrl(post: TagContentEntry): string {
   if (post._isNote) return `/note/${post.id}`
   return `/post/${post.id}`
 }
 
-function formattedDate(dateStr) {
-  if (!dateStr) return ''
-  const d = new Date(dateStr)
-  if (Number.isNaN(d.valueOf())) return dateStr
-  return `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`
+function formattedDate(dateStr?: string): string {
+  return formatTimelineDate(dateStr)
 }
+
+function openCapture(capture: CaptureAsset) {
+  openImagePreviewGallery(
+    captures.value.map((item) => ({ src: item.image, alt: item.title || tag.value })),
+    captures.value.findIndex((item) => item.id === capture.id)
+  )
+}
+
+onMounted(loadCaptures)
+watch(tag, loadCaptures)
 </script>
 
 <style scoped>
@@ -67,6 +106,23 @@ function formattedDate(dateStr) {
 
 .tag-detail__list {
   border-top: 1px solid var(--site-border);
+}
+
+.tag-detail__capture-section {
+  margin-bottom: 34px;
+}
+
+.tag-detail__section-title {
+  margin: 0 0 14px;
+  color: var(--site-text);
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.tag-detail__capture-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
 }
 
 .tag-detail__item {
@@ -156,5 +212,13 @@ function formattedDate(dateStr) {
   padding: 40px 0;
   color: var(--site-muted);
   text-align: center;
+}
+
+@media (max-width: 900px) {
+  .tag-detail__capture-grid {
+    grid-template-columns: 1fr;
+    margin-inline: -18px;
+    gap: 18px;
+  }
 }
 </style>

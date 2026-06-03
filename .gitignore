@@ -11,6 +11,14 @@ dist
 dist-ssr
 *.local
 .vscode/
+public/capture-assets/
+src/data/docs/**/*.png
+src/data/docs/**/*.jpg
+src/data/docs/**/*.jpeg
+src/data/docs/**/*.gif
+src/data/docs/**/*.webp
+src/data/docs/**/*.svg
+src/data/docs/**/*.avif
 # Environment variables
 .env
 .env.local

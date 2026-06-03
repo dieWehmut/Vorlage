@@ -20,6 +20,7 @@ const routes = [
   { path: '/', name: 'home', component: HomeView },
   { path: '/archive', name: 'archive', component: ArchiveView },
   { path: '/notes', name: 'notes', component: NotesView },
+  { path: '/capture', name: 'capture', component: () => import('./views/CaptureView.vue') },
   { path: '/infra', name: 'infra', component: InfraView, meta: { requiresInfra: true } },
   { path: '/project', name: 'project', component: ProjectView, meta: { requiresProject: true } },
   { path: '/tags', name: 'tags', component: TagsView },

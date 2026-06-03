@@ -1,11 +1,13 @@
 {
-  "name": "dieswnexus",
+  "name": "nexus-starter",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "capture:sync": "node scripts/generate-capture.mjs",
+    "dev": "pnpm run capture:sync && vite",
+    "typecheck": "vue-tsc --noEmit",
+    "build": "pnpm run capture:sync && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
