@@ -1,0 +1,96 @@
+---
+title: 开发日志
+date: 2026-06-04T20:57:41+08:00
+tags: [devlog, commit]
+---
+
+# 开发日志
+
+本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
+
+- `95e4950` 2026-06-04T20:57:41+08:00 - docs: clarify site and starter readmes
+- `896ff8a` 2026-06-04T20:52:57+08:00 - feat: refine layout and starter export
+- `be90a26` 2026-06-04T00:04:39+08:00 - chore: update starter naming and license
+- `b1768ba` 2026-06-03T23:15:20+08:00 - fix: update starter template sync
+- `2efae1c` 2026-06-03T22:05:02+08:00 - feat: animate floating settings button
+- `dd85a42` 2026-06-03T22:04:56+08:00 - feat: add calendar icon to project dates
+- `15e2f0d` 2026-06-03T20:33:11+08:00 - fix: sync capture assets from assets repository
+- `c8d3709` 2026-06-03T12:01:30Z - chore: sync capture assets
+- `21b56a6` 2026-06-03T20:01:06+08:00 - fix: initialize empty assets repository
+- `1792daa` 2026-06-03T19:37:41+08:00 - fix: isolate assets git authentication
+- `a36cbc9` 2026-06-03T19:31:03+08:00 - chore: normalize GitHub avatar URLs
+- `cae3c03` 2026-06-03T18:30:55+08:00 - fix: validate assets repository token
+- `bf6ac68` 2026-06-03T15:19:32+08:00 - fix: bootstrap assets branch checkout
+- `c3c8ddc` 2026-06-03T15:10:54+08:00 - fix: configure assets checkout ref
+- `c420192` 2026-06-03T14:37:29+08:00 - chore: refine capture sync workflow
+- `ede4ac5` 2026-06-03T00:30:21+08:00 - feat: add capture functionality and integrate capture assets into views
+- `eb53ad8` 2026-06-01T18:33:01+08:00 - 更新朋友列表中的描述，提供更准确的信息
+- `a7f1abd` 2026-05-30T19:21:59+08:00 - 修复GitHub page环境变量读取
+- `0121d2d` 2026-05-28T23:38:56+08:00 - 0
+- `57118a5` 2026-05-28T22:27:43+08:00 - 1
+- `b0dd68c` 2026-05-28T21:52:11+08:00 - feat: add multilingual support by creating translated README files in English and Traditional Chinese
+- `d0ecaa9` 2026-05-28T21:39:32+08:00 - feat: enhance markdown rendering with KaTeX support and improve UI components
+- `f055897` 2026-05-28T20:56:19+08:00 - feat: streamline deployment workflows by removing redundant pnpm setup and adding starter token check
+- `ebb1c14` 2026-05-28T20:38:57+08:00 - feat: update deployment workflow to use pnpm for package management
+- `3021dac` 2026-05-28T20:32:40+08:00 - feat: update color variables for improved theme consistency and styling
+- `6912142` 2026-05-28T20:05:07+08:00 - feat: centralize site configuration and improve UI interactions
+- `16d5b6d` 2026-05-28T18:53:36+08:00 - refactor: remove deprecated notes and posts, update note rendering
+- `310879f` 2026-05-28T15:47:25+08:00 - Refactor views for improved layout and styling
+- `c32c872` 2026-05-28T12:47:57+08:00 - feat: add InfraView, NotFoundView, NotesView, ProjectView, SearchView, TagDetailView, and TagsView components
+- `1da36f1` 2026-05-27T00:19:54+08:00 - 删掉文件相关导航
+- `d1cf773` 2026-05-26T21:42:51+08:00 - 优化BounceCursor和FocusView组件，重构样式和事件处理，提升性能和可维护性
+- `4651394` 2026-05-22T21:36:02+08:00 - 优化搜索栏样式以适应全宽，添加自定义插件以支持GitHub Pages的404页面处理
+- `45061ea` 2026-05-22T21:01:19+08:00 - Update package-lock.json to fix CI
+- `0fcc025` 2026-05-22T20:54:49+08:00 - 删除favicon.svg文件，更新NavButtons和SearchBar组件的样式
+- `1b0bd57` 2026-05-22T20:36:45+08:00 - Merge branch 'main' of https://github.com/dieWehmut/dieWehmut.github.io
+- `9f01aac` 2026-05-22T20:36:15+08:00 - 添加GitHub Pages部署工作流
+- `a73e9ca` 2026-05-20T19:28:35+08:00 - 优化焦点视图的鼠标悬停效果，调整粒子和樱花画布的参数，增强URL状态检查的代理功能
+- `9e6f857` 2026-05-18T21:40:08+08:00 - 优化中心圈样式
+- `2afdb3c` 2026-05-18T21:31:07+08:00 - 初步添加Focus视图
+- `80e9693` 2026-05-18T14:21:45+08:00 - 优化响应式布局：调整搜索栏、侧边栏和卡片样式以适应移动设备
+- `272dabc` 2026-05-17T22:01:27+08:00 - 添加service条目；初步调整侧边栏排版
+- `176c4ef` 2026-05-16T22:09:14+08:00 - 调整侧边栏和应用布局，更新多语言文件中的“最后更新”文本为“最近 commit”
+- `0b6b23f` 2026-05-16T22:03:16+08:00 - 重构应用结构：更新标题，调整样式，移除引导动画组件，优化侧边栏和搜索栏布局
+- `6aa3442` 2026-05-15T12:08:31+08:00 - Refactor sidebar component: remove bio and location fields from UI and localization files
+- `f8415b2` 2026-03-03T11:12:02+08:00 - 修复构建bug
+- `4ae5597` 2026-03-02T18:36:33+08:00 - 按钮样式跟新
+- `279fcad` 2026-02-28T21:21:38+08:00 - 重置光标样式
+- `a96aca2` 2026-02-28T18:16:19+08:00 - 初步重置主题样式
+- `2a1d5f5` 2026-02-28T17:01:55+08:00 - 实现自定义添加内容
+- `7feca4d` 2026-01-26T01:09:14+08:00 - 9
+- `f95a7e6` 2025-12-26T15:35:16+08:00 - 文档补充
+- `2a42acc` 2025-12-26T15:29:25+08:00 - 修复单双栏切换问题
+- `f8bc381` 2025-12-24T16:50:43+08:00 - 修复日期覆盖问题
+- `28173f2` 2025-11-04T19:48:24+08:00 - 修复GitHub api调用
+- `ef60ddb` 2025-11-04T19:07:50+08:00 - 优化样式
+- `2377026` 2025-11-04T18:39:45+08:00 - 全部自动化
+- `2caa99c` 2025-11-04T14:27:23+08:00 - pages自动化
+- `5d15bc3` 2025-11-04T13:13:18+08:00 - 补充item内容
+- `62ef8a6` 2025-10-30T21:17:42+08:00 - 添加单双栏切换按钮
+- `f961f4f` 2025-10-30T15:38:29+08:00 - 补充ba网络站
+- `0aa42c6` 2025-10-29T21:34:29+08:00 - 添加缓存
+- `a8c2e0b` 2025-10-29T20:52:31+08:00 - 修复搜索栏问题
+- `21ba28c` 2025-10-29T19:24:57+08:00 - 将GitHubActivity转移到profile
+- `9748687` 2025-10-29T18:35:23+08:00 - 优化按钮样式
+- `da708c1` 2025-10-29T15:38:45+08:00 - 添加Tools栏
+- `2bc3a7c` 2025-10-29T13:57:06+08:00 - 添加拉丁语
+- `5593106` 2025-10-29T13:24:43+08:00 - 添加纯净模式
+- `1b9986a` 2025-10-29T12:49:03+08:00 - 修复悬浮按钮bug
+- `054230f` 2025-10-29T00:10:48+08:00 - 抽出更多组件
+- `bcc7ac8` 2025-10-28T19:22:06+08:00 - 改为玻璃窗
+- `60439c2` 2025-10-28T18:28:05+08:00 - 添加多语言设置
+- `9d4c2c6` 2025-10-28T16:26:37+08:00 - 页面美化
+- `6912caa` 2025-10-28T00:18:29+08:00 - 大改一点
+- `0c00d28` 2025-10-10T14:27:47+08:00 - 0
+- `9f6594c` 2025-10-10T14:24:55+08:00 - 0
+- `a2813f0` 2025-10-01T22:00:51+08:00 - 0
+- `85fee3d` 2025-10-01T18:21:13+08:00 - 1
+- `df414a1` 2025-10-01T13:02:35+08:00 - 1
+- `4fe99a0` 2025-10-01T12:52:17+08:00 - 1
+- `e34623d` 2025-10-01T12:27:53+08:00 - 添加访客统计
+- `50554d6` 2025-09-30T23:57:11+08:00 - save
+- `fdcf965` 2025-09-30T19:01:12+08:00 - 补充CNAME
+- `1c6e334` 2025-09-30T18:53:24+08:00 - 总站迁移
+- `27627b2` 2025-09-30T15:15:11+08:00 - Added CNAME file for custom domain (hc-dsw-nexus.me)
+- `5840cbc` 2025-09-30T15:08:36+08:00 - Added CNAME file for custom domain (hc-dsw-nexus.me)
+- `66e531b` 2025-09-30T15:08:34+08:00 - Initial commit
