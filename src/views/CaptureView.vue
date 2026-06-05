@@ -1,136 +1,246 @@
 <template>
-  <section class="capture-view page-surface">
+  <section class="capture-view page-surface" :class="{ 'capture-view--detail': isDetailRoute }">
     <div class="capture-view__main">
-      <PageHeading
-        :title="t('capture.title')"
-        :icon="Camera"
-      />
-      <div v-if="canEdit" class="capture-editor">
-        <div class="capture-editor__status">
-          <span>{{ t('capture.editor') }}</span>
-          <strong>{{ editorStatusText }}</strong>
+      <template v-if="selectedGroup">
+        <div class="capture-detail__topbar">
+          <button
+            class="capture-detail__back"
+            type="button"
+            aria-label="Back"
+            title="Back"
+            @click="backToCapture"
+          >
+            <el-icon><ArrowLeft /></el-icon>
+          </button>
         </div>
-        <input
-          ref="uploadInput"
-          class="capture-editor__file"
-          type="file"
-          accept="image/*"
-          @change="onUploadFileChange"
-        />
-      </div>
 
-      <div v-if="yearGroups.length" class="capture-timeline">
-        <section v-for="year in yearGroups" :key="year.id" class="capture-year">
-          <h2 :id="year.id" class="capture-time-heading capture-time-heading--year">
-            {{ year.label }}
-          </h2>
-
-          <section v-for="month in year.months" :key="month.id" class="capture-month">
-            <h3 :id="month.id" class="capture-time-heading capture-time-heading--month">
-              {{ month.label }}
-            </h3>
-
-            <div class="capture-groups">
-              <article
-                v-for="group in month.groups"
-                :key="group.id"
-                class="capture-group"
+        <article class="capture-detail">
+          <div
+            class="capture-detail__grid"
+            :class="{
+              'capture-detail__grid--single': selectedGroup.assets.length === 1,
+              'capture-detail__grid--double': selectedGroup.assets.length === 2,
+            }"
+          >
+            <figure
+              v-for="asset in selectedGroup.assets"
+              :key="asset.id"
+              class="capture-detail__figure"
+            >
+              <button
+                class="capture-detail__media"
+                type="button"
+                @click="openAsset(asset)"
               >
-                <div class="capture-grid">
+                <img
+                  :src="asset.image"
+                  :alt="asset.title || ''"
+                  loading="eager"
+                  decoding="async"
+                />
+              </button>
+            </figure>
+          </div>
+
+          <div class="capture-detail__body">
+            <div class="capture-detail__meta-row">
+              <time v-if="selectedGroup.date" :datetime="selectedGroup.date">
+                <el-icon class="capture-card__meta-icon"><Calendar /></el-icon>
+                {{ formatDateOnly(selectedGroup.date) }}
+              </time>
+              <RouterLink
+                v-for="tag in selectedGroup.tags"
+                :key="tag"
+                class="capture-card__tag"
+                :to="`/tags/${encodeURIComponent(tag)}`"
+              >
+                <el-icon class="capture-card__tag-icon"><PriceTag /></el-icon>
+                {{ tag }}
+              </RouterLink>
+            </div>
+
+            <div v-if="selectedGroup.sources.length" class="capture-group__sources">
+              <RouterLink
+                v-for="source in selectedGroup.sources"
+                :key="`${source.type}:${source.id}`"
+                class="capture-group__source"
+                :to="source.url"
+              >
+                {{ source.title }}
+              </RouterLink>
+            </div>
+
+            <GiscusComments layout="inline" source="capture" :term="selectedCommentTerm" />
+          </div>
+        </article>
+      </template>
+
+      <template v-else-if="isDetailRoute">
+        <div class="capture-detail__topbar">
+          <button
+            class="capture-detail__back"
+            type="button"
+            aria-label="Back"
+            title="Back"
+            @click="backToCapture"
+          >
+            <el-icon><ArrowLeft /></el-icon>
+          </button>
+        </div>
+        <PageHeading :title="t('capture.title')" :icon="Camera" />
+        <div class="capture-empty">
+          <span>{{ t('capture.empty') }}</span>
+        </div>
+      </template>
+
+      <template v-else>
+        <PageHeading
+          :title="t('capture.title')"
+          :icon="Camera"
+        />
+        <div v-if="canEdit" class="capture-editor">
+          <div class="capture-editor__status">
+            <span>{{ t('capture.editor') }}</span>
+            <strong>{{ editorStatusText }}</strong>
+          </div>
+          <input
+            ref="uploadInput"
+            class="capture-editor__file"
+            type="file"
+            accept="image/*"
+            @change="onUploadFileChange"
+          />
+        </div>
+
+        <div v-if="yearGroups.length" class="capture-timeline">
+          <section v-for="year in yearGroups" :key="year.id" class="capture-year">
+            <h2 :id="year.id" class="capture-time-heading capture-time-heading--year">
+              {{ year.label }}
+            </h2>
+
+            <section v-for="month in year.months" :key="month.id" class="capture-month">
+              <h3 :id="month.id" class="capture-time-heading capture-time-heading--month">
+                {{ month.label }}
+              </h3>
+
+              <div class="capture-groups">
+                <article
+                  v-for="group in month.groups"
+                  :key="group.id"
+                  class="capture-group"
+                >
                   <div
-                    v-for="asset in group.assets"
-                    :key="asset.id"
-                    class="capture-card"
+                    class="capture-grid"
+                    :class="{
+                      'capture-grid--single': group.assets.length === 1,
+                      'capture-grid--double': group.assets.length === 2,
+                    }"
                   >
-                    <button
-                      class="capture-card__media"
-                      type="button"
-                      @click="openAsset(asset)"
+                    <div
+                      v-for="asset in group.assets"
+                      :key="asset.id"
+                      class="capture-card"
                     >
-                      <img
-                        v-lazy-src="asset.image"
-                        :src="placeholderImage"
-                        :alt="asset.title || ''"
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    </button>
+                      <button
+                        class="capture-card__media"
+                        type="button"
+                        @click="openAsset(asset)"
+                      >
+                        <img
+                          v-lazy-src="asset.image"
+                          :src="placeholderImage"
+                          :alt="asset.title || ''"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      </button>
+                      <button
+                        v-if="canEdit"
+                        class="capture-card__delete"
+                        type="button"
+                        :aria-label="t('capture.deleteImage')"
+                        :title="t('capture.deleteImage')"
+                        :disabled="editorBusy"
+                        @click="deleteCapture(asset)"
+                      >
+                        <el-icon><Delete /></el-icon>
+                      </button>
+                    </div>
                     <button
                       v-if="canEdit"
-                      class="capture-card__delete"
+                      class="capture-card capture-card--add"
                       type="button"
-                      :aria-label="t('capture.deleteImage')"
-                      :title="t('capture.deleteImage')"
+                      :aria-label="t('capture.uploadImage')"
+                      :title="t('capture.uploadImage')"
                       :disabled="editorBusy"
-                      @click="deleteCapture(asset)"
+                      @click="selectUploadGroup(group)"
                     >
-                      <el-icon><Delete /></el-icon>
+                      <el-icon><Plus /></el-icon>
                     </button>
                   </div>
-                  <button
-                    v-if="canEdit"
-                    class="capture-card capture-card--add"
-                    type="button"
-                    :aria-label="t('capture.uploadImage')"
-                    :title="t('capture.uploadImage')"
-                    :disabled="editorBusy"
-                    @click="selectUploadGroup(group)"
-                  >
-                    <el-icon><Plus /></el-icon>
-                  </button>
-                </div>
 
-                <div class="capture-group__body">
-                  <div v-if="group.sources.length" class="capture-group__sources">
-                    <RouterLink
-                      v-for="source in group.sources"
-                      :key="`${source.type}:${source.id}`"
-                      class="capture-group__source"
-                      :to="source.url"
-                    >
-                      {{ source.title }}
-                    </RouterLink>
-                  </div>
+                  <div class="capture-group__body">
+                    <div class="capture-card__meta-row">
+                      <time v-if="group.date" :datetime="group.date">
+                        <el-icon class="capture-card__meta-icon"><Calendar /></el-icon>
+                        {{ formatDateOnly(group.date) }}
+                      </time>
+                      <RouterLink
+                        v-for="tag in group.tags"
+                        :key="tag"
+                        class="capture-card__tag"
+                        :to="`/tags/${encodeURIComponent(tag)}`"
+                      >
+                        <el-icon class="capture-card__tag-icon"><PriceTag /></el-icon>
+                        {{ tag }}
+                      </RouterLink>
+                      <RouterLink
+                        class="capture-card__comments"
+                        :to="`/capture/${encodeURIComponent(group.id)}`"
+                        aria-label="Comments"
+                        title="Comments"
+                        @click="saveCaptureScrollPosition"
+                      >
+                        <el-icon><ChatRound /></el-icon>
+                      </RouterLink>
+                    </div>
 
-                  <div class="capture-card__meta-row">
-                    <time v-if="group.date" :datetime="group.date">
-                      <el-icon class="capture-card__meta-icon"><Calendar /></el-icon>
-                      {{ formatDate(group.date) }}
-                    </time>
-                    <RouterLink
-                      v-for="tag in group.tags"
-                      :key="tag"
-                      class="capture-card__tag"
-                      :to="`/tags/${encodeURIComponent(tag)}`"
-                    >
-                      <el-icon class="capture-card__tag-icon"><PriceTag /></el-icon>
-                      {{ tag }}
-                    </RouterLink>
+                    <div v-if="group.sources.length" class="capture-group__sources">
+                      <RouterLink
+                        v-for="source in group.sources"
+                        :key="`${source.type}:${source.id}`"
+                        class="capture-group__source"
+                        :to="source.url"
+                      >
+                        {{ source.title }}
+                      </RouterLink>
+                    </div>
                   </div>
-                </div>
-              </article>
-            </div>
+                </article>
+              </div>
+            </section>
           </section>
-        </section>
-      </div>
+        </div>
 
-      <div v-else class="capture-empty">
-        <span>{{ t('capture.empty') }}</span>
-        <button
-          v-if="canEdit"
-          class="capture-empty__upload"
-          type="button"
-          :aria-label="t('capture.uploadImage')"
-          :title="t('capture.uploadImage')"
-          :disabled="editorBusy"
-          @click="selectEmptyUploadGroup"
-        >
-          <el-icon><Plus /></el-icon>
-        </button>
-      </div>
+        <div v-else class="capture-empty">
+          <span>{{ t('capture.empty') }}</span>
+          <button
+            v-if="canEdit"
+            class="capture-empty__upload"
+            type="button"
+            :aria-label="t('capture.uploadImage')"
+            :title="t('capture.uploadImage')"
+            :disabled="editorBusy"
+            @click="selectEmptyUploadGroup"
+          >
+            <el-icon><Plus /></el-icon>
+          </button>
+        </div>
+      </template>
     </div>
 
     <ScrollSpySidebar
+      v-if="!isDetailRoute"
       :key="scrollSpyKey"
       root-selector=".capture-view__main"
       heading-selector=".capture-time-heading"
@@ -175,11 +285,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, type Directive } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch, type Directive } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { RouterLink } from 'vue-router'
-import { Calendar, Camera, Delete, Plus, PriceTag } from '@element-plus/icons-vue'
+import { RouterLink, useRoute, useRouter } from 'vue-router'
+import { ArrowLeft, Calendar, Camera, ChatRound, Delete, Plus, PriceTag } from '@element-plus/icons-vue'
 import PageHeading from '../components/content/PageHeading.vue'
+import GiscusComments from '../components/system/GiscusComments.vue'
 import ScrollSpySidebar from '../components/system/ScrollSpySidebar.vue'
 import { getCaptureAssets, normalizeCaptureAssets } from '../data/capture'
 import type { CaptureAsset, CaptureSourceRef } from '../types/content'
@@ -188,10 +299,19 @@ import { openImagePreviewGallery } from '../utils/imagePreview'
 
 const placeholderImage = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=='
 const isDev = import.meta.env.DEV
+const captureScrollStorageKey = 'nexus:capture-scroll-y'
 
 const allAssets = ref<CaptureAsset[]>(getCaptureAssets())
 const captureGroups = computed(() => groupCaptureAssets(allAssets.value))
 const yearGroups = computed(() => groupByYearAndMonth(captureGroups.value))
+const route = useRoute()
+const router = useRouter()
+const selectedGroupId = computed(() => String(route.params.id || ''))
+const isDetailRoute = computed(() => selectedGroupId.value.length > 0)
+const selectedGroup = computed(() =>
+  selectedGroupId.value ? findCaptureGroupByRouteId(decodeURIComponent(selectedGroupId.value)) : null
+)
+const selectedCommentTerm = computed(() => selectedGroup.value ? `capture-group:${selectedGroup.value.id}` : '')
 const scrollSpyKey = computed(() =>
   yearGroups.value
     .map((year) => `${year.id}:${year.months.map((month) => `${month.id}:${month.groups.length}`).join(',')}`)
@@ -271,6 +391,17 @@ function formatDate(date?: string) {
   return formatTimelineDate(date)
 }
 
+function formatDateOnly(date?: string) {
+  const { start, end } = parseTimelineDate(date)
+  if (start && end) return `${formatDateOnlyValue(start)} - ${formatDateOnlyValue(end)}`
+  if (start) return formatDateOnlyValue(start)
+  return date?.replace(/[ T]\d{2}:\d{2}(?::\d{2})?(?:\s*(?:Z|[+-]\d{2}:?\d{2}))?$/, '') || ''
+}
+
+function formatDateOnlyValue(date: Date) {
+  return `${date.getFullYear()}/${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getDate()).padStart(2, '0')}`
+}
+
 function groupCaptureAssets(assets: CaptureAsset[]): CaptureGroup[] {
   const groups = new Map<string, CaptureGroup>()
 
@@ -293,6 +424,12 @@ function groupCaptureAssets(assets: CaptureAsset[]): CaptureGroup[] {
   }
 
   return Array.from(groups.values()).sort((a, b) => b.timestamp - a.timestamp)
+}
+
+function findCaptureGroupByRouteId(routeId: string) {
+  return captureGroups.value.find(
+    (group) => group.id === routeId || group.assets.some((asset) => asset.id === routeId)
+  ) || null
 }
 
 function groupByYearAndMonth(groups: CaptureGroup[]): YearGroup[] {
@@ -344,6 +481,32 @@ function openAsset(asset: CaptureAsset) {
     allAssets.value.map((item) => ({ src: item.image, alt: item.title || '' })),
     allAssets.value.findIndex((item) => item.id === asset.id)
   )
+}
+
+function backToCapture() {
+  if (window.sessionStorage.getItem(captureScrollStorageKey)) {
+    router.back()
+    return
+  }
+  router.push('/capture')
+}
+
+function saveCaptureScrollPosition() {
+  window.sessionStorage.setItem(captureScrollStorageKey, String(window.scrollY))
+}
+
+function restoreCaptureScrollPosition() {
+  if (isDetailRoute.value) return
+  const savedScrollY = window.sessionStorage.getItem(captureScrollStorageKey)
+  if (!savedScrollY) return
+  window.sessionStorage.removeItem(captureScrollStorageKey)
+
+  const top = Number(savedScrollY)
+  if (!Number.isFinite(top)) return
+
+  window.requestAnimationFrame(() => {
+    window.scrollTo({ top, behavior: 'auto' })
+  })
 }
 
 async function refreshEditorAuth() {
@@ -501,6 +664,9 @@ function upsertCaptureAsset(asset: CaptureAsset) {
 
 function removeCaptureAsset(id: string) {
   allAssets.value = allAssets.value.filter((asset) => asset.id !== id)
+  if (selectedGroupId.value && !selectedGroup.value) {
+    backToCapture()
+  }
 }
 
 function sortCaptureAssetList(assets: CaptureAsset[]) {
@@ -533,7 +699,7 @@ function formatYearLabel(date: Date) {
 }
 
 function formatMonthLabel(date: Date) {
-  return new Intl.DateTimeFormat(locale.value.replace('_', '-'), { month: 'long' }).format(date)
+  return new Intl.DateTimeFormat(locale.value.replace('_', '-'), { month: 'numeric' }).format(date)
 }
 
 function observeImage(el: HTMLImageElement, src?: string) {
@@ -583,6 +749,7 @@ function slugFromDate(date: string) {
 onMounted(() => {
   refreshEditorAuth()
   refreshCaptureAssets()
+  restoreCaptureScrollPosition()
   if (canUseLocalCaptureAssetApi()) {
     captureAssetRefreshTimer = window.setInterval(refreshCaptureAssets, 1500)
   }
@@ -593,6 +760,10 @@ onBeforeUnmount(() => {
   imageObserver?.disconnect()
   imageObserver = undefined
 })
+
+watch(isDetailRoute, (detail) => {
+  if (!detail) restoreCaptureScrollPosition()
+}, { flush: 'post' })
 </script>
 
 <style scoped>
@@ -605,6 +776,112 @@ onBeforeUnmount(() => {
 .capture-view__main {
   flex: 1;
   min-width: 0;
+}
+
+.capture-view--detail {
+  display: block;
+}
+
+.capture-detail__topbar {
+  display: flex;
+  margin-bottom: 18px;
+}
+
+.capture-detail__back {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 1px solid var(--site-border);
+  border-radius: 8px;
+  color: var(--site-text);
+  background: rgba(255, 255, 255, 0.03);
+  cursor: pointer;
+  font-size: 18px;
+  transition: color 160ms ease, border-color 160ms ease, background-color 160ms ease;
+}
+
+.capture-detail__back:hover,
+.capture-detail__back:focus-visible {
+  color: var(--site-accent);
+  border-color: rgba(255, 255, 255, 0.42);
+  background: rgba(255, 255, 255, 0.06);
+  outline: none;
+}
+
+.capture-detail {
+  display: grid;
+  gap: 22px;
+}
+
+.capture-detail__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.capture-detail__figure {
+  overflow: hidden;
+  margin: 0;
+  border: 1px solid var(--site-border);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.capture-detail__media {
+  appearance: none;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  max-height: 76vh;
+  padding: 0;
+  border: 0;
+  background: rgba(255, 255, 255, 0.03);
+  cursor: zoom-in;
+}
+
+.capture-detail__media img {
+  display: block;
+  width: 100%;
+  max-height: 76vh;
+  object-fit: contain;
+}
+
+.capture-detail__media:focus-visible {
+  outline: 2px solid var(--site-accent);
+  outline-offset: -2px;
+}
+
+.capture-detail__meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px 14px;
+  font-size: 14px;
+}
+
+.capture-detail__meta-row time {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--site-muted);
+  font-size: 14px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.capture-detail__body {
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid var(--site-border);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .capture-editor {
@@ -683,7 +960,6 @@ onBeforeUnmount(() => {
 .capture-card {
   position: relative;
   min-width: 0;
-  aspect-ratio: 1;
   overflow: hidden;
   background: rgba(255, 255, 255, 0.04);
 }
@@ -760,6 +1036,7 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-content: center;
   width: 100%;
+  aspect-ratio: 1;
   border: 0;
   color: var(--site-muted);
   background:
@@ -779,6 +1056,8 @@ onBeforeUnmount(() => {
 }
 
 .capture-group__body {
+  display: grid;
+  gap: 10px;
   padding: 12px 14px 14px;
 }
 
@@ -786,7 +1065,6 @@ onBeforeUnmount(() => {
   display: flex;
   flex-wrap: wrap;
   gap: 8px 12px;
-  margin-bottom: 8px;
 }
 
 .capture-group__source {
@@ -811,8 +1089,10 @@ onBeforeUnmount(() => {
   flex-wrap: wrap;
   align-items: center;
   gap: 8px;
+  flex: 1;
   min-height: 22px;
   font-size: 14px;
+  min-width: 0;
 }
 
 .capture-card__meta-row time {
@@ -854,6 +1134,32 @@ onBeforeUnmount(() => {
   width: 13px;
   height: 13px;
   font-size: 13px;
+}
+
+.capture-card__comments {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--site-border);
+  border-radius: 8px;
+  color: var(--site-text);
+  background: rgba(255, 255, 255, 0.03);
+  text-decoration: none;
+  font-size: 15px;
+  margin-left: auto;
+  transition: color 160ms ease, border-color 160ms ease, background-color 160ms ease, transform 160ms ease;
+}
+
+.capture-card__comments:hover,
+.capture-card__comments:focus-visible {
+  color: var(--site-accent);
+  border-color: rgba(255, 255, 255, 0.42);
+  background: rgba(255, 255, 255, 0.06);
+  outline: none;
+  transform: translateY(-1px);
 }
 
 .capture-empty {
@@ -1007,15 +1313,73 @@ onBeforeUnmount(() => {
   }
 
   .capture-grid {
-    grid-template-columns: repeat(3, calc(100vw / 3));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .capture-card__media {
-    width: calc(100vw / 3);
+  .capture-grid--single {
+    grid-template-columns: minmax(0, 66.666667%);
+    justify-content: start;
   }
 
-  .capture-card--add {
-    width: calc(100vw / 3);
+  .capture-grid--double {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .capture-card__meta-row {
+    flex: 1 1 auto;
+    gap: 5px;
+  }
+
+  .capture-card__comments {
+    flex: 0 0 auto;
+    width: 28px;
+    height: 28px;
+  }
+
+  .capture-detail,
+  .capture-detail__body {
+    margin-inline: -18px;
+  }
+
+  .capture-detail__topbar {
+    display: none;
+  }
+
+  .capture-detail__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+  }
+
+  .capture-detail__grid--single {
+    grid-template-columns: minmax(0, 66.666667%);
+    justify-content: start;
+  }
+
+  .capture-detail__grid--double {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .capture-detail__figure {
+    aspect-ratio: 1;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .capture-detail__media {
+    height: 100%;
+    max-height: none;
+  }
+
+  .capture-detail__media img {
+    height: 100%;
+    max-height: none;
+    object-fit: cover;
+  }
+
+  .capture-detail__body {
+    border-right: 0;
+    border-left: 0;
+    border-radius: 0;
   }
 }
 
