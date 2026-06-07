@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-06-05T22:59:52+08:00
+date: 2026-06-08T00:18:34+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,14 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `d8f6323` 2026-06-08T00:18:34+08:00 - Update site metadata and docs
+- `7ed70db` 2026-06-08T00:18:14+08:00 - Optimize content previews and routes
+- `c50a2f0` 2026-06-08T00:17:49+08:00 - Improve markdown media runtime
+- `573f100` 2026-06-08T00:17:11+08:00 - Add generated study note captures
+- `2b99b98` 2026-06-07T22:38:29+08:00 - Resolve capture asset URLs under base path
+- `f39e34e` 2026-06-07T22:04:10+08:00 - Show markdown source images by default
+- `351c1d8` 2026-06-07T21:42:16+08:00 - Style editable markdown blocks
+- `36ed63b` 2026-06-07T21:42:04+08:00 - Add editable markdown code and math blocks
 - `f428caa` 2026-06-05T22:59:52+08:00 - Tighten desktop content spacing
 - `47b4deb` 2026-06-05T22:51:24+08:00 - Apply mobile capture grid sizing to list
 - `d882ff2` 2026-06-05T22:41:51+08:00 - Use two-column mobile capture detail for pairs
