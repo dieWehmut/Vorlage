@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-06-09T10:00:46+08:00
+date: 2026-06-09T13:19:28+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,8 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `00b3c88` 2026-06-09T13:19:28+08:00 - feat: add word count and reading minutes to posts and notes
+- `4ed1df7` 2026-06-09T10:30:31+08:00 - feat: add Go source normalization for comments and strings in runCode
 - `7130339` 2026-06-09T10:00:46+08:00 - Merge branch 'main' of https://github.com/dieWehmut/dieWehmut.github.io
 - `4e12fa6` 2026-06-09T10:00:43+08:00 - feat: add markdown documentation generation and improve content loading
 - `db6d13b` 2026-06-08T15:20:47Z - chore: sync capture assets
