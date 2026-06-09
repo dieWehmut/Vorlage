@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-06-08T23:19:45+08:00
+date: 2026-06-09T10:00:46+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,9 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `7130339` 2026-06-09T10:00:46+08:00 - Merge branch 'main' of https://github.com/dieWehmut/dieWehmut.github.io
+- `4e12fa6` 2026-06-09T10:00:43+08:00 - feat: add markdown documentation generation and improve content loading
+- `db6d13b` 2026-06-08T15:20:47Z - chore: sync capture assets
 - `249fdf8` 2026-06-08T23:19:45+08:00 - fix go examples runner issues
 - `91df386` 2026-06-08T21:06:19+08:00 - fix: update title in go-learning.md to reflect correct terminology
 - `d8f6323` 2026-06-08T00:18:34+08:00 - Update site metadata and docs
