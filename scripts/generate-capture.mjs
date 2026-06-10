@@ -10,6 +10,7 @@ const publicCaptureDir = path.join(rootDir, 'public', 'capture-assets')
 const publicDocsDir = path.join(publicCaptureDir, 'docs')
 const publicStandaloneDir = path.join(publicCaptureDir, 'standalone')
 const publicLocalDir = path.join(publicCaptureDir, 'local')
+const publicInfraDir = path.join(publicCaptureDir, 'infra')
 const captureUrlPrefix = '/capture-assets/'
 const preservedAssetPrefixes = [`${captureUrlPrefix}standalone/`, `${captureUrlPrefix}local/`]
 
@@ -209,11 +210,13 @@ function syncDocAsset(assetsDir, docFilePath, imageUrl) {
   const assetsSourcePath = path.join(assetsDir, 'docs', docRelativePath)
   const destinationPath = path.join(publicCaptureDir, relativeAssetPath)
   const publicSourcePath = destinationPath
-  const sourcePath = fs.existsSync(publicSourcePath)
-    ? publicSourcePath
-    : fs.existsSync(localSourcePath)
-      ? localSourcePath
-      : assetsSourcePath
+  const sourcePath = fs.existsSync(localSourcePath)
+    ? localSourcePath
+    : fs.existsSync(assetsSourcePath)
+      ? assetsSourcePath
+      : fs.existsSync(publicSourcePath)
+        ? publicSourcePath
+        : assetsSourcePath
 
   assertFileExists(sourcePath, 'Markdown image')
   if (path.resolve(sourcePath) === path.resolve(destinationPath)) return
@@ -229,6 +232,20 @@ function copyStandaloneAsset(assetsDir, imageUrl) {
   assertFileExists(sourcePath, 'Standalone asset')
   ensureDir(path.dirname(destinationPath))
   fs.copyFileSync(sourcePath, destinationPath)
+}
+
+function syncInfraAssets(assetsDir) {
+  const sourceDir = path.join(assetsDir, 'infra')
+  assertFileExists(sourceDir, 'Infra assets directory')
+  fs.rmSync(publicInfraDir, { recursive: true, force: true })
+
+  for (const entry of fs.readdirSync(sourceDir, { withFileTypes: true })) {
+    if (!entry.isFile()) continue
+    const sourcePath = path.join(sourceDir, entry.name)
+    const destinationPath = path.join(publicInfraDir, entry.name)
+    ensureDir(path.dirname(destinationPath))
+    fs.copyFileSync(sourcePath, destinationPath)
+  }
 }
 
 function toTsModule(data) {
@@ -254,6 +271,8 @@ async function main() {
   ensureDir(publicDocsDir)
   ensureDir(publicStandaloneDir)
   ensureDir(publicLocalDir)
+  ensureDir(publicInfraDir)
+  syncInfraAssets(assetsDir)
 
   const byImage = new Map()
   const markdownFiles = getMarkdownFiles(docsDir)
