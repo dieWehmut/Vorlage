@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-06-10T12:41:46Z
+date: 2026-06-10T13:07:07Z
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,7 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `76e6816` 2026-06-10T13:07:07Z - feat: attach files to runnable code blocks
 - `6fda2c5` 2026-06-10T12:41:46Z - feat: use sandkasten backend code runner only
 - `8e57df7` 2026-06-09T06:13:11Z - feat: add sandkasten backend runner mode
 - `00b3c88` 2026-06-09T13:19:28+08:00 - feat: add word count and reading minutes to posts and notes
