@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-06-10T22:03:34+08:00
+date: 2026-06-10T22:22:54+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,7 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `631b9e4` 2026-06-10T22:22:54+08:00 - feat: update .gitignore to include additional image formats and remove obsolete assets
 - `3b8ecd3` 2026-06-10T22:03:34+08:00 - feat: add infrastructure asset syncing and update InfraView component
 - `d8ddbaa` 2026-06-10T22:03:18+08:00 - Remove obsolete image files and update documentation structure
 - `76e6816` 2026-06-10T13:07:07Z - feat: attach files to runnable code blocks
