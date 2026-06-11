@@ -1,127 +1,198 @@
 <template>
-  <section class="page-surface">
-    <PageHeading :title="tag" :icon="PriceTag" />
+  <section class="page-surface tag-detail-view">
+    <div class="tag-detail__main">
+      <PageHeading :title="tag" :icon="PriceTag">
+        <template #title-extra>
+          <span class="tag-detail__count">
+            {{ totalCount }} {{ totalCount === 1 ? 'entry' : 'entries' }}
+          </span>
+        </template>
+      </PageHeading>
 
-    <div class="tag-detail__count">
-      {{ totalCount }} {{ totalCount === 1 ? 'entry' : 'entries' }}
-    </div>
-
-    <div v-if="captures.length" class="tag-detail__capture-section">
-      <h2 class="tag-detail__section-title">Capture</h2>
-
-      <div v-if="standaloneCaptureGroups.length" class="tag-detail__capture-groups">
-        <article
-          v-for="group in standaloneCaptureGroups"
-          :key="group.id"
-          class="tag-detail__capture-group"
-        >
-          <div class="tag-detail__capture-grid">
-            <button
-              v-for="capture in group.assets"
-              :key="capture.id"
-              class="tag-detail__capture-media"
-              type="button"
-              @click="openCapture(capture)"
-            >
-              <img
-                :src="capture.image"
-                :alt="capture.title || ''"
-                loading="lazy"
-                decoding="async"
-                @error="retryPublicAssetImage($event, capture.image)"
-              />
-            </button>
-          </div>
-
-          <div class="tag-detail__capture-body">
-            <div class="tag-detail__capture-meta-row">
-              <time v-if="group.date" :datetime="group.date">
-                <el-icon class="tag-detail__date-icon"><Calendar /></el-icon>
-                {{ formattedDate(group.date) }}
-              </time>
-              <RouterLink
-                v-for="captureTag in group.tags"
-                :key="captureTag"
-                class="tag-detail__tag"
-                :to="`/tags/${encodeURIComponent(captureTag)}`"
-              >
-                <el-icon class="tag-detail__tag-icon"><PriceTag /></el-icon>
-                {{ captureTag }}
-              </RouterLink>
-            </div>
-          </div>
-        </article>
-      </div>
-
-      <div v-if="linkedCaptures.length" class="tag-detail__linked-capture-grid">
-        <CaptureAssetCard
-          v-for="capture in linkedCaptures"
-          :key="capture.id"
-          :asset="capture"
-          @preview="openCapture(capture)"
-        />
-      </div>
-    </div>
-
-    <div v-if="posts.length" class="tag-detail__list">
-      <article v-for="post in posts" :key="post.id" class="tag-detail__item">
-        <div class="tag-detail__item-body">
-          <h2>
-            <RouterLink :to="postUrl(post)">{{ post.title }}</RouterLink>
+      <div v-if="timelineYearGroups.length" class="tag-detail__list content-timeline">
+        <section v-for="year in timelineYearGroups" :key="year.id" class="content-timeline__year">
+          <h2 :id="year.id" class="content-time-heading content-time-heading--year">
+            {{ year.label }}
           </h2>
-          <MarkdownPreview
-            v-if="post.summary"
-            class="tag-detail__summary"
-            :source="post.summary"
-          />
-          <div v-if="post.date || post.tags?.length || post.wordCount || post.readingMinutes" class="tag-detail__meta-row">
-            <time v-if="post.date" class="tag-detail__date" :datetime="post.date"><el-icon class="tag-detail__date-icon"><Calendar /></el-icon>{{ formattedDate(post.date) }}</time>
-            <ContentStats :word-count="post.wordCount" :reading-minutes="post.readingMinutes" />
-            <RouterLink v-for="t in post.tags" :key="t" class="tag-detail__tag" :to="`/tags/${encodeURIComponent(t)}`"><el-icon class="tag-detail__tag-icon"><PriceTag /></el-icon>{{ t }}</RouterLink>
-          </div>
-        </div>
-      </article>
+
+          <section v-for="month in year.months" :key="month.id" class="content-timeline__month">
+            <h3 :id="month.id" class="content-time-heading content-time-heading--month">
+              {{ month.label }}
+            </h3>
+
+            <div class="content-timeline__items">
+              <template v-for="item in month.items" :key="item.id">
+                <article v-if="item.kind === 'post'" class="tag-detail__item">
+                  <div class="tag-detail__item-body">
+                    <h2>
+                      <RouterLink :to="postUrl(item.post)">{{ item.post.title }}</RouterLink>
+                    </h2>
+                    <MarkdownPreview
+                      v-if="item.post.summary"
+                      class="tag-detail__summary"
+                      :source="item.post.summary"
+                    />
+                    <div v-if="item.post.date || item.post.tags?.length || item.post.wordCount || item.post.readingMinutes" class="tag-detail__meta-row">
+                      <time v-if="item.post.date" class="tag-detail__date" :datetime="item.post.date"><el-icon class="tag-detail__date-icon"><Calendar /></el-icon>{{ formattedDate(item.post.date) }}</time>
+                      <ContentStats :word-count="item.post.wordCount" :reading-minutes="item.post.readingMinutes" />
+                      <RouterLink v-for="t in item.post.tags" :key="t" class="tag-detail__tag" :to="`/tags/${encodeURIComponent(t)}`"><el-icon class="tag-detail__tag-icon"><PriceTag /></el-icon>{{ t }}</RouterLink>
+                    </div>
+                  </div>
+                </article>
+
+                <article
+                  v-else
+                  class="tag-detail__capture-group"
+                >
+                  <div class="tag-detail__capture-grid">
+                    <button
+                      v-for="capture in item.group.assets"
+                      :key="capture.id"
+                      class="tag-detail__capture-media"
+                      type="button"
+                      @click="openCapture(capture)"
+                    >
+                      <img
+                        :src="capture.image"
+                        :alt="capture.title || ''"
+                        loading="lazy"
+                        decoding="async"
+                        @error="retryPublicAssetImage($event, capture.image)"
+                      />
+                    </button>
+                  </div>
+
+                  <div class="tag-detail__capture-body">
+                    <div v-if="item.group.sources.length" class="tag-detail__capture-sources">
+                      <RouterLink
+                        v-for="source in item.group.sources"
+                        :key="`${source.type}:${source.id}`"
+                        class="tag-detail__capture-source"
+                        :to="source.url"
+                      >
+                        {{ source.title }}
+                      </RouterLink>
+                    </div>
+                    <div class="tag-detail__capture-meta-row">
+                      <time v-if="item.group.date" :datetime="item.group.date">
+                        <el-icon class="tag-detail__date-icon"><Calendar /></el-icon>
+                        {{ formattedDate(item.group.date) }}
+                      </time>
+                      <RouterLink
+                        v-for="captureTag in item.group.tags"
+                        :key="captureTag"
+                        class="tag-detail__tag"
+                        :to="`/tags/${encodeURIComponent(captureTag)}`"
+                      >
+                        <el-icon class="tag-detail__tag-icon"><PriceTag /></el-icon>
+                        {{ captureTag }}
+                      </RouterLink>
+                    </div>
+                  </div>
+                </article>
+              </template>
+            </div>
+          </section>
+        </section>
+      </div>
+
+      <div v-if="!totalCount" class="tag-detail__empty">
+        No entries found for this tag.
+      </div>
     </div>
 
-    <div v-if="!totalCount" class="tag-detail__empty">
-      No entries found for this tag.
-    </div>
+    <ScrollSpySidebar
+      v-if="timelineYearGroups.length"
+      :key="scrollSpyKey"
+      root-selector=".tag-detail__main"
+      heading-selector=".content-time-heading"
+    />
   </section>
 </template>
 
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRoute, RouterLink } from 'vue-router'
 import { PriceTag, Calendar } from '@element-plus/icons-vue'
-import CaptureAssetCard from '../components/capture/CaptureAssetCard.vue'
 import ContentStats from '../components/content/ContentStats.vue'
 import MarkdownPreview from '../components/content/MarkdownPreview.vue'
 import PageHeading from '../components/content/PageHeading.vue'
+import ScrollSpySidebar from '../components/system/ScrollSpySidebar.vue'
 import { getPosts, getNotes } from '../data'
-import type { CaptureAsset, TagContentEntry } from '../types/content'
+import type { CaptureAsset, CaptureSourceRef, TagContentEntry } from '../types/content'
 import { formatTimelineDate, getDateSortTimestamp } from '../utils/date'
 import { openImagePreviewGallery } from '../utils/imagePreview'
 import { retryPublicAssetImage } from '../utils/publicAssets'
+import { groupItemsByYearAndMonth } from '../utils/timelineGroups'
 
 const route = useRoute()
+const { locale } = useI18n()
 const tag = computed(() => decodeURIComponent(String(route.params.tag || '')))
 const captures = ref<CaptureAsset[]>([])
 const totalCount = computed(() => posts.value.length + captures.value.length)
-const standaloneCaptures = computed(() =>
-  captures.value.filter((asset) => asset.standalone || !asset.sourceRefs.length)
-)
-const linkedCaptures = computed(() =>
-  captures.value.filter((asset) => !asset.standalone && asset.sourceRefs.length)
-)
-const standaloneCaptureGroups = computed(() => groupStandaloneCaptures(standaloneCaptures.value))
+const captureGroups = computed(() => groupCapturesByDate(captures.value))
+const timelineItems = computed<TagTimelineItem[]>(() => {
+  const postItems: TagTimelineItem[] = posts.value.map((post, index) => ({
+    id: `${post._isNote ? 'note' : 'post'}:${post.id}`,
+    kind: 'post',
+    timestamp: getDateSortTimestamp(post.date),
+    priority: 0,
+    order: index,
+    post,
+  }))
 
-type StandaloneCaptureGroup = {
+  const captureItems: TagTimelineItem[] = captureGroups.value.map((group, index) => ({
+    id: group.id,
+    kind: 'capture',
+    timestamp: group.timestamp,
+    priority: 1,
+    order: index,
+    group,
+  }))
+
+  return [...postItems, ...captureItems]
+    .sort((a, b) => b.timestamp - a.timestamp || a.priority - b.priority || a.order - b.order)
+})
+const timelineYearGroups = computed(() =>
+  groupItemsByYearAndMonth(timelineItems.value, {
+    idPrefix: 'tag-detail',
+    locale: locale.value,
+    getDate: (item) => item.kind === 'post' ? item.post.date : item.group.date,
+  })
+)
+const scrollSpyKey = computed(() =>
+  timelineYearGroups.value
+    .map((year) => `${year.id}:${year.months.map((month) => `${month.id}:${month.items.map((item) => item.id).join(',')}`).join(';')}`)
+    .join('|')
+)
+
+type CaptureGroup = {
   id: string
   date?: string
   timestamp: number
   tags: string[]
+  sources: CaptureSourceRef[]
   assets: CaptureAsset[]
 }
+
+type TagTimelineItem =
+  | {
+      id: string
+      kind: 'post'
+      timestamp: number
+      priority: number
+      order: number
+      post: TagContentEntry
+    }
+  | {
+      id: string
+      kind: 'capture'
+      timestamp: number
+      priority: number
+      order: number
+      group: CaptureGroup
+    }
 
 const posts = computed<TagContentEntry[]>(() => {
   const matchTag = (tags: string[]) => tags.some((t) => t.toLowerCase() === tag.value.toLowerCase())
@@ -155,8 +226,8 @@ function formattedDate(dateStr?: string): string {
   return formatTimelineDate(dateStr)
 }
 
-function groupStandaloneCaptures(assets: CaptureAsset[]): StandaloneCaptureGroup[] {
-  const groups = new Map<string, StandaloneCaptureGroup>()
+function groupCapturesByDate(assets: CaptureAsset[]): CaptureGroup[] {
+  const groups = new Map<string, CaptureGroup>()
 
   for (const asset of assets) {
     const key = asset.date || 'undated'
@@ -165,10 +236,12 @@ function groupStandaloneCaptures(assets: CaptureAsset[]): StandaloneCaptureGroup
       date: asset.date,
       timestamp: getDateSortTimestamp(asset.date),
       tags: [],
+      sources: [],
       assets: [],
     }
 
     group.tags = mergeUnique(group.tags, asset.tags || [])
+    group.sources = mergeSources(group.sources, asset.sourceRefs || [])
     group.assets.push(asset)
     groups.set(key, group)
   }
@@ -178,6 +251,18 @@ function groupStandaloneCaptures(assets: CaptureAsset[]): StandaloneCaptureGroup
 
 function mergeUnique(existing: string[], incoming: string[]): string[] {
   return Array.from(new Set([...existing, ...incoming]))
+}
+
+function mergeSources(existing: CaptureSourceRef[], incoming: CaptureSourceRef[]): CaptureSourceRef[] {
+  const merged = [...existing]
+
+  for (const source of incoming) {
+    if (!merged.some((item) => item.type === source.type && item.id === source.id)) {
+      merged.push(source)
+    }
+  }
+
+  return merged
 }
 
 function slugFromDate(date: string): string {
@@ -199,31 +284,54 @@ watch(tag, loadCaptures)
 </script>
 
 <style scoped>
+.tag-detail-view {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--site-view-aside-gap);
+}
+
+.tag-detail__main {
+  flex: 1;
+  min-width: 0;
+}
+
 .tag-detail__count {
   color: var(--site-muted);
   font-size: 15px;
   font-weight: 700;
-  margin-bottom: 24px;
+  line-height: 1.2;
+  white-space: nowrap;
 }
 
 .tag-detail__list {
-  border-top: 1px solid var(--site-border);
+  margin-top: 8px;
 }
 
-.tag-detail__capture-section {
-  margin-bottom: 34px;
+.content-timeline,
+.content-timeline__year,
+.content-timeline__month,
+.content-timeline__items {
+  display: grid;
+  gap: 24px;
 }
 
-.tag-detail__section-title {
-  margin: 0 0 14px;
+.content-time-heading {
+  margin: 0;
+  scroll-margin-top: 28px;
+}
+
+.content-time-heading--year {
   color: var(--site-text);
-  font-size: 18px;
+  font-size: 28px;
+  line-height: 1.1;
   font-weight: 900;
 }
 
-.tag-detail__capture-groups {
-  display: grid;
-  gap: 20px;
+.content-time-heading--month {
+  color: var(--site-muted);
+  font-size: 18px;
+  line-height: 1.2;
+  font-weight: 900;
 }
 
 .tag-detail__capture-group {
@@ -278,7 +386,32 @@ watch(tag, loadCaptures)
 }
 
 .tag-detail__capture-body {
+  display: grid;
+  gap: 10px;
   padding: 12px 14px 14px;
+}
+
+.tag-detail__capture-sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+}
+
+.tag-detail__capture-source {
+  color: var(--site-text);
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.35;
+  text-decoration: none;
+  transition: color 160ms ease, text-decoration-color 160ms ease;
+}
+
+.tag-detail__capture-source:hover,
+.tag-detail__capture-source:focus-visible {
+  color: var(--site-accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  outline: none;
 }
 
 .tag-detail__capture-meta-row {
@@ -300,20 +433,9 @@ watch(tag, loadCaptures)
   white-space: nowrap;
 }
 
-.tag-detail__linked-capture-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 18px;
-  margin-top: 18px;
-}
-
-.tag-detail__capture-groups + .tag-detail__linked-capture-grid {
-  margin-top: 24px;
-}
-
 .tag-detail__item {
   padding: 20px 0;
-  border-bottom: 1px solid var(--site-border);
+  border-top: 1px solid var(--site-border);
 }
 
 .tag-detail__item-body h2 {
@@ -399,6 +521,10 @@ watch(tag, loadCaptures)
 }
 
 @media (max-width: 900px) {
+  .tag-detail-view {
+    display: block;
+  }
+
   .tag-detail__capture-grid {
     grid-template-columns: repeat(3, calc(100vw / 3));
   }
@@ -407,21 +533,11 @@ watch(tag, loadCaptures)
     width: calc(100vw / 3);
   }
 
-  .tag-detail__capture-groups {
-    margin-inline: -18px;
-    gap: 20px;
-  }
-
   .tag-detail__capture-group {
+    margin-inline: -18px;
     border-right: 0;
     border-left: 0;
     border-radius: 0;
-  }
-
-  .tag-detail__linked-capture-grid {
-    grid-template-columns: 1fr;
-    margin-inline: -18px;
-    gap: 18px;
   }
 }
 </style>
