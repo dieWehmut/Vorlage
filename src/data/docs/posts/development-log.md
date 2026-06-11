@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-06-11T19:47:24+08:00
+date: 2026-06-11T19:58:51+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,7 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `4a35c20` 2026-06-11T19:58:51+08:00 - fix: expand infra outer nodes horizontally
 - `2aec856` 2026-06-11T19:47:24+08:00 - fix: tighten infra outer orbit radius
 - `57179fd` 2026-06-11T19:43:36+08:00 - feat: refine infra orbit layout
 - `aa3a304` 2026-06-11T19:42:47+08:00 - refactor: remove redundant page headings
