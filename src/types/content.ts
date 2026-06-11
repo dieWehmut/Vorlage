@@ -10,6 +10,7 @@ export interface ArchivePost {
   summary: string
   wordCount?: number
   readingMinutes?: number
+  updated?: string
   body?: string
   assetPaths?: string[]
 }
@@ -22,6 +23,7 @@ export interface NoteEntry {
   summary: string
   wordCount?: number
   readingMinutes?: number
+  updated?: string
   body?: string
   assetPaths?: string[]
 }
@@ -72,6 +74,7 @@ export interface SearchDocument {
   url: string
   date?: string
   tags?: string[]
+  updated?: string
   wordCount?: number
   readingMinutes?: number
   captureAssetIds?: string[]

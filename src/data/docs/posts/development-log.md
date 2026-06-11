@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-06-11T15:27:22+08:00
+date: 2026-06-11T19:43:36+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,11 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `57179fd` 2026-06-11T19:43:36+08:00 - feat: refine infra orbit layout
+- `aa3a304` 2026-06-11T19:42:47+08:00 - refactor: remove redundant page headings
+- `5ff5ec6` 2026-06-11T19:41:54+08:00 - docs: update infra and setup notes
+- `fbef50e` 2026-06-11T16:17:20+08:00 - 添加最后更新显示
+- `b5c441e` 2026-06-11T15:44:12+08:00 - feat: add last updated timestamp to generated documentation and views
 - `2c7b45d` 2026-06-11T15:27:22+08:00 - Refactor timeline display in CaptureView, HomeView, NotesView, TagDetailView, and TagsView
 - `fe3623f` 2026-06-10T23:53:29+08:00 - fix: order tag detail entries by date
 - `631b9e4` 2026-06-10T22:22:54+08:00 - feat: update .gitignore to include additional image formats and remove obsolete assets
