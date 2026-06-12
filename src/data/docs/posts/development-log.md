@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-06-11T19:58:51+08:00
+date: 2026-06-11T14:00:49Z
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,12 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `285de6c` 2026-06-11T14:00:49Z - Revert "feat: add runtimes landing route"
+- `1a1889e` 2026-06-11T13:33:20Z - feat: add runtimes landing route
+- `17ba427` 2026-06-11T12:48:50Z - test: smoke code runner without preflight
+- `27f20a1` 2026-06-11T12:46:31Z - perf: wait for short code runs in one request
+- `b3ef29f` 2026-06-11T12:44:05Z - perf: avoid code runner CORS preflight
+- `db15193` 2026-06-11T12:29:53Z - fix: redact backend paths in code runner output
 - `4a35c20` 2026-06-11T19:58:51+08:00 - fix: expand infra outer nodes horizontally
 - `2aec856` 2026-06-11T19:47:24+08:00 - fix: tighten infra outer orbit radius
 - `57179fd` 2026-06-11T19:43:36+08:00 - feat: refine infra orbit layout
