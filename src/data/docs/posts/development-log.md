@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-06-13T14:03:44+08:00
+date: 2026-06-13T17:37:10Z
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,10 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `ea884ff` 2026-06-13T17:37:10Z - fix: tolerate missing private capture assets
+- `a91ed70` 2026-06-13T17:31:27Z - chore: refresh sandkasten doc metadata
+- `565f8f9` 2026-06-13T17:31:11Z - test: verify sandkasten doc examples
+- `eb14608` 2026-06-13T06:23:38Z - fix: align sandkasten document runners
 - `e01bcc0` 2026-06-13T14:03:44+08:00 - feat: expand code runner to full language set, add renderable output, add ScrollSpySidebar to search page
 - `45d98f3` 2026-06-13T13:39:44+08:00 - 补充backend参考
 - `8d0e5a2` 2026-06-13T13:37:40+08:00 - docs: add full Sandkasten runtime test post, update code runner section
