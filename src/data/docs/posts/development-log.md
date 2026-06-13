@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-06-13T13:37:40+08:00
+date: 2026-06-13T13:39:44+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,7 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `45d98f3` 2026-06-13T13:39:44+08:00 - 补充backend参考
 - `8d0e5a2` 2026-06-13T13:37:40+08:00 - docs: add full Sandkasten runtime test post, update code runner section
 - `152abd8` 2026-06-13T13:28:22+08:00 - docs: expand README, fix about.md links, sync template title
 - `285de6c` 2026-06-11T14:00:49Z - Revert "feat: add runtimes landing route"
