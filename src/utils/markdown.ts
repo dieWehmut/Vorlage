@@ -54,6 +54,9 @@ const MARKDOWN_CHUNK_MAX_LENGTH = 12000
 const SOURCE_IMAGE_PLACEHOLDER = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=='
 const renderedMarkdownCache = new Map<string, string>()
 const renderedMarkdownPreviewCache = new Map<string, string>()
+const BLOCKED_PAGE_KEYS = new Set(['d', 'g', 'h', 'j', 'k', 'l', 'r', 'u'])
+let markdownShortcutGuardRefCount = 0
+let markdownShortcutGuardHandler: ((event: KeyboardEvent) => void) | null = null
 
 hljs.registerLanguage('bash', bash)
 hljs.registerLanguage('css', css)
@@ -149,6 +152,54 @@ function isSafeStyle(value: string): boolean {
   if (normalized.includes('expression(')) return false
   if (normalized.includes('javascript:')) return false
   return /^[\w\s.,:%#()+\-;]*$/.test(value)
+}
+
+function isEditableKeyboardTarget(target: EventTarget | null): boolean {
+  if (!(target instanceof HTMLElement)) return false
+
+  const formControl = target.closest('input, textarea, select')
+  if (formControl instanceof HTMLInputElement || formControl instanceof HTMLTextAreaElement) {
+    return !formControl.disabled && !formControl.readOnly
+  }
+  if (formControl instanceof HTMLSelectElement) {
+    return !formControl.disabled
+  }
+
+  if (target.closest('[contenteditable=""], [contenteditable="true"]')) return true
+
+  const monacoBlock = target.closest<HTMLElement>('.md-editable-block')
+  return Boolean(monacoBlock?.classList.contains('is-editing') && target.closest('.monaco-editor'))
+}
+
+function shouldBlockMarkdownShortcut(event: KeyboardEvent): boolean {
+  if (event.defaultPrevented) return false
+  if (event.ctrlKey || event.metaKey || event.altKey) return false
+  if (event.isComposing) return false
+  if (!BLOCKED_PAGE_KEYS.has(event.key.toLowerCase())) return false
+  return !isEditableKeyboardTarget(event.target)
+}
+
+function installMarkdownShortcutGuard(doc: Document) {
+  markdownShortcutGuardRefCount += 1
+  if (markdownShortcutGuardHandler || markdownShortcutGuardRefCount !== 1) return
+
+  markdownShortcutGuardHandler = (event: KeyboardEvent) => {
+    if (!shouldBlockMarkdownShortcut(event)) return
+    event.preventDefault()
+    event.stopImmediatePropagation()
+  }
+
+  doc.defaultView?.addEventListener('keydown', markdownShortcutGuardHandler, true)
+  doc.addEventListener('keydown', markdownShortcutGuardHandler, true)
+}
+
+function uninstallMarkdownShortcutGuard(doc: Document) {
+  markdownShortcutGuardRefCount = Math.max(0, markdownShortcutGuardRefCount - 1)
+  if (markdownShortcutGuardRefCount !== 0 || !markdownShortcutGuardHandler) return
+
+  doc.defaultView?.removeEventListener('keydown', markdownShortcutGuardHandler, true)
+  doc.removeEventListener('keydown', markdownShortcutGuardHandler, true)
+  markdownShortcutGuardHandler = null
 }
 
 function sanitizeHtml(html: string): string {
@@ -357,6 +408,10 @@ type CodeLanguageInfo = {
   validLang: string
 }
 
+type SetSourceOptions = {
+  renderContent?: boolean
+}
+
 type CodeFenceInfo = {
   lang: string
   fileName: string
@@ -380,7 +435,7 @@ function resolveCodeLanguage(lang: string | undefined): CodeLanguageInfo {
   const validLang = requestedLang && hljs.getLanguage(requestedLang) ? requestedLang : ''
   return {
     langClass: validLang ? ` language-${validLang}` : '',
-    langLabel: validLang || '',
+    langLabel: requestedLang || validLang || '',
     validLang,
   }
 }
@@ -440,7 +495,7 @@ const RENDERABLE_RUNNERS = new Set([
   'latex', 'graphviz', 'dot', 'typst', 'typ',
 ])
 const STYLE_RENDERABLE_RUNNERS = new Set(['css', 'scss', 'tailwindcss'])
-const RUN_ALL_CONCURRENCY = 16
+const RUN_ALL_CONCURRENCY = 4
 
 function resolveCodeRunner(lang: string | undefined): string {
   const requestedLang = (lang || '').trim().split(/\s+/)[0].toLowerCase()
@@ -492,12 +547,31 @@ function languageFromFileName(fileName: string): string {
       return 'typescript'
     case 'xml':
     case 'html':
-      return 'xml'
+      return 'html'
     case 'yaml':
     case 'yml':
       return 'yaml'
+    case 'css':
+    case 'scss':
+    case 'vue':
+    case 'tsx':
+    case 'mdx':
+    case 'sql':
+    case 'rs':
+    case 'py':
+    case 'rb':
+    case 'php':
+    case 'lua':
+    case 'dart':
+    case 'kt':
+    case 'swift':
+      return extension === 'rs' ? 'rust'
+        : extension === 'py' ? 'python'
+          : extension === 'rb' ? 'ruby'
+            : extension === 'kt' ? 'kotlin'
+              : extension
     default:
-      return extension && hljs.getLanguage(extension) ? extension : ''
+      return extension || ''
   }
 }
 
@@ -617,8 +691,10 @@ function renderEditableToolbar(kind: EditableBlockKind, label: string, runner: s
 
 function renderEditableBlock(kind: EditableBlockKind, source: string, lang = '', fileName = ''): string {
   const encodedSource = escapeHtml(encodeSource(source))
+  const requestedLang = lang.trim().split(/\s+/)[0]
   const { langLabel, validLang } = resolveCodeLanguage(lang)
-  const runner = kind === 'code' && !fileName ? resolveCodeRunner(lang) : ''
+  const runner = kind === 'code' && !fileName ? resolveCodeRunner(requestedLang) : ''
+  const editorLang = requestedLang || validLang || runner
   const content = kind === 'code'
     ? renderHighlightedCode(source, validLang)
     : renderLatex(source, true)
@@ -628,10 +704,10 @@ function renderEditableBlock(kind: EditableBlockKind, source: string, lang = '',
   const runnerAttr = runner ? ` data-md-runner="${escapeHtml(runner)}"` : ''
   const fileNameAttr = fileName ? ` data-md-file-name="${escapeHtml(fileName)}"` : ''
   const fileClass = fileName ? ' md-file-block' : ''
-  const label = fileName ? `file: ${fileName}` : langLabel
+  const label = fileName ? `file: ${fileName}` : (langLabel || runner || 'text')
 
   return [
-    `<div class="md-editable-block md-${kind}-block${fileClass}" data-md-kind="${kind}" data-md-original="${encodedSource}" data-md-current="${encodedSource}" data-md-lang="${escapeHtml(validLang)}"${runnerAttr}${fileNameAttr}>`,
+    `<div class="md-editable-block md-${kind}-block${fileClass}" data-md-kind="${kind}" data-md-original="${encodedSource}" data-md-current="${encodedSource}" data-md-lang="${escapeHtml(editorLang)}"${runnerAttr}${fileNameAttr}>`,
     renderEditableToolbar(kind, label, runner),
     sourceView,
     `<div class="md-editable-content md-${kind}-content">${content}</div>`,
@@ -787,6 +863,12 @@ export function bindMarkdownInteractions(root: ParentNode | null | undefined): (
   const activeTimers = new Set<number>()
   const cleanupHandlers: Array<() => void> = []
   let toastTimer: number | null = null
+  const ownerDocument = root instanceof Document ? root : root.ownerDocument
+
+  if (ownerDocument) {
+    installMarkdownShortcutGuard(ownerDocument)
+    cleanupHandlers.push(() => uninstallMarkdownShortcutGuard(ownerDocument))
+  }
 
   const imagePreviewSrc = (image: HTMLImageElement): string => {
     const original = image.dataset.originalSrc || image.dataset.mdLazySrc || image.getAttribute('src') || ''
@@ -949,9 +1031,9 @@ export function bindMarkdownInteractions(root: ParentNode | null | undefined): (
     content.innerHTML = renderHighlightedCode(source, block.dataset.mdLang || '')
   }
 
-  const setCurrentSource = (block: HTMLElement, source: string) => {
+  const setCurrentSource = (block: HTMLElement, source: string, options: SetSourceOptions = {}) => {
     block.dataset.mdCurrent = encodeSource(source)
-    renderBlockContent(block, source)
+    if (options.renderContent !== false) renderBlockContent(block, source)
     updateSourceView(block, source)
     updateModifiedState(block)
   }
@@ -976,6 +1058,26 @@ export function bindMarkdownInteractions(root: ParentNode | null | undefined): (
   const monacoEditors = new WeakMap<HTMLElement, MarkdownMonacoEditor>()
   const monacoLoaders = new WeakMap<HTMLElement, Promise<MarkdownMonacoEditor>>()
   const activeMonacoEditors = new Set<MarkdownMonacoEditor>()
+  const pendingPreviewBlocks = new Set<HTMLElement>()
+  const previewHydrationObserver = window.IntersectionObserver
+    ? new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return
+        const block = entry.target
+        if (!(block instanceof HTMLElement)) return
+        previewHydrationObserver?.unobserve(block)
+        pendingPreviewBlocks.delete(block)
+        void ensureEditor(block, true)
+      })
+    }, {
+      rootMargin: '480px 0px',
+      threshold: 0,
+    })
+    : null
+
+  if (previewHydrationObserver) {
+    cleanupHandlers.push(() => previewHydrationObserver.disconnect())
+  }
 
   const ensureEditorHost = (block: HTMLElement): HTMLElement => {
     const existing = block.querySelector<HTMLElement>('.md-editable-editor')
@@ -996,22 +1098,41 @@ export function bindMarkdownInteractions(root: ParentNode | null | undefined): (
     return host
   }
 
-  const ensureEditor = async (block: HTMLElement): Promise<MarkdownMonacoEditor> => {
+  const showReadOnlyPreview = (block: HTMLElement, editorHost: HTMLElement) => {
+    if (getBlockKind(block) !== 'code' || block.classList.contains('is-editing')) return
+    const content = block.querySelector<HTMLElement>('.md-editable-content')
+    if (content) content.hidden = true
+    editorHost.hidden = false
+    editorHost.classList.add('is-readonly')
+  }
+
+  const ensureEditor = async (block: HTMLElement, readOnly = false): Promise<MarkdownMonacoEditor> => {
     const existing = monacoEditors.get(block)
-    if (existing) return existing
+    if (existing) {
+      existing.setReadOnly(readOnly)
+      if (readOnly) showReadOnlyPreview(block, existing.container)
+      return existing
+    }
 
     const loading = monacoLoaders.get(block)
-    if (loading) return loading
+    if (loading) {
+      const editor = await loading
+      editor.setReadOnly(readOnly)
+      if (readOnly) showReadOnlyPreview(block, editor.container)
+      return editor
+    }
 
     const host = ensureEditorHost(block)
     host.classList.add('is-loading')
     host.setAttribute('aria-busy', 'true')
+    if (readOnly) showReadOnlyPreview(block, host)
 
     const loader = createMarkdownMonacoEditor({
       container: host,
       language: block.dataset.mdLang || block.dataset.mdRunner || '',
       value: getCurrentSource(block),
-      onChange: (value) => setCurrentSource(block, value),
+      onChange: (value) => setCurrentSource(block, value, { renderContent: false }),
+      readOnly,
     }).then((editor) => {
       monacoEditors.set(block, editor)
       activeMonacoEditors.add(editor)
@@ -1042,12 +1163,28 @@ export function bindMarkdownInteractions(root: ParentNode | null | undefined): (
     }
   }
 
+  const schedulePreviewHydration = (block: HTMLElement) => {
+    if (getBlockKind(block) !== 'code') return
+    if (monacoEditors.has(block) || monacoLoaders.has(block) || pendingPreviewBlocks.has(block)) return
+    ensureEditorHost(block)
+
+    if (!previewHydrationObserver) {
+      void ensureEditor(block, true)
+      return
+    }
+
+    pendingPreviewBlocks.add(block)
+    previewHydrationObserver.observe(block)
+  }
+
   const setEditing = async (block: HTMLElement, editing: boolean) => {
     const editorHost = ensureEditorHost(block)
+    const content = block.querySelector<HTMLElement>('.md-editable-content')
     const editButton = block.querySelector<HTMLButtonElement>('[data-md-action="edit"]')
 
     block.classList.toggle('is-editing', editing)
     editorHost.hidden = !editing
+    if (content) content.hidden = editing || (getBlockKind(block) === 'code' && monacoEditors.has(block))
 
     if (editButton) {
       editButton.textContent = editing ? '完成' : '修改'
@@ -1058,14 +1195,21 @@ export function bindMarkdownInteractions(root: ParentNode | null | undefined): (
     if (!editing) {
       const editor = monacoEditors.get(block)
       editor?.setValue(getCurrentSource(block))
+      editor?.setReadOnly(true)
+      if (getBlockKind(block) === 'code' && editor) {
+        editorHost.hidden = false
+        editorHost.classList.add('is-readonly')
+        editor.layout()
+      }
       return
     }
 
     setSourceVisible(block, false)
     try {
-      const editor = await ensureEditor(block)
+      const editor = await ensureEditor(block, false)
       editor.setValue(getCurrentSource(block))
       editor.layout()
+      editor.container.classList.remove('is-readonly')
       editor.focusEnd()
     } finally {
       if (editButton) editButton.setAttribute('aria-busy', 'false')
@@ -1079,6 +1223,24 @@ export function bindMarkdownInteractions(root: ParentNode | null | undefined): (
     setCurrentSource(block, originalSource)
     setSourceVisible(block, false)
     void setEditing(block, false)
+  }
+
+  root.querySelectorAll<HTMLElement>('.md-editable-block[data-md-kind="code"]').forEach(schedulePreviewHydration)
+
+  if (window.MutationObserver && root instanceof Node) {
+    const codeObserver = new MutationObserver((records) => {
+      records.forEach((record) => {
+        record.addedNodes.forEach((node) => {
+          if (!(node instanceof Element)) return
+          if (node.matches('.md-editable-block[data-md-kind="code"]')) {
+            schedulePreviewHydration(node as HTMLElement)
+          }
+          node.querySelectorAll<HTMLElement>('.md-editable-block[data-md-kind="code"]').forEach(schedulePreviewHydration)
+        })
+      })
+    })
+    codeObserver.observe(root, { childList: true, subtree: true })
+    cleanupHandlers.push(() => codeObserver.disconnect())
   }
 
   const showCopyToast = (message: string, failed = false) => {
@@ -1416,7 +1578,6 @@ export function bindMarkdownInteractions(root: ParentNode | null | undefined): (
     let nextIndex = 0
     setRunAllButtonLoading(button, true)
     setRunAllStatus(`已提交 ${blocks.length} 个`)
-    blocks.forEach((block) => setRunOutputPending(block, 'queued'))
 
     try {
       await new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()))
@@ -1434,18 +1595,8 @@ export function bindMarkdownInteractions(root: ParentNode | null | undefined): (
       await Promise.all(workers)
       setRunAllStatus(`${blocks.length}/${blocks.length} 完成`)
     } catch (error) {
-      blocks.forEach((block) => {
-        if (!block.classList.contains('is-running')) {
-          setRunOutputResult(block, {
-            status: 'runtime_error',
-            stdout: '',
-            stderr: '',
-            durationMs: 0,
-            message: error instanceof Error ? error.message : String(error),
-          })
-        }
-      })
-      setRunAllStatus('运行/渲染未完成')
+      const message = error instanceof Error ? error.message : String(error)
+      setRunAllStatus(message ? `运行/渲染未完成：${message}` : '运行/渲染未完成')
     } finally {
       setRunAllButtonLoading(button, false)
     }
