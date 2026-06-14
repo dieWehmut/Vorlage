@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-06-14T14:16:00Z
+date: 2026-06-14T16:36:30Z
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,7 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `fa6ea34` 2026-06-14T16:36:30Z - feat: gate markdown code runners
 - `2e5ebd9` 2026-06-14T14:16:00Z - Make Sandkasten examples more realistic
 - `bd1a9ec` 2026-06-14T14:15:45Z - Render markdown code blocks lighter
 - `9ac8359` 2026-06-14T12:47:38Z - Block markdown shortcut keys
