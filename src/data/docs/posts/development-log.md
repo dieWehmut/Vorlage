@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-06-15T19:53:47+08:00
+date: 2026-06-15T19:56:47+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,7 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `d137bb0` 2026-06-15T19:56:47+08:00 - style: paint iframe render scrollbars with site accent green
 - `21596b5` 2026-06-15T19:53:47+08:00 - fix: stop auto-scrolling after run/render finishes
 - `976c3d5` 2026-06-15T19:49:26+08:00 - fix: skip 'GitHub 登录中' state when already authenticated
 - `a4c5203` 2026-06-15T19:47:41+08:00 - style: align code block visuals between rendered and edit modes
