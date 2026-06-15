@@ -1,11 +1,17 @@
 import { ref } from 'vue'
+import type { InfraEntry } from '../../types/content'
 
-const initialInfra = [
-  // Add your infrastructure endpoints here
+// Sample endpoints — replace with your own services.
+// Each entry will be probed via /api/ping (dev) or direct fetch (prod),
+// and optionally enriched by an Uptime Kuma status page if configured
+// in siteConfig.kuma.
+const initialInfra: InfraEntry[] = [
+  { name: 'Demo Site', key: 'demo', url: 'https://diewehmut.github.io/diesuwa-starter/', date: '2026-05-01' },
+  { name: 'GitHub', key: 'github', url: 'https://github.com', date: '2026-05-01' },
   // { name: 'Service Name', key: 'service', url: 'https://service.example.com', date: '2025-01-01' },
 ]
 
-initialInfra.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+initialInfra.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
 
 export const infra = ref(initialInfra)
 

@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-06-15T22:12:08+08:00
+date: 2026-06-16T00:21:42+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,10 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `6da5b2e` 2026-06-16T00:21:42+08:00 - ci(starter): auto-update repo description & homepage on sync
+- `1aa5135` 2026-06-16T00:20:12+08:00 - docs(starter): highlight Sandkasten + Uptime Kuma integration
+- `2379500` 2026-06-16T00:16:14+08:00 - feat(starter): ship sample infra & project data with feature flags on
+- `dc3468f` 2026-06-16T00:14:01+08:00 - feat(infra): integrate Uptime Kuma status as primary source
 - `824128a` 2026-06-15T22:12:08+08:00 - 补充文档
 - `77b3fea` 2026-06-15T22:06:56+08:00 - fix(markdown): pin gutter widths so rendered and edit modes align
 - `fd5f049` 2026-06-15T21:59:33+08:00 - fix(markdown): make fold chevron clickable and bigger
