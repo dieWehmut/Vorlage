@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-06-15T21:21:31+08:00
+date: 2026-06-15T21:53:37+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,7 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `7896f39` 2026-06-15T21:53:37+08:00 - fix(markdown): keep fold chevron visible after sanitization
 - `bfc5c40` 2026-06-15T21:21:31+08:00 - style(markdown): match Monaco fold chevron size and shape
 - `f7f4b21` 2026-06-15T21:16:14+08:00 - feat(markdown): add inline fold chevrons to rendered code blocks
 - `37da3a1` 2026-06-15T21:07:01+08:00 - revert(markdown): restore line numbers and Monaco folding controls
