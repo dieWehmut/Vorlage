@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-06-14T16:57:09Z
+date: 2026-06-15T19:30:10+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,8 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `6bb2c1c` 2026-06-15T19:30:10+08:00 - fix: restore dynamic background visibility under content layer
+- `4116a4b` 2026-06-15T19:04:46+08:00 - 更新文档
 - `b45829a` 2026-06-14T16:57:09Z - style: add mesh background to view area
 - `b013d9a` 2026-06-14T16:54:10Z - perf: speed up markdown editor activation
 - `fa6ea34` 2026-06-14T16:36:30Z - feat: gate markdown code runners
