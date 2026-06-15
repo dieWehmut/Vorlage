@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-06-15T19:42:26+08:00
+date: 2026-06-15T19:47:41+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,7 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `a4c5203` 2026-06-15T19:47:41+08:00 - style: align code block visuals between rendered and edit modes
 - `db9cad8` 2026-06-15T19:42:26+08:00 - style: drop heavy shadows under light theme
 - `6bb2c1c` 2026-06-15T19:30:10+08:00 - fix: restore dynamic background visibility under content layer
 - `4116a4b` 2026-06-15T19:04:46+08:00 - 更新文档
