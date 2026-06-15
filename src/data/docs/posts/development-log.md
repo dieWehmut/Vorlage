@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-06-15T20:20:59+08:00
+date: 2026-06-15T20:48:56+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,7 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `d12b35c` 2026-06-15T20:48:56+08:00 - fix(markdown): align code start position and add collapse toggle
 - `64a53ae` 2026-06-15T20:20:59+08:00 - style: align code position between rendered and edit modes
 - `d137bb0` 2026-06-15T19:56:47+08:00 - style: paint iframe render scrollbars with site accent green
 - `21596b5` 2026-06-15T19:53:47+08:00 - fix: stop auto-scrolling after run/render finishes
