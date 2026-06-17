@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-06-16T00:21:42+08:00
+date: 2026-06-17T22:07:05+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,16 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `c32dc28` 2026-06-17T22:07:05+08:00 - feat(ui): label preview card timestamp as "Updated"
+- `edd2729` 2026-06-16T15:26:56+08:00 - fix(dev): preserve scroll position during markdown HMR
+- `0961f9b` 2026-06-16T12:07:43+08:00 - style(markdown): visualize heading-anchor TOC lists as cards
+- `9a71208` 2026-06-16T11:58:17+08:00 - feat(dev): swap full-reload md HMR for granular cache bust
+- `9f72c8f` 2026-06-16T11:46:59+08:00 - fix(markdown): restore KaTeX SVG vertical alignment
+- `ed06e11` 2026-06-16T11:40:08+08:00 - style(markdown): keep code toolbar on a single row on mobile
+- `eceb56a` 2026-06-16T11:36:05+08:00 - style(markdown): tighten code block toolbar to button height
+- `0c2279d` 2026-06-16T11:27:51+08:00 - feat(preview): keep markdown line breaks in summary cards
+- `186219b` 2026-06-16T11:05:16+08:00 - feat(dev): hot-reload markdown sources during dev
+- `faf4941` 2026-06-16T10:35:41+08:00 - 统一小驼峰命名
 - `6da5b2e` 2026-06-16T00:21:42+08:00 - ci(starter): auto-update repo description & homepage on sync
 - `1aa5135` 2026-06-16T00:20:12+08:00 - docs(starter): highlight Sandkasten + Uptime Kuma integration
 - `2379500` 2026-06-16T00:16:14+08:00 - feat(starter): ship sample infra & project data with feature flags on

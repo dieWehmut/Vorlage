@@ -26,7 +26,7 @@
         </time>
         <time v-if="entry.updated" class="feed-entry-card__updated" :datetime="entry.updated">
           <el-icon class="feed-entry-card__updated-icon"><Edit /></el-icon>
-          最后更新: {{ formatDate(entry.updated) }}
+          Updated: {{ formatDate(entry.updated) }}
         </time>
         <ContentStats :word-count="entry.wordCount" :reading-minutes="entry.readingMinutes" />
         <RouterLink
@@ -138,7 +138,7 @@ function openEntry(event?: MouseEvent | KeyboardEvent) {
   color: var(--site-muted);
   font-size: 16px;
   line-height: 1.6;
-  --markdown-preview-lines: 2;
+  --markdown-preview-lines: 3;
 }
 
 .feed-entry-card__meta-row {
