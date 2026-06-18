@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-06-17T22:25:21+08:00
+date: 2026-06-18T14:23:30+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,8 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `501cea8` 2026-06-18T14:23:30+08:00 - fix(dev): anchor HMR scroll restore to render completion
+- `ff6a1ff` 2026-06-17T22:32:57+08:00 - perf(markdown): paint first chunk immediately, drain rest in batches
 - `56168cd` 2026-06-17T22:25:21+08:00 - fix(scroll-spy): reliable TOC jump and active auto-follow
 - `19e168e` 2026-06-17T14:08:28Z - chore: sync capture assets
 - `c32dc28` 2026-06-17T22:07:05+08:00 - feat(ui): label preview card timestamp as "Updated"
