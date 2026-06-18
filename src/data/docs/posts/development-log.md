@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-06-18T14:23:30+08:00
+date: 2026-06-18T14:32:46+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,7 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `6d6d34b` 2026-06-18T14:32:46+08:00 - fix(docs): remove \tag{} and 概念： prefixes from computingMethod notes
 - `501cea8` 2026-06-18T14:23:30+08:00 - fix(dev): anchor HMR scroll restore to render completion
 - `ff6a1ff` 2026-06-17T22:32:57+08:00 - perf(markdown): paint first chunk immediately, drain rest in batches
 - `56168cd` 2026-06-17T22:25:21+08:00 - fix(scroll-spy): reliable TOC jump and active auto-follow
