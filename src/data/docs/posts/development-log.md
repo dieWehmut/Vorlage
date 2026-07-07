@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-07-07T20:37:09+08:00
+date: 2026-07-07T22:39:44+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,8 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `37e5deb` 2026-07-07T22:39:44+08:00 - fix(infra): animate orbit nodes
+- `17df7cc` 2026-07-07T21:55:26+08:00 - fix(infra): stabilize orbit layout
 - `2ddf43a` 2026-07-07T20:37:09+08:00 - feat(infra): refine icons and orbit status
 - `936a0b8` 2026-07-04T13:41:27Z - chore: sync capture assets
 - `805f62a` 2026-07-04T21:41:01+08:00 - 完善文档
