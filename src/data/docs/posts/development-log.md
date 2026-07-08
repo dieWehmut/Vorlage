@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-07-07T22:40:51+08:00
+date: 2026-07-08T20:12:13+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,7 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `6032cf6` 2026-07-08T20:12:13+08:00 - chore: sync docs metadata timestamps
 - `b7c525e` 2026-07-07T22:40:51+08:00 - docs: update agent and pve notes
 - `37e5deb` 2026-07-07T22:39:44+08:00 - fix(infra): animate orbit nodes
 - `17df7cc` 2026-07-07T21:55:26+08:00 - fix(infra): stabilize orbit layout
