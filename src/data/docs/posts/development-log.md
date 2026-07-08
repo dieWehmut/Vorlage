@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-07-08T20:42:24+08:00
+date: 2026-07-08T21:54:29+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,7 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `3ed291f` 2026-07-08T21:54:29+08:00 - fix(mobile): pin header calendar button to the right edge
 - `b3c21be` 2026-07-08T20:42:24+08:00 - perf: cache sakura petal gradients and split vendor chunks
 - `047ae5b` 2026-07-08T20:20:53+08:00 - feat(project): add Templates category with starter repos
 - `6032cf6` 2026-07-08T20:12:13+08:00 - chore: sync docs metadata timestamps
