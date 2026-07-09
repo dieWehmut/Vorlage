@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-07-09T19:02:44+08:00
+date: 2026-07-09T20:25:50+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,7 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `6e7fcff` 2026-07-09T20:25:50+08:00 - Limit card previews and preload navigation
 - `dd25835` 2026-07-09T19:02:44+08:00 - docs: update template guide
 - `bdae720` 2026-07-09T08:29:16Z - chore: sync capture assets
 - `380c2c5` 2026-07-09T16:28:27+08:00 - feat: add cognitiveScience note and emit docs-meta.json on asset sync
