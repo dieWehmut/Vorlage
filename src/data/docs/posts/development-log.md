@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-07-09T16:28:27+08:00
+date: 2026-07-09T19:02:44+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,8 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `dd25835` 2026-07-09T19:02:44+08:00 - docs: update template guide
+- `bdae720` 2026-07-09T08:29:16Z - chore: sync capture assets
 - `380c2c5` 2026-07-09T16:28:27+08:00 - feat: add cognitiveScience note and emit docs-meta.json on asset sync
 - `3533f1c` 2026-07-09T15:10:05+08:00 - infra: load service icons at runtime from diesw-assets
 - `8765dad` 2026-07-09T11:09:42+08:00 - revert: drop monogatari 404 redirect from user site
