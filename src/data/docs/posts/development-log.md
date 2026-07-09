@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-07-09T11:09:42+08:00
+date: 2026-07-09T15:10:05+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,153 +8,154 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
-- `e76f6c5` 2026-07-09T11:09:42+08:00 - revert: drop monogatari 404 redirect from user site
-- `6340d7e` 2026-07-09T10:29:05+08:00 - feat: guide monogatari deep links from the 404 fallback
-- `3ed291f` 2026-07-08T21:54:29+08:00 - fix(mobile): pin header calendar button to the right edge
-- `b3c21be` 2026-07-08T20:42:24+08:00 - perf: cache sakura petal gradients and split vendor chunks
-- `047ae5b` 2026-07-08T20:20:53+08:00 - feat(project): add Templates category with starter repos
-- `6032cf6` 2026-07-08T20:12:13+08:00 - chore: sync docs metadata timestamps
-- `b7c525e` 2026-07-07T22:40:51+08:00 - docs: update agent and pve notes
-- `37e5deb` 2026-07-07T22:39:44+08:00 - fix(infra): animate orbit nodes
-- `17df7cc` 2026-07-07T21:55:26+08:00 - fix(infra): stabilize orbit layout
-- `2ddf43a` 2026-07-07T20:37:09+08:00 - feat(infra): refine icons and orbit status
-- `936a0b8` 2026-07-04T13:41:27Z - chore: sync capture assets
-- `805f62a` 2026-07-04T21:41:01+08:00 - 完善文档
-- `4a0ab0a` 2026-07-04T21:31:55+08:00 - fix: limit capture preview grid
-- `6d6d34b` 2026-06-18T14:32:46+08:00 - fix(docs): remove \tag{} and 概念： prefixes from computingMethod notes
-- `501cea8` 2026-06-18T14:23:30+08:00 - fix(dev): anchor HMR scroll restore to render completion
-- `ff6a1ff` 2026-06-17T22:32:57+08:00 - perf(markdown): paint first chunk immediately, drain rest in batches
-- `56168cd` 2026-06-17T22:25:21+08:00 - fix(scroll-spy): reliable TOC jump and active auto-follow
-- `19e168e` 2026-06-17T14:08:28Z - chore: sync capture assets
-- `c32dc28` 2026-06-17T22:07:05+08:00 - feat(ui): label preview card timestamp as "Updated"
-- `edd2729` 2026-06-16T15:26:56+08:00 - fix(dev): preserve scroll position during markdown HMR
-- `0961f9b` 2026-06-16T12:07:43+08:00 - style(markdown): visualize heading-anchor TOC lists as cards
-- `9a71208` 2026-06-16T11:58:17+08:00 - feat(dev): swap full-reload md HMR for granular cache bust
-- `9f72c8f` 2026-06-16T11:46:59+08:00 - fix(markdown): restore KaTeX SVG vertical alignment
-- `ed06e11` 2026-06-16T11:40:08+08:00 - style(markdown): keep code toolbar on a single row on mobile
-- `eceb56a` 2026-06-16T11:36:05+08:00 - style(markdown): tighten code block toolbar to button height
-- `0c2279d` 2026-06-16T11:27:51+08:00 - feat(preview): keep markdown line breaks in summary cards
-- `186219b` 2026-06-16T11:05:16+08:00 - feat(dev): hot-reload markdown sources during dev
-- `faf4941` 2026-06-16T10:35:41+08:00 - 统一小驼峰命名
-- `6da5b2e` 2026-06-16T00:21:42+08:00 - ci(starter): auto-update repo description & homepage on sync
-- `1aa5135` 2026-06-16T00:20:12+08:00 - docs(starter): highlight Sandkasten + Uptime Kuma integration
-- `2379500` 2026-06-16T00:16:14+08:00 - feat(starter): ship sample infra & project data with feature flags on
-- `dc3468f` 2026-06-16T00:14:01+08:00 - feat(infra): integrate Uptime Kuma status as primary source
-- `824128a` 2026-06-15T22:12:08+08:00 - 补充文档
-- `77b3fea` 2026-06-15T22:06:56+08:00 - fix(markdown): pin gutter widths so rendered and edit modes align
-- `fd5f049` 2026-06-15T21:59:33+08:00 - fix(markdown): make fold chevron clickable and bigger
-- `7896f39` 2026-06-15T21:53:37+08:00 - fix(markdown): keep fold chevron visible after sanitization
-- `bfc5c40` 2026-06-15T21:21:31+08:00 - style(markdown): match Monaco fold chevron size and shape
-- `f7f4b21` 2026-06-15T21:16:14+08:00 - feat(markdown): add inline fold chevrons to rendered code blocks
-- `37da3a1` 2026-06-15T21:07:01+08:00 - revert(markdown): restore line numbers and Monaco folding controls
-- `d12b35c` 2026-06-15T20:48:56+08:00 - fix(markdown): align code start position and add collapse toggle
-- `64a53ae` 2026-06-15T20:20:59+08:00 - style: align code position between rendered and edit modes
-- `d137bb0` 2026-06-15T19:56:47+08:00 - style: paint iframe render scrollbars with site accent green
-- `21596b5` 2026-06-15T19:53:47+08:00 - fix: stop auto-scrolling after run/render finishes
-- `976c3d5` 2026-06-15T19:49:26+08:00 - fix: skip 'GitHub 登录中' state when already authenticated
-- `a4c5203` 2026-06-15T19:47:41+08:00 - style: align code block visuals between rendered and edit modes
-- `db9cad8` 2026-06-15T19:42:26+08:00 - style: drop heavy shadows under light theme
-- `6bb2c1c` 2026-06-15T19:30:10+08:00 - fix: restore dynamic background visibility under content layer
-- `4116a4b` 2026-06-15T19:04:46+08:00 - 更新文档
-- `b45829a` 2026-06-14T16:57:09Z - style: add mesh background to view area
-- `b013d9a` 2026-06-14T16:54:10Z - perf: speed up markdown editor activation
-- `fa6ea34` 2026-06-14T16:36:30Z - feat: gate markdown code runners
-- `2e5ebd9` 2026-06-14T14:16:00Z - Make Sandkasten examples more realistic
-- `bd1a9ec` 2026-06-14T14:15:45Z - Render markdown code blocks lighter
-- `9ac8359` 2026-06-14T12:47:38Z - Block markdown shortcut keys
-- `a884ada` 2026-06-14T12:22:59Z - Reduce run-all markdown output churn
-- `7f8ed2b` 2026-06-14T12:19:17Z - Render markdown code blocks with read-only Monaco
-- `91c79ca` 2026-06-14T10:56:18Z - fix: send runner requests as json
-- `bb444f6` 2026-06-14T07:31:33Z - chore: refresh Sandkasten doc metadata
-- `72db9b3` 2026-06-14T07:30:42Z - feat: add Monaco markdown code editor
-- `80acf25` 2026-06-14T07:30:07Z - chore: prepare Monaco markdown editor build
-- `0567191` 2026-06-14T04:34:03Z - Keep Octave only and speed batch runs
-- `677656d` 2026-06-14T03:10:18Z - Improve Sandkasten login gating and runner polling
-- `8466aec` 2026-06-14T02:46:01Z - Update content stat labels
-- `361ad48` 2026-06-14T02:07:19Z - Improve Sandkasten rendering UX and smoke coverage
-- `ea884ff` 2026-06-13T17:37:10Z - fix: tolerate missing private capture assets
-- `a91ed70` 2026-06-13T17:31:27Z - chore: refresh sandkasten doc metadata
-- `565f8f9` 2026-06-13T17:31:11Z - test: verify sandkasten doc examples
-- `eb14608` 2026-06-13T06:23:38Z - fix: align sandkasten document runners
-- `e01bcc0` 2026-06-13T14:03:44+08:00 - feat: expand code runner to full language set, add renderable output, add ScrollSpySidebar to search page
-- `45d98f3` 2026-06-13T13:39:44+08:00 - 补充backend参考
-- `8d0e5a2` 2026-06-13T13:37:40+08:00 - docs: add full Sandkasten runtime test post, update code runner section
-- `152abd8` 2026-06-13T13:28:22+08:00 - docs: expand README, fix about.md links, sync template title
-- `285de6c` 2026-06-11T14:00:49Z - Revert "feat: add runtimes landing route"
-- `1a1889e` 2026-06-11T13:33:20Z - feat: add runtimes landing route
-- `17ba427` 2026-06-11T12:48:50Z - test: smoke code runner without preflight
-- `27f20a1` 2026-06-11T12:46:31Z - perf: wait for short code runs in one request
-- `b3ef29f` 2026-06-11T12:44:05Z - perf: avoid code runner CORS preflight
-- `db15193` 2026-06-11T12:29:53Z - fix: redact backend paths in code runner output
-- `4a35c20` 2026-06-11T19:58:51+08:00 - fix: expand infra outer nodes horizontally
-- `2aec856` 2026-06-11T19:47:24+08:00 - fix: tighten infra outer orbit radius
-- `57179fd` 2026-06-11T19:43:36+08:00 - feat: refine infra orbit layout
-- `aa3a304` 2026-06-11T19:42:47+08:00 - refactor: remove redundant page headings
-- `5ff5ec6` 2026-06-11T19:41:54+08:00 - docs: update infra and setup notes
-- `fbef50e` 2026-06-11T16:17:20+08:00 - 添加最后更新显示
-- `b5c441e` 2026-06-11T15:44:12+08:00 - feat: add last updated timestamp to generated documentation and views
-- `2c7b45d` 2026-06-11T15:27:22+08:00 - Refactor timeline display in CaptureView, HomeView, NotesView, TagDetailView, and TagsView
-- `fe3623f` 2026-06-10T23:53:29+08:00 - fix: order tag detail entries by date
-- `631b9e4` 2026-06-10T22:22:54+08:00 - feat: update .gitignore to include additional image formats and remove obsolete assets
-- `3b8ecd3` 2026-06-10T22:03:34+08:00 - feat: add infrastructure asset syncing and update InfraView component
-- `d8ddbaa` 2026-06-10T22:03:18+08:00 - Remove obsolete image files and update documentation structure
-- `76e6816` 2026-06-10T13:07:07Z - feat: attach files to runnable code blocks
-- `6fda2c5` 2026-06-10T12:41:46Z - feat: use sandkasten backend code runner only
-- `8e57df7` 2026-06-09T06:13:11Z - feat: add sandkasten backend runner mode
-- `00b3c88` 2026-06-09T13:19:28+08:00 - feat: add word count and reading minutes to posts and notes
-- `4ed1df7` 2026-06-09T10:30:31+08:00 - feat: add Go source normalization for comments and strings in runCode
-- `7130339` 2026-06-09T10:00:46+08:00 - Merge branch 'main' of https://github.com/dieWehmut/dieWehmut.github.io
-- `4e12fa6` 2026-06-09T10:00:43+08:00 - feat: add markdown documentation generation and improve content loading
-- `db6d13b` 2026-06-08T15:20:47Z - chore: sync capture assets
-- `249fdf8` 2026-06-08T23:19:45+08:00 - fix go examples runner issues
-- `91df386` 2026-06-08T21:06:19+08:00 - fix: update title in go-learning.md to reflect correct terminology
-- `d8f6323` 2026-06-08T00:18:34+08:00 - Update site metadata and docs
-- `7ed70db` 2026-06-08T00:18:14+08:00 - Optimize content previews and routes
-- `c50a2f0` 2026-06-08T00:17:49+08:00 - Improve markdown media runtime
-- `573f100` 2026-06-08T00:17:11+08:00 - Add generated study note captures
-- `2b99b98` 2026-06-07T22:38:29+08:00 - Resolve capture asset URLs under base path
-- `f39e34e` 2026-06-07T22:04:10+08:00 - Show markdown source images by default
-- `351c1d8` 2026-06-07T21:42:16+08:00 - Style editable markdown blocks
-- `36ed63b` 2026-06-07T21:42:04+08:00 - Add editable markdown code and math blocks
-- `f428caa` 2026-06-05T22:59:52+08:00 - Tighten desktop content spacing
-- `47b4deb` 2026-06-05T22:51:24+08:00 - Apply mobile capture grid sizing to list
-- `d882ff2` 2026-06-05T22:41:51+08:00 - Use two-column mobile capture detail for pairs
-- `0b88bda` 2026-06-05T22:39:01+08:00 - Scope capture detail thumbnail layout to mobile
-- `4b4c6f2` 2026-06-05T22:33:54+08:00 - Make capture detail thumbnails square
-- `a219e68` 2026-06-05T22:29:08+08:00 - Restore capture scroll after comments
-- `c05df3b` 2026-06-05T22:12:39+08:00 - Show capture detail images in three columns
-- `672bf4c` 2026-06-05T22:03:31+08:00 - Group capture comments by timestamp
-- `f2b028b` 2026-06-05T19:40:58+08:00 - Split capture giscus configuration
-- `c1a1fcd` 2026-06-05T19:38:31+08:00 - Add capture detail comments view
-- `95e4950` 2026-06-04T20:57:41+08:00 - docs: clarify site and starter readmes
-- `896ff8a` 2026-06-04T20:52:57+08:00 - feat: refine layout and starter export
-- `be90a26` 2026-06-04T00:04:39+08:00 - chore: update starter naming and license
-- `b1768ba` 2026-06-03T23:15:20+08:00 - fix: update starter template sync
-- `2efae1c` 2026-06-03T22:05:02+08:00 - feat: animate floating settings button
-- `dd85a42` 2026-06-03T22:04:56+08:00 - feat: add calendar icon to project dates
-- `15e2f0d` 2026-06-03T20:33:11+08:00 - fix: sync capture assets from assets repository
-- `c8d3709` 2026-06-03T12:01:30Z - chore: sync capture assets
-- `21b56a6` 2026-06-03T20:01:06+08:00 - fix: initialize empty assets repository
-- `1792daa` 2026-06-03T19:37:41+08:00 - fix: isolate assets git authentication
-- `a36cbc9` 2026-06-03T19:31:03+08:00 - chore: normalize GitHub avatar URLs
-- `cae3c03` 2026-06-03T18:30:55+08:00 - fix: validate assets repository token
-- `bf6ac68` 2026-06-03T15:19:32+08:00 - fix: bootstrap assets branch checkout
-- `c3c8ddc` 2026-06-03T15:10:54+08:00 - fix: configure assets checkout ref
-- `c420192` 2026-06-03T14:37:29+08:00 - chore: refine capture sync workflow
-- `ede4ac5` 2026-06-03T00:30:21+08:00 - feat: add capture functionality and integrate capture assets into views
-- `eb53ad8` 2026-06-01T18:33:01+08:00 - 更新朋友列表中的描述，提供更准确的信息
-- `a7f1abd` 2026-05-30T19:21:59+08:00 - 修复GitHub page环境变量读取
-- `0121d2d` 2026-05-28T23:38:56+08:00 - 0
-- `57118a5` 2026-05-28T22:27:43+08:00 - 1
-- `b0dd68c` 2026-05-28T21:52:11+08:00 - feat: add multilingual support by creating translated README files in English and Traditional Chinese
-- `d0ecaa9` 2026-05-28T21:39:32+08:00 - feat: enhance markdown rendering with KaTeX support and improve UI components
-- `f055897` 2026-05-28T20:56:19+08:00 - feat: streamline deployment workflows by removing redundant pnpm setup and adding starter token check
-- `ebb1c14` 2026-05-28T20:38:57+08:00 - feat: update deployment workflow to use pnpm for package management
-- `3021dac` 2026-05-28T20:32:40+08:00 - feat: update color variables for improved theme consistency and styling
-- `6912142` 2026-05-28T20:05:07+08:00 - feat: centralize site configuration and improve UI interactions
-- `16d5b6d` 2026-05-28T18:53:36+08:00 - refactor: remove deprecated notes and posts, update note rendering
-- `310879f` 2026-05-28T15:47:25+08:00 - Refactor views for improved layout and styling
-- `c32c872` 2026-05-28T12:47:57+08:00 - feat: add InfraView, NotFoundView, NotesView, ProjectView, SearchView, TagDetailView, and TagsView components
+- `3533f1c` 2026-07-09T15:10:05+08:00 - infra: load service icons at runtime from diesw-assets
+- `8765dad` 2026-07-09T11:09:42+08:00 - revert: drop monogatari 404 redirect from user site
+- `1d17749` 2026-07-09T10:29:05+08:00 - feat: guide monogatari deep links from the 404 fallback
+- `9e87d0b` 2026-07-08T21:54:29+08:00 - fix(mobile): pin header calendar button to the right edge
+- `78b8965` 2026-07-08T20:42:24+08:00 - perf: cache sakura petal gradients and split vendor chunks
+- `8f9d3a7` 2026-07-08T20:20:53+08:00 - feat(project): add Templates category with starter repos
+- `c6df6b0` 2026-07-08T20:12:13+08:00 - chore: sync docs metadata timestamps
+- `5135e73` 2026-07-07T22:40:51+08:00 - docs: update agent and pve notes
+- `dddc7ca` 2026-07-07T22:39:44+08:00 - fix(infra): animate orbit nodes
+- `088d7af` 2026-07-07T21:55:26+08:00 - fix(infra): stabilize orbit layout
+- `316b5e3` 2026-07-07T20:37:09+08:00 - feat(infra): refine icons and orbit status
+- `0c423a5` 2026-07-04T13:41:27Z - chore: sync capture assets
+- `6e85f91` 2026-07-04T21:41:01+08:00 - 完善文档
+- `02b51d7` 2026-07-04T21:31:55+08:00 - fix: limit capture preview grid
+- `9384d1c` 2026-06-18T14:32:46+08:00 - fix(docs): remove \tag{} and 概念： prefixes from computingMethod notes
+- `b0f7f67` 2026-06-18T14:23:30+08:00 - fix(dev): anchor HMR scroll restore to render completion
+- `7b421a3` 2026-06-17T22:32:57+08:00 - perf(markdown): paint first chunk immediately, drain rest in batches
+- `13505d6` 2026-06-17T22:25:21+08:00 - fix(scroll-spy): reliable TOC jump and active auto-follow
+- `77e5f31` 2026-06-17T14:08:28Z - chore: sync capture assets
+- `bbc2d18` 2026-06-17T22:07:05+08:00 - feat(ui): label preview card timestamp as "Updated"
+- `17ad5e3` 2026-06-16T15:26:56+08:00 - fix(dev): preserve scroll position during markdown HMR
+- `7bbaf84` 2026-06-16T12:07:43+08:00 - style(markdown): visualize heading-anchor TOC lists as cards
+- `c5072fa` 2026-06-16T11:58:17+08:00 - feat(dev): swap full-reload md HMR for granular cache bust
+- `31187fa` 2026-06-16T11:46:59+08:00 - fix(markdown): restore KaTeX SVG vertical alignment
+- `c8ef304` 2026-06-16T11:40:08+08:00 - style(markdown): keep code toolbar on a single row on mobile
+- `b996f69` 2026-06-16T11:36:05+08:00 - style(markdown): tighten code block toolbar to button height
+- `67deea8` 2026-06-16T11:27:51+08:00 - feat(preview): keep markdown line breaks in summary cards
+- `a441a93` 2026-06-16T11:05:16+08:00 - feat(dev): hot-reload markdown sources during dev
+- `7831730` 2026-06-16T10:35:41+08:00 - 统一小驼峰命名
+- `f53ff05` 2026-06-16T00:21:42+08:00 - ci(starter): auto-update repo description & homepage on sync
+- `96984d5` 2026-06-16T00:20:12+08:00 - docs(starter): highlight Sandkasten + Uptime Kuma integration
+- `bb9da9a` 2026-06-16T00:16:14+08:00 - feat(starter): ship sample infra & project data with feature flags on
+- `1ce7b3a` 2026-06-16T00:14:01+08:00 - feat(infra): integrate Uptime Kuma status as primary source
+- `4646166` 2026-06-15T22:12:08+08:00 - 补充文档
+- `f252416` 2026-06-15T22:06:56+08:00 - fix(markdown): pin gutter widths so rendered and edit modes align
+- `9184067` 2026-06-15T21:59:33+08:00 - fix(markdown): make fold chevron clickable and bigger
+- `52133dc` 2026-06-15T21:53:37+08:00 - fix(markdown): keep fold chevron visible after sanitization
+- `e6a5ef6` 2026-06-15T21:21:31+08:00 - style(markdown): match Monaco fold chevron size and shape
+- `1097038` 2026-06-15T21:16:14+08:00 - feat(markdown): add inline fold chevrons to rendered code blocks
+- `a45f63f` 2026-06-15T21:07:01+08:00 - revert(markdown): restore line numbers and Monaco folding controls
+- `e8436fd` 2026-06-15T20:48:56+08:00 - fix(markdown): align code start position and add collapse toggle
+- `623dd54` 2026-06-15T20:20:59+08:00 - style: align code position between rendered and edit modes
+- `10db96f` 2026-06-15T19:56:47+08:00 - style: paint iframe render scrollbars with site accent green
+- `fe7dee4` 2026-06-15T19:53:47+08:00 - fix: stop auto-scrolling after run/render finishes
+- `a1c998f` 2026-06-15T19:49:26+08:00 - fix: skip 'GitHub 登录中' state when already authenticated
+- `060ccea` 2026-06-15T19:47:41+08:00 - style: align code block visuals between rendered and edit modes
+- `493a010` 2026-06-15T19:42:26+08:00 - style: drop heavy shadows under light theme
+- `fa4dd36` 2026-06-15T19:30:10+08:00 - fix: restore dynamic background visibility under content layer
+- `5ae9e31` 2026-06-15T19:04:46+08:00 - 更新文档
+- `1819fb8` 2026-06-14T16:57:09Z - style: add mesh background to view area
+- `05c5fc7` 2026-06-14T16:54:10Z - perf: speed up markdown editor activation
+- `1fd1d48` 2026-06-14T16:36:30Z - feat: gate markdown code runners
+- `839e504` 2026-06-14T14:16:00Z - Make Sandkasten examples more realistic
+- `9ca6a4b` 2026-06-14T14:15:45Z - Render markdown code blocks lighter
+- `91de74f` 2026-06-14T12:47:38Z - Block markdown shortcut keys
+- `e727984` 2026-06-14T12:22:59Z - Reduce run-all markdown output churn
+- `0a211d0` 2026-06-14T12:19:17Z - Render markdown code blocks with read-only Monaco
+- `6c9edf3` 2026-06-14T10:56:18Z - fix: send runner requests as json
+- `50bf9f6` 2026-06-14T07:31:33Z - chore: refresh Sandkasten doc metadata
+- `ff9bcbb` 2026-06-14T07:30:42Z - feat: add Monaco markdown code editor
+- `e86866f` 2026-06-14T07:30:07Z - chore: prepare Monaco markdown editor build
+- `bdcac1d` 2026-06-14T04:34:03Z - Keep Octave only and speed batch runs
+- `827f951` 2026-06-14T03:10:18Z - Improve Sandkasten login gating and runner polling
+- `3685b6a` 2026-06-14T02:46:01Z - Update content stat labels
+- `fbb159e` 2026-06-14T02:07:19Z - Improve Sandkasten rendering UX and smoke coverage
+- `f75c8b6` 2026-06-13T17:37:10Z - fix: tolerate missing private capture assets
+- `bcd5870` 2026-06-13T17:31:27Z - chore: refresh sandkasten doc metadata
+- `e2e0200` 2026-06-13T17:31:11Z - test: verify sandkasten doc examples
+- `2dcce87` 2026-06-13T06:23:38Z - fix: align sandkasten document runners
+- `4823aad` 2026-06-13T14:03:44+08:00 - feat: expand code runner to full language set, add renderable output, add ScrollSpySidebar to search page
+- `796bd5f` 2026-06-13T13:39:44+08:00 - 补充backend参考
+- `77a4084` 2026-06-13T13:37:40+08:00 - docs: add full Sandkasten runtime test post, update code runner section
+- `ebac497` 2026-06-13T13:28:22+08:00 - docs: expand README, fix about.md links, sync template title
+- `05079df` 2026-06-11T14:00:49Z - Revert "feat: add runtimes landing route"
+- `6bc9612` 2026-06-11T13:33:20Z - feat: add runtimes landing route
+- `19d3207` 2026-06-11T12:48:50Z - test: smoke code runner without preflight
+- `aeedcc9` 2026-06-11T12:46:31Z - perf: wait for short code runs in one request
+- `4c82de3` 2026-06-11T12:44:05Z - perf: avoid code runner CORS preflight
+- `d0847dd` 2026-06-11T12:29:53Z - fix: redact backend paths in code runner output
+- `be6e951` 2026-06-11T19:58:51+08:00 - fix: expand infra outer nodes horizontally
+- `6c4f876` 2026-06-11T19:47:24+08:00 - fix: tighten infra outer orbit radius
+- `e436ec1` 2026-06-11T19:43:36+08:00 - feat: refine infra orbit layout
+- `c86458e` 2026-06-11T19:42:47+08:00 - refactor: remove redundant page headings
+- `9104d46` 2026-06-11T19:41:54+08:00 - docs: update infra and setup notes
+- `52534ed` 2026-06-11T16:17:20+08:00 - 添加最后更新显示
+- `18a9f00` 2026-06-11T15:44:12+08:00 - feat: add last updated timestamp to generated documentation and views
+- `5257400` 2026-06-11T15:27:22+08:00 - Refactor timeline display in CaptureView, HomeView, NotesView, TagDetailView, and TagsView
+- `5c4d0e6` 2026-06-10T23:53:29+08:00 - fix: order tag detail entries by date
+- `16f0857` 2026-06-10T22:22:54+08:00 - feat: update .gitignore to include additional image formats and remove obsolete assets
+- `3f6ddd7` 2026-06-10T22:03:34+08:00 - feat: add infrastructure asset syncing and update InfraView component
+- `8b77aea` 2026-06-10T22:03:18+08:00 - Remove obsolete image files and update documentation structure
+- `b5f84dc` 2026-06-10T13:07:07Z - feat: attach files to runnable code blocks
+- `a1cfd5b` 2026-06-10T12:41:46Z - feat: use sandkasten backend code runner only
+- `9461839` 2026-06-09T06:13:11Z - feat: add sandkasten backend runner mode
+- `0c42f4a` 2026-06-09T13:19:28+08:00 - feat: add word count and reading minutes to posts and notes
+- `53c3126` 2026-06-09T10:30:31+08:00 - feat: add Go source normalization for comments and strings in runCode
+- `1c7a2a7` 2026-06-09T10:00:46+08:00 - Merge branch 'main' of https://github.com/dieWehmut/dieWehmut.github.io
+- `11799a2` 2026-06-09T10:00:43+08:00 - feat: add markdown documentation generation and improve content loading
+- `0e99974` 2026-06-08T15:20:47Z - chore: sync capture assets
+- `c93e35d` 2026-06-08T23:19:45+08:00 - fix go examples runner issues
+- `5a5ddc8` 2026-06-08T21:06:19+08:00 - fix: update title in go-learning.md to reflect correct terminology
+- `ae61831` 2026-06-08T00:18:34+08:00 - Update site metadata and docs
+- `cc58d8c` 2026-06-08T00:18:14+08:00 - Optimize content previews and routes
+- `55d9a9f` 2026-06-08T00:17:49+08:00 - Improve markdown media runtime
+- `6499e52` 2026-06-08T00:17:11+08:00 - Add generated study note captures
+- `6d3c409` 2026-06-07T22:38:29+08:00 - Resolve capture asset URLs under base path
+- `b1ba617` 2026-06-07T22:04:10+08:00 - Show markdown source images by default
+- `7a18a56` 2026-06-07T21:42:16+08:00 - Style editable markdown blocks
+- `de76da0` 2026-06-07T21:42:04+08:00 - Add editable markdown code and math blocks
+- `2e9925b` 2026-06-05T22:59:52+08:00 - Tighten desktop content spacing
+- `bce958b` 2026-06-05T22:51:24+08:00 - Apply mobile capture grid sizing to list
+- `ef184e5` 2026-06-05T22:41:51+08:00 - Use two-column mobile capture detail for pairs
+- `95b8739` 2026-06-05T22:39:01+08:00 - Scope capture detail thumbnail layout to mobile
+- `fee70f0` 2026-06-05T22:33:54+08:00 - Make capture detail thumbnails square
+- `74d1646` 2026-06-05T22:29:08+08:00 - Restore capture scroll after comments
+- `1469b69` 2026-06-05T22:12:39+08:00 - Show capture detail images in three columns
+- `1b00dcd` 2026-06-05T22:03:31+08:00 - Group capture comments by timestamp
+- `0427dde` 2026-06-05T19:40:58+08:00 - Split capture giscus configuration
+- `4205580` 2026-06-05T19:38:31+08:00 - Add capture detail comments view
+- `c961934` 2026-06-04T20:57:41+08:00 - docs: clarify site and starter readmes
+- `8fcc5bc` 2026-06-04T20:52:57+08:00 - feat: refine layout and starter export
+- `bd05709` 2026-06-04T00:04:39+08:00 - chore: update starter naming and license
+- `7e64af2` 2026-06-03T23:15:20+08:00 - fix: update starter template sync
+- `903984a` 2026-06-03T22:05:02+08:00 - feat: animate floating settings button
+- `cd65285` 2026-06-03T22:04:56+08:00 - feat: add calendar icon to project dates
+- `de39ac6` 2026-06-03T20:33:11+08:00 - fix: sync capture assets from assets repository
+- `1fc484a` 2026-06-03T12:01:30Z - chore: sync capture assets
+- `08d5064` 2026-06-03T20:01:06+08:00 - fix: initialize empty assets repository
+- `27ab929` 2026-06-03T19:37:41+08:00 - fix: isolate assets git authentication
+- `37b06d6` 2026-06-03T19:31:03+08:00 - chore: normalize GitHub avatar URLs
+- `b6a24c6` 2026-06-03T18:30:55+08:00 - fix: validate assets repository token
+- `a070c6b` 2026-06-03T15:19:32+08:00 - fix: bootstrap assets branch checkout
+- `dcddf16` 2026-06-03T15:10:54+08:00 - fix: configure assets checkout ref
+- `87e47bc` 2026-06-03T14:37:29+08:00 - chore: refine capture sync workflow
+- `36dfd4c` 2026-06-03T00:30:21+08:00 - feat: add capture functionality and integrate capture assets into views
+- `359497c` 2026-06-01T18:33:01+08:00 - 更新朋友列表中的描述，提供更准确的信息
+- `fa2bc51` 2026-05-30T19:21:59+08:00 - 修复GitHub page环境变量读取
+- `ff51af3` 2026-05-28T23:38:56+08:00 - 0
+- `e41eaea` 2026-05-28T22:27:43+08:00 - 1
+- `8ba3a79` 2026-05-28T21:52:11+08:00 - feat: add multilingual support by creating translated README files in English and Traditional Chinese
+- `acb6f6b` 2026-05-28T21:39:32+08:00 - feat: enhance markdown rendering with KaTeX support and improve UI components
+- `3888355` 2026-05-28T20:56:19+08:00 - feat: streamline deployment workflows by removing redundant pnpm setup and adding starter token check
+- `815e25b` 2026-05-28T20:38:57+08:00 - feat: update deployment workflow to use pnpm for package management
+- `903dff1` 2026-05-28T20:32:40+08:00 - feat: update color variables for improved theme consistency and styling
+- `275fd01` 2026-05-28T20:05:07+08:00 - feat: centralize site configuration and improve UI interactions
+- `dedab01` 2026-05-28T18:53:36+08:00 - refactor: remove deprecated notes and posts, update note rendering
+- `c5dc9d5` 2026-05-28T15:47:25+08:00 - Refactor views for improved layout and styling
+- `f5f4457` 2026-05-28T12:47:57+08:00 - feat: add InfraView, NotFoundView, NotesView, ProjectView, SearchView, TagDetailView, and TagsView components
 - `1da36f1` 2026-05-27T00:19:54+08:00 - 删掉文件相关导航
 - `d1cf773` 2026-05-26T21:42:51+08:00 - 优化BounceCursor和FocusView组件，重构样式和事件处理，提升性能和可维护性
 - `4651394` 2026-05-22T21:36:02+08:00 - 优化搜索栏样式以适应全宽，添加自定义插件以支持GitHub Pages的404页面处理
