@@ -1,7 +1,7 @@
 <template>
   <article
-    class="project-item"
-    :class="{ 'is-clickable': !!primaryUrl }"
+    class="project-item card-overflow-host"
+    :class="{ 'is-clickable': !!primaryUrl, 'has-overflow-badge': overflowCount > 0 }"
     :role="primaryUrl ? 'link' : undefined"
     :tabindex="primaryUrl ? 0 : undefined"
     @click="openProject"
@@ -27,6 +27,9 @@
       <a v-if="project.url" :href="project.url" target="_blank" rel="noopener noreferrer">Open</a>
       <a v-if="project.repoUrl && project.repoUrl !== project.url" :href="project.repoUrl" target="_blank" rel="noopener noreferrer">Repo</a>
     </div>
+    <span v-if="overflowCount > 0" class="card-overflow-badge" aria-hidden="true">
+      +{{ overflowCount }}
+    </span>
   </article>
 </template>
 
@@ -39,8 +42,10 @@ const props = withDefaults(defineProps<{
   project: ProjectEntry
   category: ProjectEntry['category']
   hideIcon?: boolean
+  overflowCount?: number
 }>(), {
   hideIcon: false,
+  overflowCount: 0,
 })
 
 const iconMap: Record<ProjectEntry['category'], unknown> = {
@@ -87,10 +92,14 @@ function openProject(event?: MouseEvent | KeyboardEvent) {
   cursor: pointer;
 }
 
+.project-item.has-overflow-badge {
+  padding-right: 96px;
+}
+
 .project-item:hover,
 .project-item:focus-visible {
-  border-color: rgba(31, 196, 31, 0.45);
-  background: rgba(31, 196, 31, 0.04);
+  border-color: rgb(var(--site-accent-rgb) / 0.45);
+  background: rgb(var(--site-accent-rgb) / 0.04);
   transform: translateY(-2px);
   outline: none;
 }
@@ -166,7 +175,7 @@ function openProject(event?: MouseEvent | KeyboardEvent) {
 .project-item__actions a:hover,
 .project-item__actions a:focus-visible {
   color: var(--site-accent);
-  border-color: rgba(31, 196, 31, 0.45);
+  border-color: rgb(var(--site-accent-rgb) / 0.45);
   transform: translateY(-1px);
   text-decoration: none;
   outline: none;
@@ -176,6 +185,10 @@ function openProject(event?: MouseEvent | KeyboardEvent) {
   .project-item {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .project-item.has-overflow-badge {
+    padding-right: 82px;
   }
 
   .project-item__actions {

@@ -79,8 +79,8 @@
         <article
           v-for="item in visibleServiceItems"
           :key="item.key || item.name"
-          class="infra-mobile-item"
-          :class="[infraKeyClass(item), { 'is-clickable': item.url }]"
+          class="infra-mobile-item card-overflow-host"
+          :class="[infraKeyClass(item), { 'is-clickable': item.url, 'has-overflow-badge': serviceOverflowCount(item) > 0 }]"
           :role="item.url ? 'link' : undefined"
           :tabindex="item.url ? 0 : undefined"
           @click="openInfra(item, $event)"
@@ -107,6 +107,13 @@
             </div>
           </div>
           <a v-if="item.url" :href="item.url" target="_blank" rel="noopener noreferrer" @click.stop>Open</a>
+          <span
+            v-if="serviceOverflowCount(item) > 0"
+            class="card-overflow-badge"
+            aria-hidden="true"
+          >
+            +{{ serviceOverflowCount(item) }}
+          </span>
         </article>
     </div>
   </section>
@@ -120,7 +127,7 @@ import PageHeading from '../components/content/PageHeading.vue'
 import { infra } from '../data/site/infra.ts'
 import { useUrlStatus } from '../composables/useUrlStatus'
 import { useKumaStatus } from '../composables/useKumaStatus'
-import { limitCardGroup } from '../utils/cardGroups'
+import { hiddenCardCount, limitCardGroup, overflowCountForItem } from '../utils/cardGroups'
 const { t } = useI18n()
 const infraAsset = (name) => `/capture-assets/infra/${name}`
 const sphereImg = infraAsset('qiu.png')
@@ -154,6 +161,7 @@ const serviceItems = computed(() =>
     .sort((a, b) => (Date.parse(a.date) || 0) - (Date.parse(b.date) || 0))
 )
 const visibleServiceItems = computed(() => limitCardGroup(serviceItems.value))
+const serviceItemsHiddenCount = computed(() => hiddenCardCount(serviceItems.value))
 
 const kuma = useKumaStatus(serviceItems)
 const fallback = useUrlStatus()
@@ -336,6 +344,10 @@ function openInfra(item, event) {
   if (!item?.url || isInteractiveTarget(event?.target || null)) return
   window.open(item.url, '_blank', 'noopener,noreferrer')
 }
+
+function serviceOverflowCount(item) {
+  return overflowCountForItem(item, visibleServiceItems.value, serviceItemsHiddenCount.value)
+}
 </script>
 
 <style scoped>
@@ -417,7 +429,7 @@ function openInfra(item, event) {
 .infra-core__sphere {
   width: 82%;
   height: 82%;
-  filter: drop-shadow(0 0 var(--infra-core-shadow) rgba(31, 196, 31, 0.24));
+  filter: drop-shadow(0 0 var(--infra-core-shadow) rgb(var(--site-accent-rgb) / 0.24));
   animation: core-sphere-spin 35s linear infinite;
 }
 
@@ -448,7 +460,7 @@ function openInfra(item, event) {
 .infra-core__counts span {
   padding: var(--infra-count-padding-y) var(--infra-count-padding-x);
   border-radius: 999px;
-  color: #32e47a;
+  color: var(--site-accent);
   background: rgba(0, 20, 28, 0.42);
   font-size: var(--infra-count-size);
   font-weight: 950;
@@ -485,7 +497,7 @@ function openInfra(item, event) {
   height: 1px;
   pointer-events: none;
   transform-origin: 0 50%;
-  background: linear-gradient(to right, rgba(31, 196, 31, 0.55), rgba(31, 196, 31, 0.12));
+  background: linear-gradient(to right, rgb(var(--site-accent-rgb) / 0.55), rgb(var(--site-accent-rgb) / 0.12));
 }
 
 .infra-node {
@@ -528,7 +540,7 @@ function openInfra(item, event) {
 .infra-node:hover .infra-node__inner,
 .infra-node.is-clickable:focus-visible .infra-node__inner {
   color: var(--site-accent);
-  filter: drop-shadow(0 0 var(--infra-hover-shadow) rgba(31, 196, 31, 0.25));
+  filter: drop-shadow(0 0 var(--infra-hover-shadow) rgb(var(--site-accent-rgb) / 0.25));
   --infra-node-scale: 1.05;
   outline: none;
 }
@@ -581,13 +593,13 @@ function openInfra(item, event) {
 }
 
 :root[data-theme="light"] .infra-core__counts span {
-  color: #078a31;
+  color: var(--site-accent);
   background: rgba(255, 255, 255, 0.72);
   box-shadow: inset 0 0 0 1px rgba(0, 126, 210, 0.18);
 }
 
 :root[data-theme="light"] .infra-line {
-  background: linear-gradient(to right, rgba(26, 158, 26, 0.7), rgba(26, 158, 26, 0.15));
+  background: linear-gradient(to right, rgb(var(--site-accent-rgb) / 0.7), rgb(var(--site-accent-rgb) / 0.15));
 }
 
 .infra-node__icon-frame {
@@ -766,10 +778,14 @@ function openInfra(item, event) {
   cursor: pointer;
 }
 
+.infra-mobile-item.has-overflow-badge {
+  padding-right: 82px;
+}
+
 .infra-mobile-item:hover,
 .infra-mobile-item.is-clickable:focus-visible {
-  border-color: rgba(31, 196, 31, 0.45);
-  background: rgba(31, 196, 31, 0.04);
+  border-color: rgb(var(--site-accent-rgb) / 0.45);
+  background: rgb(var(--site-accent-rgb) / 0.04);
   transform: translateY(-2px);
   outline: none;
 }
@@ -890,7 +906,7 @@ function openInfra(item, event) {
 .infra-mobile-item > a:hover,
 .infra-mobile-item > a:focus-visible {
   color: var(--site-accent);
-  border-color: rgba(31, 196, 31, 0.45);
+  border-color: rgb(var(--site-accent-rgb) / 0.45);
   transform: translateY(-1px);
   text-decoration: none;
   outline: none;

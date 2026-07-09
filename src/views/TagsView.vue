@@ -24,7 +24,8 @@
       <article
         v-for="group in visibleTagGroups"
         :key="group.tag"
-        class="tag-card"
+        class="tag-card card-overflow-host"
+        :class="{ 'has-overflow-badge': tagOverflowCount(group) > 0 }"
         role="link"
         tabindex="0"
         @click="openTag($event, group.tag)"
@@ -63,6 +64,9 @@
             <RouterLink :to="postUrl(post)" @click.stop>{{ post.title }}</RouterLink>
           </li>
         </ul>
+        <span v-if="tagOverflowCount(group) > 0" class="card-overflow-badge" aria-hidden="true">
+          +{{ tagOverflowCount(group) }}
+        </span>
       </article>
     </div>
   </section>
@@ -73,7 +77,7 @@ import { computed, onMounted, ref } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import { PriceTag } from '@element-plus/icons-vue'
 import { getTagGroups } from '../data'
-import { limitCardGroup } from '../utils/cardGroups'
+import { hiddenCardCount, limitCardGroup, overflowCountForItem } from '../utils/cardGroups'
 import { retryPublicAssetImage } from '../utils/publicAssets'
 
 const captureTagCounts = ref(new Map())
@@ -82,24 +86,25 @@ const router = useRouter()
 
 const tagGroups = computed(() => mergeCaptureTags(getTagGroups()))
 const visibleTagGroups = computed(() => limitCardGroup(tagGroups.value))
+const tagGroupsHiddenCount = computed(() => hiddenCardCount(tagGroups.value))
 const cloudPalette = [
   '#2dd4bf',
   '#ff5f8a',
   '#ff8a34',
   '#38bdf8',
   '#a855f7',
-  '#22c55e',
+  '#9b3dff',
   '#f59e0b',
   '#fb7185',
   '#60a5fa',
-  '#34d399',
+  '#f472b6',
   '#f97316',
   '#c084fc',
   '#e11d48',
-  '#84cc16',
+  '#7c3aed',
   '#0ea5e9',
   '#d946ef',
-  '#10b981',
+  '#a78bfa',
   '#f43f5e',
   '#7c3aed',
   '#22d3ee',
@@ -198,6 +203,10 @@ function visiblePostLimit(group) {
   return group.captures?.length ? 2 : 3
 }
 
+function tagOverflowCount(group) {
+  return overflowCountForItem(group, visibleTagGroups.value, tagGroupsHiddenCount.value)
+}
+
 function tagUrl(tag) {
   return `/tags/${encodeURIComponent(tag)}`
 }
@@ -227,15 +236,15 @@ onMounted(async () => {
 <style scoped>
 .tag-view {
   --tag-accent: var(--site-accent);
-  --tag-accent-soft: rgba(31, 196, 31, 0.18);
-  --tag-accent-muted: rgba(31, 196, 31, 0.08);
+  --tag-accent-soft: rgb(var(--site-accent-rgb) / 0.18);
+  --tag-accent-muted: rgb(var(--site-accent-rgb) / 0.08);
   --tag-border: rgba(255, 255, 255, 0.08);
 }
 
 :global([data-theme="light"]) .tag-view {
   --tag-accent: var(--site-accent);
-  --tag-accent-soft: rgba(31, 196, 31, 0.14);
-  --tag-accent-muted: rgba(31, 196, 31, 0.06);
+  --tag-accent-soft: rgb(var(--site-accent-rgb) / 0.14);
+  --tag-accent-muted: rgb(var(--site-accent-rgb) / 0.06);
   --tag-border: rgba(0, 0, 0, 0.1);
 }
 
@@ -306,10 +315,14 @@ onMounted(async () => {
   transition: border-color 160ms ease, background-color 160ms ease, transform 160ms ease;
 }
 
+.tag-card.has-overflow-badge {
+  padding-bottom: 54px;
+}
+
 .tag-card:hover,
 .tag-card:focus-visible {
-  border-color: rgba(31, 196, 31, 0.45);
-  background: rgba(31, 196, 31, 0.04);
+  border-color: rgb(var(--site-accent-rgb) / 0.45);
+  background: rgb(var(--site-accent-rgb) / 0.04);
   outline: none;
   transform: translateY(-1px);
 }
