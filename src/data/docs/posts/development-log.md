@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-07-09T15:10:05+08:00
+date: 2026-07-09T16:28:27+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,7 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `380c2c5` 2026-07-09T16:28:27+08:00 - feat: add cognitiveScience note and emit docs-meta.json on asset sync
 - `3533f1c` 2026-07-09T15:10:05+08:00 - infra: load service icons at runtime from diesw-assets
 - `8765dad` 2026-07-09T11:09:42+08:00 - revert: drop monogatari 404 redirect from user site
 - `1d17749` 2026-07-09T10:29:05+08:00 - feat: guide monogatari deep links from the 404 fallback
