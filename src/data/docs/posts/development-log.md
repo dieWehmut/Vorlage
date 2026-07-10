@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-07-09T21:21:03+08:00
+date: 2026-07-10T20:28:22+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,7 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `5e3ba36` 2026-07-10T20:28:22+08:00 - 添加Tauri文档
 - `0034caf` 2026-07-09T21:21:03+08:00 - Add configurable site color schemes
 - `48d32dc` 2026-07-09T21:01:57+08:00 - Show overflow counts on limited cards
 - `e024d0b` 2026-07-09T20:50:27+08:00 - Update pve setup packages
