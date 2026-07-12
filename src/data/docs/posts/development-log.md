@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-07-12T14:46:38+08:00
+date: 2026-07-12T15:02:54+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,7 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `5509939` 2026-07-12T15:02:54+08:00 - feat(ScrollSpySidebar): bidirectional scroll sync with page content
 - `6e824eb` 2026-07-12T14:46:38+08:00 - fix(markdown): mind map node visibility on light theme
 - `c51244e` 2026-07-12T14:45:25+08:00 - feat(ProjectListItem): add icons, only websites show Open button
 - `be984b8` 2026-07-12T14:44:21+08:00 - fix(cardGroups): remove card group limit to render all content on every page
