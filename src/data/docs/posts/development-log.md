@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-07-17T23:21:07+08:00
+date: 2026-07-18T01:32:15+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,7 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `b358ebf` 2026-07-18T01:32:15+08:00 - perf(infra): 节流轨道动画重算，消除 /infra 页光标卡顿
 - `7c7fe00` 2026-07-17T23:21:07+08:00 - perf(layout): 优化页面切换过渡，快速淡出+平滑淡入更丝滑
 - `30248e7` 2026-07-17T23:17:00+08:00 - docs(about): Copyright 声明采用 CC BY-SA 4.0 许可协议
 - `07e3bfa` 2026-07-17T23:16:37+08:00 - style(infra): 固定 online 为绿色、offline 为红色，不随主题配色变化
