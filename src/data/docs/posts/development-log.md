@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-07-15T21:35:46+08:00
+date: 2026-07-17T21:33:10+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,7 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `7e3724f` 2026-07-17T21:33:10+08:00 - feat(BounceCursor): 点环颜色跟随当前主题 accent 色
 - `11542e8` 2026-07-15T21:35:46+08:00 - 小补
 - `75045d4` 2026-07-15T21:34:31+08:00 - harness自进化初探
 - `2c333ca` 2026-07-12T15:18:20+08:00 - fix(cardGroups): decouple page-list limit from capture-image preview limit
