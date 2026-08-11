@@ -11,22 +11,29 @@
   </div>
   <canvas
     ref="dotsCanvasRef"
-    v-show="visible"
+    v-show="ringVisible"
     class="heart-dots-canvas"
     aria-hidden="true"
   ></canvas>
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useMotionPreferences } from '../../composables/useMotionPreferences'
 import { useColorSchemePreference } from '../../composables/useColorSchemePreference'
+import { useBackgroundPreference } from '../../composables/useBackgroundPreference'
 
 const cursorRef = ref(null)
 const dotsCanvasRef = ref(null)
 const visible = ref(false)
 const { canUsePointerEffects } = useMotionPreferences()
 const { colorScheme } = useColorSchemePreference()
+const { dynamicBackgroundEnabled } = useBackgroundPreference()
+
+// 点环与流线只属于「动态背景」这一档效果，关掉后只剩爱心本体
+const ringVisible = computed(
+  () => visible.value && canUsePointerEffects.value && dynamicBackgroundEnabled.value,
+)
 
 // ── 弹性点环（仿 cnblogs type:12 / mouseType3）─────────────────────────────
 // 头点跟随爱心中心，多条链沿角度放射，每个点弹性追踪父点
@@ -39,9 +46,9 @@ const RING_R_MAX   = 34    // 链上点的最大半径
 const RING_R_STEP  = 2     // 半径步进（越大点越少）→ 每链 12 点
 const RING_DOT_SIZE = 2.5   // 点直径 px
 const RING_SPIN_SPEED = 0.012 // 自旋角速度（rad/帧）→ 60fps 下约一圈 8.7s
-const RING_TRAIL_LEN = 11     // 尾点流线长度 px（沿切向）
-const RING_TRAIL_WIDTH = 0.6  // 流线宽度 px
-const RING_TRAIL_CURVE = 3    // 流线弯曲量 px（沿半径方向偏移控制点）
+const RING_TRAIL_LEN = 16     // 尾点流线长度 px（沿切向）
+const RING_TRAIL_WIDTH = 0.42 // 流线宽度 px
+const RING_TRAIL_CURVE = 4.5  // 流线弯曲量 px（沿半径方向偏移控制点，随长度等比放大保持弧度）
 const RING_FALLBACK_COLOR = '#ff69b4' // 读不到主题色时的兜底（爱心粉）
 let ringColor = RING_FALLBACK_COLOR   // 当前点环颜色，来自 --site-accent
 
@@ -342,9 +349,9 @@ function syncPointerEffects() {
 
 watch(canUsePointerEffects, syncPointerEffects, { immediate: true })
 
-// 点环随爱心显隐启停
-watch(visible, (v) => {
-  if (v && canUsePointerEffects.value) startRing()
+// 点环随「爱心可见 + 动态背景开启」启停
+watch(ringVisible, (v) => {
+  if (v) startRing()
   else stopRing()
 })
 
