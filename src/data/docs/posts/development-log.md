@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-08-14T18:59:17+08:00
+date: 2026-08-14T21:27:44+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,8 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `e4fecd6` 2026-08-14T21:27:44+08:00 - test(markdown): add rendering regression checks
+- `4ccac80` 2026-08-14T21:22:28+08:00 - fix(markdown): restore underlines and theme-relative colors
 - `6d2542e` 2026-08-14T18:59:17+08:00 - 添加外刊md
 - `cdc3bda` 2026-08-14T00:43:33+08:00 - feat(pdf): 标题更突出、引用竖线变细、目录美化、链接补全绝对地址；网页引用与标题同步优化
 - `bb30946` 2026-08-14T00:18:47+08:00 - feat(pdf): 导出 PDF 增加目录、元信息分组与标签、代码语言头、引用强调条，排版贴近网页
