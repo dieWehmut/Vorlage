@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-08-14T23:17:26+08:00
+date: 2026-08-14T23:28:47+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,7 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `0a3330f` 2026-08-14T23:28:47+08:00 - feat(pdf): preserve vocabulary rows and theme colors
 - `22264a2` 2026-08-14T23:17:26+08:00 - feat(markdown): add vocabulary pronunciation playback
 - `2d9a12b` 2026-08-14T21:46:21+08:00 - 添加agentrouter codex配置
 - `6baeadf` 2026-08-14T21:42:16+08:00 - docs(reading): mark key phrases with underline
