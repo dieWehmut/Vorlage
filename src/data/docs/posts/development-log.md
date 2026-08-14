@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-08-14T21:42:16+08:00
+date: 2026-08-14T21:46:21+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,7 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `2d9a12b` 2026-08-14T21:46:21+08:00 - 添加agentrouter codex配置
 - `6baeadf` 2026-08-14T21:42:16+08:00 - docs(reading): mark key phrases with underline
 - `e4fecd6` 2026-08-14T21:27:44+08:00 - test(markdown): add rendering regression checks
 - `4ccac80` 2026-08-14T21:22:28+08:00 - fix(markdown): restore underlines and theme-relative colors
