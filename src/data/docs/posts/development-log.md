@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-08-15T01:08:22+08:00
+date: 2026-08-16T20:21:39+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,7 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `b83e727` 2026-08-16T20:21:39+08:00 - fix(markdown): handle speaker clicks on svg icons
 - `905c058` 2026-08-15T01:08:22+08:00 - fix(navigation): follow article hashes after async render
 - `425feeb` 2026-08-14T23:58:18+08:00 - refactor(markdown): generate stable heading anchors
 - `0a3330f` 2026-08-14T23:28:47+08:00 - feat(pdf): preserve vocabulary rows and theme colors
