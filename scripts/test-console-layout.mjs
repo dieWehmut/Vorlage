@@ -22,6 +22,7 @@ const siteShell = read('src/layouts/SiteShell.vue')
 const floatButton = read('src/components/system/FloatButton.vue')
 const captureView = read('src/views/CaptureView.vue')
 const consoleShell = read('src/components/console/ConsoleShell.vue')
+const consoleSession = read('src/composables/useConsoleSession.ts')
 const consoleOverview = readOptional('src/components/console/ConsoleOverviewHeader.vue')
 const consolePanel = read('src/components/console/ConsolePanelView.vue')
 const commandRegistry = read('src/console/commandRegistry.ts')
@@ -31,7 +32,11 @@ const noteView = read('src/views/NoteView.vue')
 const homeView = read('src/views/HomeView.vue')
 const displayPreference = read('src/composables/useDisplayModePreference.ts')
 const consoleStyles = read('src/styles/console.scss')
+const router = read('src/router.ts')
 const desktopTemplate = desktopLayout.split('<script setup')[0]
+const consoleLayoutBlock = desktopLayout.match(/\.desktop-layout--console \{[\s\S]*?\n\}/)?.[0] || ''
+const consoleContentBlock = desktopLayout.match(/\.desktop-layout--console \.desktop-layout__content \{[\s\S]*?\n\}/)?.[0] || ''
+const consoleResultBlock = desktopLayout.match(/\.desktop-layout--console \.desktop-layout__result \{[\s\S]*?\n\}/)?.[0] || ''
 const consoleShellTemplate = consoleShell.split('<script setup')[0]
 const footerTags = componentTags(desktopTemplate, 'Footer')
 const desktopCommentTags = componentTags(desktopTemplate, 'GiscusComments')
@@ -54,12 +59,40 @@ check(
     && desktopTemplate.indexOf('<ConsoleOverviewHeader') < desktopTemplate.indexOf('<main')
     && desktopTemplate.indexOf('desktop-layout__result') < desktopTemplate.indexOf('desktop-layout__command-dock'),
 )
+check(
+  'Console mode scrolls the whole document instead of an inner viewport',
+  /min-height:\s*100vh\s*;/.test(consoleLayoutBlock)
+    && !/overflow/.test(consoleLayoutBlock)
+    && !/overflow/.test(consoleContentBlock)
+    && !/overflow/.test(consoleResultBlock)
+    && !desktopLayout.includes('resultRef'),
+)
+check(
+  'Console reveal helpers drive the window scroller',
+  desktopLayout.includes('window.scrollTo({ top: 0')
+    && desktopLayout.includes('window.scrollY + anchor.getBoundingClientRect().top'),
+)
+check(
+  'Console route output can always reach the top of the page',
+  /\.desktop-layout--console \.desktop-layout__main \{[\s\S]*?min-height:\s*100vh\s*;/.test(desktopLayout)
+    && /\.desktop-layout--console \.desktop-layout__main--empty \{[\s\S]*?min-height:\s*0\s*;/.test(desktopLayout),
+)
+check(
+  'router hands the scroller to Console mode',
+  /scrollBehavior\([\s\S]*?useDisplayModePreference\(\)\.isConsole\.value\) return false/.test(router),
+)
 check('mobile layout does not mount the console shell', !mobileLayout.includes('ConsoleShell'))
 check('mobile layout does not mount the Console overview', !mobileLayout.includes('ConsoleOverviewHeader'))
 check('desktop/mobile breakpoint remains 900px', siteShell.includes('(max-width: 900px)'))
 check('settings button exposes expanded state', floatButton.includes(':aria-expanded="settingsOpen"'))
 check('language selector exposes expanded state', floatButton.includes(':aria-expanded="languageOpen"'))
 check('colour selector exposes expanded state', floatButton.includes(':aria-expanded="colorSchemeOpen"'))
+check(
+  'classic controls use the terminal prompt mark for Console mode',
+  floatButton.includes('float-controls__terminal-mark')
+    && floatButton.includes('&gt;_')
+    && !floatButton.includes('<Monitor />'),
+)
 check('console capture preserves authorized editor controls', captureView.includes('console-capture-editor'))
 check('capture confirmation remains available in console mode', captureView.includes('<Teleport to="body">'))
 check('console overrides dynamic mesh with matching specificity', desktopLayout.includes(':root.dynamic-background-enabled .desktop-layout--console .desktop-layout__content'))
@@ -69,13 +102,31 @@ check(
   'console typography uses neutral letter spacing',
   [...consoleShell.matchAll(/letter-spacing:\s*([^;]+);/g)].every((match) => match[1].trim() === '0'),
 )
+check(
+  'console prompt caret and every option row share one left edge',
+  /--console-prompt-indent:\s*34px/.test(consoleShell)
+    && /\.console-shell__prompt-symbol \{[\s\S]*?width:\s*var\(--console-prompt-indent\)/.test(consoleShell)
+    && /\.console-shell__suggestion \{[\s\S]*?padding:[^;]*var\(--console-prompt-indent\)/.test(consoleShell)
+    && /\.console-panel__heading \{[\s\S]*?padding-left:\s*var\(--console-prompt-indent/.test(consolePanel)
+    && /\.console-panel__row \{[\s\S]*?padding:[^;]*var\(--console-prompt-indent/.test(consolePanel),
+)
 check('shared article PDF export remains in standard mode', routeBreadcrumb.includes('ArticleExportButton'))
 check('shared article PDF export remains in console posts', postView.includes('ArticleExportButton'))
 check('shared article PDF export remains in console notes', noteView.includes('ArticleExportButton'))
 check('console mode marks the document for native cursor overrides', displayPreference.includes('console-mode-active'))
 check('console uses the terminal text cursor everywhere', consoleStyles.includes('cursor: text !important'))
 check('console suggestions keep the selected row visible', consoleShell.includes('suggestionsRef') && consoleShell.includes('scrollIntoView'))
-check('nested panels close with Escape', consolePanel.includes("event.key === 'Escape'"))
+check(
+  'nested panels return to the previous menu with Escape',
+  consolePanel.includes("event.key === 'Escape'")
+    && consoleShell.includes('returnToPreviousMenu()')
+    && consoleSession.includes('panelStack.value.pop()'),
+)
+check(
+  'root slash suggestions expose every registered command',
+  /if \(prefix === ['"]\/['"]\) return options\s/.test(consoleSession)
+    && !consoleSession.includes('options.slice(0, 12)'),
+)
 const removedPanelCommands = ['agent', 'list', 'status', 'permissions', 'docker', 'workspace', 'model']
 for (const removedCommand of removedPanelCommands) {
   check(
@@ -85,8 +136,10 @@ for (const removedCommand of removedPanelCommands) {
   )
 }
 check(
-  'Console viewport reserves its final row for the command dock',
-  /grid-template-rows:\s*minmax\(0,\s*1fr\)\s+auto\s*;/.test(desktopLayout),
+  'Console command dock sits at the end of the document flow',
+  /\.desktop-layout--console \.desktop-layout__content[\s\S]*?display:\s*block\s*;/.test(desktopLayout)
+    && !/\.desktop-layout--console \.desktop-layout__result[\s\S]*?flex:\s*0\s+1\s+auto\s*;/.test(desktopLayout)
+    && !/grid-template-rows:\s*auto\s+minmax\(0,\s*1fr\)\s+auto\s*;/.test(desktopLayout),
 )
 check(
   'Console command choices open below the prompt',
@@ -94,10 +147,10 @@ check(
     && consoleShellTemplate.indexOf('class="console-shell__prompt"') < consoleShellTemplate.indexOf('class="console-shell__transient"'),
 )
 check(
-  'short desktop viewports constrain transient console content',
+  'Console dock no longer clamps itself to the viewport height',
   consoleShell.includes('console-shell__transient')
-    && consoleShell.includes('max-height: calc(100vh')
-    && consoleShell.includes('overflow-y: auto'),
+    && !/max-height:\s*calc\(100vh/.test(consoleShell)
+    && !/max-height:\s*min\(38vh/.test(consoleShell),
 )
 check(
   'console input exposes its active listbox to assistive technology',
@@ -128,8 +181,29 @@ check(
   /image-rendering:\s*auto\s*;/.test(consoleOverview) && !/image-rendering:\s*(?:pixelated|crisp-edges)/.test(consoleOverview),
 )
 check(
-  'Console overview renders rich site, workspace, content, contact, and runtime sections',
-  ['SITE', 'WORKSPACE', 'CONTENT', 'CONTACT', 'RUNTIME'].every((label) => consoleOverview.includes(label)),
+  'Console overview keeps only compact content and runtime sections',
+  ['CONTENT', 'RUNTIME'].every((label) => consoleOverview.includes(label))
+    && !['WORKSPACE', 'CONTACT', 'Hi!This is dieWehmut.'].some((label) => consoleOverview.includes(label)),
+)
+check('Console overview cards omit route labels', !consoleOverview.includes('<code>{{ stat.path }}</code>'))
+check(
+  'Console overview starts with a terminal site title',
+  consoleOverview.indexOf('console-overview__chrome') > -1
+    && consoleOverview.indexOf('console-overview__chrome') < consoleOverview.indexOf('>CONTENT<')
+    && consoleOverview.includes('&gt;_')
+    && consoleOverview.includes('{{ config.title }}'),
+)
+check(
+  'Console overview exposes a direct classic mode switch',
+  consoleOverview.includes('console-overview__classic')
+    && consoleOverview.includes("setDisplayMode('standard')")
+    && consoleOverview.includes('aria-label="Switch to classic mode"'),
+)
+check(
+  'Console overview columns share a fixed one-third-height row',
+  /aspect-ratio:\s*3\s*\/\s*1/.test(consoleOverview)
+    && /\.console-overview__avatar[\s\S]*?height:\s*100%/.test(consoleOverview)
+    && consoleOverview.includes('overflow: clip'),
 )
 check(
   'Console overview renders shared statistics and footer metadata',

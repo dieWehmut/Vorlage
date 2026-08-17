@@ -3,33 +3,27 @@
     <div class="console-overview__portrait">
       <img
         class="console-overview__avatar"
+        :class="`console-overview__avatar--${darkIconEffect}`"
         :src="avatarUrl"
-        :alt="`${config.owner} GitHub avatar`"
+        :alt="`${config.owner} Console icon`"
         decoding="async"
       />
     </div>
 
     <div class="console-overview__dashboard">
-      <section class="console-overview__section console-overview__section--lead">
-        <div class="console-overview__section-title">SITE</div>
-        <div class="console-overview__title-line">
-          <strong>&gt;_ {{ config.title }}</strong>
-          <span class="console-overview__ready">READY</span>
+      <div class="console-overview__chrome">
+        <div class="console-overview__brand">
+          <span aria-hidden="true">&gt;_</span>
+          <strong>{{ config.title }}</strong>
         </div>
-        <p>{{ config.subtitle || config.description }}</p>
-        <p class="console-overview__description">{{ config.description }}</p>
-      </section>
-
-      <section class="console-overview__section">
-        <div class="console-overview__section-title">WORKSPACE</div>
-        <dl class="console-overview__rows">
-          <div><dt>owner</dt><dd>{{ config.owner }}</dd></div>
-          <div><dt>repository</dt><dd><a :href="repositoryUrl" target="_blank" rel="noopener noreferrer">{{ config.githubUser }}/{{ config.githubRepo }}</a></dd></div>
-          <div><dt>route</dt><dd><code>{{ route.fullPath || '/' }}</code></dd></div>
-          <div><dt>site</dt><dd><a :href="config.siteUrl" target="_blank" rel="noopener noreferrer">{{ config.siteUrl }}</a></dd></div>
-          <div><dt>layout</dt><dd>desktop / nexus-console</dd></div>
-        </dl>
-      </section>
+        <button
+          class="console-overview__classic"
+          type="button"
+          aria-label="Switch to classic mode"
+          title="Switch to classic mode"
+          @click="setDisplayMode('standard')"
+        >classic</button>
+      </div>
 
       <section class="console-overview__section">
         <div class="console-overview__section-title">CONTENT</div>
@@ -37,24 +31,8 @@
           <RouterLink v-for="stat in stats" :key="stat.key" :to="stat.path">
             <span>{{ stat.label }}</span>
             <strong>{{ stat.value ?? '...' }}</strong>
-            <code>{{ stat.path }}</code>
           </RouterLink>
         </div>
-        <dl class="console-overview__rows console-overview__rows--compact">
-          <div><dt>indexed entries</dt><dd>{{ contentSummary.entries }}</dd></div>
-          <div><dt>document words</dt><dd>{{ formattedWords }}</dd></div>
-          <div><dt>reading time</dt><dd>{{ formattedReadingMinutes }} min</dd></div>
-          <div><dt>latest content</dt><dd>{{ contentSummary.latest || 'n/a' }}</dd></div>
-        </dl>
-      </section>
-
-      <section class="console-overview__section">
-        <div class="console-overview__section-title">CONTACT</div>
-        <dl class="console-overview__rows">
-          <div><dt>email</dt><dd><a :href="`mailto:${config.email}`">{{ config.email }}</a></dd></div>
-          <div><dt>github</dt><dd><a :href="githubProfileUrl" target="_blank" rel="noopener noreferrer">{{ githubProfileUrl }}</a></dd></div>
-          <div v-for="link in config.links" :key="link.url"><dt>{{ link.label }}</dt><dd><a :href="link.url" target="_blank" rel="noopener noreferrer">{{ link.url }}</a></dd></div>
-        </dl>
       </section>
 
       <section class="console-overview__section">
@@ -71,35 +49,37 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { RouterLink, useRoute } from 'vue-router'
+import { RouterLink } from 'vue-router'
 import { useSiteOverview } from '../../composables/useSiteOverview'
+import { useDisplayModePreference } from '../../composables/useDisplayModePreference'
 import { getGitHubAvatarUrl } from '../../utils/githubAvatar'
 
-const route = useRoute()
 const {
   config,
   stats,
-  contentSummary,
   footerMeta,
   uptime,
-  repositoryUrl,
-  githubProfileUrl,
 } = useSiteOverview()
-const avatarUrl = `${getGitHubAvatarUrl(config.githubUser)}?size=1024`
-const numberFormatter = new Intl.NumberFormat('en-US')
-const formattedWords = computed(() => numberFormatter.format(contentSummary.value.totalWords))
-const formattedReadingMinutes = computed(() => numberFormatter.format(contentSummary.value.readingMinutes))
+const { setDisplayMode } = useDisplayModePreference()
+const configuredIcon = String(config.console?.icon || '').trim()
+const avatarUrl = configuredIcon || `${getGitHubAvatarUrl(config.githubUser)}?size=1024`
+const darkIconEffect = ['grayscale', 'whiten', 'original'].includes(config.console?.darkIconEffect || '')
+  ? config.console?.darkIconEffect
+  : 'grayscale'
 </script>
 
 <style scoped>
 .console-overview {
+  position: relative;
+  z-index: 2;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
   box-sizing: border-box;
   width: 100%;
-  min-height: min(620px, calc(100vh - 94px));
+  height: min(33.333333vw, max(240px, calc(100dvh - 140px)));
+  min-height: 0;
   margin: 0;
+  aspect-ratio: 3 / 1;
   border-top: 1px solid var(--console-border-strong);
   border-bottom: 1px solid var(--console-border-strong);
   color: var(--console-text);
@@ -111,32 +91,113 @@ const formattedReadingMinutes = computed(() => numberFormatter.format(contentSum
   position: relative;
   display: block;
   min-width: 0;
-  min-height: 360px;
+  height: 100%;
+  min-height: 0;
   align-self: stretch;
-  overflow: hidden;
+  overflow: clip;
   border-right: 1px solid var(--console-border-strong);
   background: var(--console-surface);
 }
 
 .console-overview__avatar {
-  position: sticky;
-  top: 0;
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
   max-height: none;
   object-fit: contain;
-  filter: grayscale(1);
+  object-position: left top;
+  filter: none;
   image-rendering: auto;
 }
 
+:global(html[data-theme="light"]) .console-overview__avatar {
+  filter: none;
+}
+
+:global(html[data-theme="dark"]) .console-overview__avatar--grayscale {
+  filter: grayscale(1);
+}
+
+:global(html[data-theme="dark"]) .console-overview__avatar--whiten {
+  filter: brightness(0) invert(1);
+}
+
+:global(html[data-theme="dark"]) .console-overview__avatar--original {
+  filter: none;
+}
+
 .console-overview__dashboard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
   min-width: 0;
-  padding: 18px 20px 20px;
+  height: 100%;
+  padding: 0;
+  overflow-y: auto;
+}
+
+.console-overview__chrome {
+  display: flex;
+  flex: 0 0 40px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-width: 0;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--console-border);
+}
+
+.console-overview__brand {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  gap: 9px;
+}
+
+.console-overview__brand span {
+  color: var(--console-accent);
+  font-weight: 800;
+}
+
+.console-overview__brand strong {
+  overflow: hidden;
+  color: var(--console-text);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.console-overview__classic {
+  min-height: 26px;
+  padding: 3px 8px;
+  border: 1px solid var(--console-border-strong);
+  border-radius: 0;
+  color: var(--console-muted);
+  background: transparent;
+  font: inherit;
+}
+
+.console-overview__classic:hover,
+.console-overview__classic:focus-visible {
+  color: var(--console-accent);
+  background: var(--console-selection);
+  outline: none;
+}
+
+.console-overview__section {
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+.console-overview__chrome + .console-overview__section {
+  margin-top: 12px;
 }
 
 .console-overview__section + .console-overview__section {
   margin-top: 15px;
+  margin-bottom: 16px;
   padding-top: 12px;
   border-top: 1px solid var(--console-border);
 }
@@ -147,37 +208,6 @@ const formattedReadingMinutes = computed(() => numberFormatter.format(contentSum
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0;
-}
-
-.console-overview__title-line {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.console-overview__title-line strong {
-  min-width: 0;
-  overflow-wrap: anywhere;
-  font-size: 1.35rem;
-}
-
-.console-overview__ready {
-  flex: 0 0 auto;
-  color: var(--console-accent);
-  font-size: 0.72rem;
-  font-weight: 800;
-}
-
-.console-overview p {
-  margin: 5px 0 0;
-  color: var(--console-muted);
-  font-size: 0.82rem;
-  line-height: 1.45;
-}
-
-.console-overview__description {
-  color: var(--console-dim) !important;
 }
 
 .console-overview__rows {
@@ -201,10 +231,6 @@ const formattedReadingMinutes = computed(() => numberFormatter.format(contentSum
   min-width: 0;
   margin: 0;
   overflow-wrap: anywhere;
-}
-
-.console-overview__rows--compact {
-  margin-top: 9px;
 }
 
 .console-overview__stats {
@@ -233,8 +259,7 @@ const formattedReadingMinutes = computed(() => numberFormatter.format(contentSum
   outline-offset: -1px;
 }
 
-.console-overview__stats span,
-.console-overview__stats code {
+.console-overview__stats span {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -258,25 +283,46 @@ const formattedReadingMinutes = computed(() => numberFormatter.format(contentSum
 
 @media (min-width: 901px) and (max-width: 1100px) {
   .console-overview__dashboard {
-    padding: 14px;
+    padding: 0;
   }
 
-  .console-overview__portrait {
-    min-height: 330px;
+  .console-overview__chrome {
+    flex-basis: 34px;
+    padding: 0 12px;
+  }
+
+  .console-overview__section {
+    margin-right: 12px;
+    margin-left: 12px;
+  }
+
+  .console-overview__chrome + .console-overview__section {
+    margin-top: 6px;
   }
 
   .console-overview__section + .console-overview__section {
-    margin-top: 10px;
-    padding-top: 9px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    padding-top: 6px;
   }
 
   .console-overview__rows {
-    font-size: 0.7rem;
+    gap: 2px;
+    font-size: 0.66rem;
   }
 
   .console-overview__rows div {
     grid-template-columns: 84px minmax(0, 1fr);
     gap: 8px;
+  }
+
+  .console-overview__section-title {
+    margin-bottom: 4px;
+  }
+
+  .console-overview__stats a {
+    min-height: 50px;
+    padding: 4px 6px;
   }
 }
 </style>

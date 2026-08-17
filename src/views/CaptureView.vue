@@ -42,7 +42,7 @@
                   <img
                     :src="asset.image"
                     :alt="asset.title || asset.id"
-                    loading="eager"
+                    loading="lazy"
                     decoding="async"
                     @error="retryPublicAssetImage($event, asset.image)"
                   />
@@ -85,12 +85,12 @@
           </div>
         </template>
 
-        <ConsoleMonthNavigator v-else :months="consoleMonths">
+        <ConsoleMonthNavigator v-else :months="consoleMonths" state-key="capture">
           <template #default="{ item }">
             <article class="console-capture-group">
               <div class="console-capture-group__media">
                 <div
-                  v-for="asset in asCaptureGroup(item).assets"
+                  v-for="asset in previewAssets(asCaptureGroup(item))"
                   :key="asset.id"
                   class="console-capture-asset"
                 >
@@ -118,9 +118,22 @@
                     @click="deleteCapture(asset)"
                   >-</button>
                 </div>
+                <RouterLink
+                  v-if="hiddenAssetCount(asCaptureGroup(item)) > 0"
+                  class="console-capture-group__overflow"
+                  :to="`/capture/${encodeURIComponent(asCaptureGroup(item).id)}`"
+                  :aria-label="`Open ${hiddenAssetCount(asCaptureGroup(item))} more captures`"
+                  @click="saveCaptureScrollPosition"
+                >
+                  <strong>+{{ hiddenAssetCount(asCaptureGroup(item)) }}</strong>
+                  <span>more</span>
+                </RouterLink>
               </div>
               <div class="console-capture-group__body">
-                <RouterLink :to="`/capture/${encodeURIComponent(asCaptureGroup(item).id)}`">
+                <RouterLink
+                  :to="`/capture/${encodeURIComponent(asCaptureGroup(item).id)}`"
+                  @click="saveCaptureScrollPosition"
+                >
                   <code>/capture/{{ encodeURIComponent(asCaptureGroup(item).id) }}</code>
                 </RouterLink>
                 <time v-if="asCaptureGroup(item).date" :datetime="asCaptureGroup(item).date">{{ formatDateOnly(asCaptureGroup(item).date) }}</time>
@@ -685,14 +698,8 @@ function backToCapture() {
   router.push('/capture')
 }
 
-function activeCaptureScrollContainer(): HTMLElement | null {
-  if (!isConsole.value || typeof document === 'undefined') return null
-  return document.querySelector('.desktop-layout--console .desktop-layout__result')
-}
-
 function saveCaptureScrollPosition() {
-  const top = activeCaptureScrollContainer()?.scrollTop ?? window.scrollY
-  window.sessionStorage.setItem(captureScrollStorageKey, String(top))
+  window.sessionStorage.setItem(captureScrollStorageKey, String(window.scrollY))
 }
 
 function restoreCaptureScrollPosition() {
@@ -704,11 +711,7 @@ function restoreCaptureScrollPosition() {
   const top = Number(savedScrollY)
   if (!Number.isFinite(top)) return
 
-  window.requestAnimationFrame(() => {
-    const container = activeCaptureScrollContainer()
-    if (container) container.scrollTo({ top, behavior: 'auto' })
-    else window.scrollTo({ top, behavior: 'auto' })
-  })
+  window.requestAnimationFrame(() => window.scrollTo({ top, behavior: 'auto' }))
 }
 
 async function refreshEditorAuth() {
@@ -953,6 +956,36 @@ watch(isDetailRoute, (detail) => {
   flex: 0 0 58px;
   width: 58px;
   height: 58px;
+}
+
+.console-capture-group__overflow {
+  display: grid;
+  flex: 0 0 58px;
+  width: 58px;
+  height: 58px;
+  place-content: center;
+  gap: 1px;
+  border: 1px solid var(--console-border, var(--site-border));
+  color: var(--console-muted, var(--site-muted));
+  text-align: center;
+  text-decoration: none;
+}
+
+.console-capture-group__overflow strong {
+  color: var(--console-accent, var(--site-accent));
+  font-size: 0.82rem;
+}
+
+.console-capture-group__overflow span {
+  font-size: 0.66rem;
+}
+
+.console-capture-group__overflow:hover,
+.console-capture-group__overflow:focus-visible {
+  border-color: var(--console-accent, var(--site-accent));
+  color: var(--console-text, var(--site-text));
+  background: var(--console-selection, transparent);
+  outline: none;
 }
 
 .console-capture-asset > button:first-child {

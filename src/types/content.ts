@@ -1,7 +1,7 @@
 export type ContentKind = 'post' | 'note' | 'capture' | 'friend' | 'project' | 'infra'
 export type ProjectCategory = 'websites' | 'games' | 'apps' | 'tools' | 'templates'
 export type CaptureSourceKind = 'post' | 'note'
-export type SiteColorScheme = 'green' | 'purple' | 'pink'
+export type SiteColorScheme = 'green' | 'purple' | 'pink' | 'white' | 'black'
 
 export interface ArchivePost {
   id: string
@@ -93,6 +93,13 @@ export interface SiteLink {
   url: string
 }
 
+export type ConsoleDarkIconEffect = 'grayscale' | 'whiten' | 'original'
+
+export interface ConsoleSiteConfig {
+  icon?: string
+  darkIconEffect?: ConsoleDarkIconEffect
+}
+
 export interface SiteConfig {
   githubUser: string
   githubRepo: string
@@ -120,6 +127,7 @@ export interface SiteConfig {
     refreshMs?: number
   }
   links: SiteLink[]
+  console?: ConsoleSiteConfig
 }
 
 export interface SiteProfile {

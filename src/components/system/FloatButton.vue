@@ -51,7 +51,7 @@
       :tabindex="settingsOpen ? 0 : -1"
       @click="toggleDisplayMode"
     >
-      <el-icon><Monitor /></el-icon>
+      <span class="float-controls__terminal-mark" aria-hidden="true">&gt;_</span>
     </button>
 
     <button
@@ -134,7 +134,7 @@
 <script setup>
 import { nextTick, ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Brush, MagicStick, Monitor, Setting, Top, Moon, Sunny } from '@element-plus/icons-vue'
+import { Brush, MagicStick, Setting, Top, Moon, Sunny } from '@element-plus/icons-vue'
 import { useBackgroundPreference } from '../../composables/useBackgroundPreference'
 import { useColorSchemePreference } from '../../composables/useColorSchemePreference'
 import { useThemePreference } from '../../composables/useThemePreference'
@@ -151,14 +151,8 @@ const languageOpen = ref(false)
 const colorSchemeOpen = ref(false)
 const atTop = ref(true)
 
-function activeScrollContainer() {
-  if (!isConsole.value || typeof document === 'undefined') return null
-  return document.querySelector('.desktop-layout--console .desktop-layout__result')
-}
-
 function onScroll() {
-  const container = activeScrollContainer()
-  atTop.value = (container?.scrollTop ?? window.scrollY) < 60
+  atTop.value = window.scrollY < 60
 }
 
 onMounted(() => {
@@ -422,6 +416,14 @@ function toggleDisplayMode() {
   font-weight: 900;
 }
 
+.float-controls__terminal-mark {
+  font-family: var(--site-font-mono);
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+}
+
 .float-controls__langs {
   position: absolute;
   right: 54px;
@@ -525,6 +527,11 @@ function toggleDisplayMode() {
   border-radius: 50%;
   background: var(--scheme-color);
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.28);
+}
+
+/* light 主题下按钮底色是 rgba(255,255,255,0.9)，白色描边会让 white swatch 整块消失 */
+:root[data-theme="light"] .float-controls__scheme-swatch {
+  border-color: rgba(0, 0, 0, 0.36);
 }
 
 @keyframes settings-spin {

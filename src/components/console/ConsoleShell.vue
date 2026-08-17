@@ -50,6 +50,7 @@
           :class="{ 'is-selected': suggestionCursor === index }"
           type="button"
           role="option"
+          tabindex="-1"
           :aria-selected="suggestionCursor === index"
           :data-suggestion-index="index"
           @click="executeCommand(suggestion.input)"
@@ -88,6 +89,11 @@ import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import ConsolePanelView from './ConsolePanelView.vue'
 import { useConsoleSession } from '../../composables/useConsoleSession'
 import type { ConsolePanel } from '../../console/commandRegistry'
+import {
+  CONSOLE_RESULT_NAVIGATION_EVENT,
+  type ConsoleResultNavigationAction,
+} from '../../console/selection'
+import { CONSOLE_MONTH_NAVIGATION_EVENT } from '../../console/timeline'
 
 const inputRef = ref<HTMLInputElement | null>(null)
 const panelRef = ref<InstanceType<typeof ConsolePanelView> | null>(null)
@@ -117,6 +123,7 @@ const {
   executeCommand: executeSessionCommand,
   handleInputKeydown: handleSessionInputKeydown,
   setPanel,
+  returnToPreviousMenu,
 } = useConsoleSession()
 
 const hasPanelListbox = computed(() => Boolean(
@@ -149,7 +156,7 @@ async function executeCommand(value?: string) {
 
 function closePanel() {
   panelActiveOptionId.value = ''
-  setPanel(null)
+  returnToPreviousMenu()
   void nextTick(() => inputRef.value?.focus())
 }
 
@@ -168,6 +175,38 @@ function handleShellKeydown(event: KeyboardEvent) {
       event.preventDefault()
       return
     }
+  }
+  if (
+    !activePanel.value
+    && !suggestions.value.length
+    && !commandInput.value.trim()
+    && (event.key === 'ArrowUp' || event.key === 'ArrowDown' || event.key === 'Enter')
+  ) {
+    const action: ConsoleResultNavigationAction = event.key === 'ArrowUp'
+      ? 'previous'
+      : event.key === 'ArrowDown'
+        ? 'next'
+        : 'activate'
+    const handled = !window.dispatchEvent(new CustomEvent(CONSOLE_RESULT_NAVIGATION_EVENT, {
+      detail: action,
+      cancelable: true,
+    }))
+    if (handled) {
+      event.preventDefault()
+      return
+    }
+  }
+  if (
+    !activePanel.value
+    && !suggestions.value.length
+    && !commandInput.value.trim()
+    && (event.key === 'ArrowLeft' || event.key === 'ArrowRight')
+  ) {
+    event.preventDefault()
+    window.dispatchEvent(new CustomEvent(CONSOLE_MONTH_NAVIGATION_EVENT, {
+      detail: event.key === 'ArrowLeft' ? -1 : 1,
+    }))
+    return
   }
   handleSessionInputKeydown(event)
 }
@@ -193,14 +232,13 @@ onMounted(() => {
 
 <style scoped>
 .console-shell {
+  /* Single column that the prompt caret, the suggestion rows and the panel rows
+     all start from, so every `/` lines up under the one being typed. */
+  --console-prompt-indent: 34px;
   position: relative;
-  display: flex;
-  flex-direction: column;
+  display: block;
   box-sizing: border-box;
   width: 100%;
-  max-height: calc(100vh - 72px);
-  min-height: 0;
-  overflow: hidden;
   color: var(--console-text);
   border-top: 1px solid var(--console-border-strong);
   background: var(--console-bg);
@@ -209,7 +247,6 @@ onMounted(() => {
 
 .console-shell__history {
   display: flex;
-  flex: 0 0 auto;
   flex-wrap: nowrap;
   align-items: center;
   gap: 4px 10px;
@@ -245,7 +282,6 @@ onMounted(() => {
 }
 
 .console-shell__prompt {
-  flex: 0 0 auto;
   display: flex;
   align-items: center;
   min-height: 46px;
@@ -255,35 +291,23 @@ onMounted(() => {
 }
 
 .console-shell__transient {
-  flex: 0 1 auto;
-  min-height: 0;
-  max-height: min(38vh, calc(100vh - 190px));
-  overflow-y: auto;
   border-bottom: 1px solid var(--console-border);
-  scrollbar-color: var(--console-border-strong) transparent;
-  scrollbar-width: thin;
-}
-
-.console-shell__transient::-webkit-scrollbar {
-  width: 8px;
-}
-
-.console-shell__transient::-webkit-scrollbar-thumb {
-  border: 2px solid transparent;
-  border-radius: 0;
-  background: var(--console-border-strong);
-  background-clip: padding-box;
 }
 
 .console-shell__feedback {
   margin: 0;
-  padding: 9px 8px;
+  padding: 9px 9px 9px var(--console-prompt-indent);
   color: var(--console-muted);
 }
 
 .console-shell__prompt-symbol {
   flex: 0 0 auto;
-  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: var(--console-prompt-indent);
+  padding: 0;
   color: var(--console-accent);
   font-weight: 700;
 }
@@ -336,7 +360,7 @@ onMounted(() => {
   grid-template-columns: minmax(170px, 260px) 1fr;
   gap: 16px;
   min-height: 30px;
-  padding: 4px 9px;
+  padding: 4px 9px 4px var(--console-prompt-indent);
   border: 1px solid transparent;
   color: var(--console-muted);
   background: transparent;

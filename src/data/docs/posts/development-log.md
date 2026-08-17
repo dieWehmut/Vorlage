@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-08-17T16:00:04+08:00
+date: 2026-08-17T22:28:10+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,72 +8,94 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
-- `9cefcc0` 2026-08-17T16:00:04+08:00 - refactor: remove obsolete console commands
-- `01ca37e` 2026-08-17T15:31:53+08:00 - fix: flush console portrait and open panels downward
-- `38d9e7c` 2026-08-17T15:31:52+08:00 - test: lock console thirds and downward panels
-- `db0d94f` 2026-08-17T14:41:22+08:00 - fix: isolate console chrome and comments
-- `20350d8` 2026-08-17T14:41:22+08:00 - feat: dock console input and reveal output
-- `b90af7e` 2026-08-17T14:41:21+08:00 - feat: add rich console overview header
-- `2493eb9` 2026-08-17T14:24:58+08:00 - refactor: share home stats and footer data
-- `85252bb` 2026-08-17T14:12:49+08:00 - feat: wire explicit console comments
-- `184057f` 2026-08-17T14:12:48+08:00 - feat: add console root and canonical home route
-- `c16169c` 2026-08-17T14:03:31+08:00 - feat: define shared site overview model
-- `7b78b13` 2026-08-17T14:03:30+08:00 - feat: define explicit console comment state
-- `309406b` 2026-08-17T12:57:18+08:00 - test: define console v2 contracts
-- `68af422` 2026-08-17T12:35:10+08:00 - docs: define nexus console v2
-- `483f003` 2026-08-17T05:14:11+08:00 - fix: constrain console command workspace
-- `b791256` 2026-08-17T05:10:13+08:00 - fix: respect console route feature flags
-- `e7fe9bb` 2026-08-17T04:35:19+08:00 - fix: ignore unknown console data targets
-- `348493c` 2026-08-17T04:34:53+08:00 - fix: stabilize console viewport and keyboard flow
-- `582f92f` 2026-08-17T04:34:33+08:00 - fix: preserve console document and search actions
-- `0a2952b` 2026-08-17T03:47:29+08:00 - fix: complete console empty and section navigation
-- `6366dc7` 2026-08-17T03:34:49+08:00 - style: stabilize console typography
-- `6acf29b` 2026-08-17T03:29:13+08:00 - fix: preserve console route parity
-- `c37c195` 2026-08-17T03:19:07+08:00 - fix: complete console keyboard navigation
-- `dc53755` 2026-08-17T03:06:57+08:00 - fix: preserve console route controls
-- `c7554cf` 2026-08-17T02:44:39+08:00 - fix: track console result viewport scrolling
-- `5d67a2d` 2026-08-17T02:41:09+08:00 - fix: align console comments and footer
-- `c3de4d2` 2026-08-17T02:40:22+08:00 - feat: move console document navigation above content
-- `486ff7f` 2026-08-17T02:37:12+08:00 - feat: add console capture timeline and detail
-- `82a29ff` 2026-08-17T02:36:14+08:00 - fix: stabilize console month entry rendering
-- `f0c9203` 2026-08-17T02:31:15+08:00 - style: flatten console route layouts
-- `7b5e6dc` 2026-08-17T02:29:12+08:00 - feat: add console search result table
-- `6b74e77` 2026-08-17T02:27:17+08:00 - fix: disable page progress decoration in console
-- `7a2c6b4` 2026-08-17T02:25:22+08:00 - feat: add console not-found result
-- `a34ae2e` 2026-08-17T02:25:12+08:00 - fix: reset console panel on shell remount
-- `234d73e` 2026-08-17T02:22:24+08:00 - fix: remove hidden console controls from tab order
-- `d8a85ce` 2026-08-17T02:20:53+08:00 - feat: add console about contact panel
-- `b369119` 2026-08-17T02:19:31+08:00 - style: normalize shared console result rows
-- `b729f12` 2026-08-17T02:17:20+08:00 - feat: add console friends table
-- `dd3c9e4` 2026-08-17T02:11:00+08:00 - fix: avoid double decoding console route params
-- `6833a33` 2026-08-17T02:10:20+08:00 - feat: add console project table
-- `db413b8` 2026-08-17T02:04:49+08:00 - feat: add console infrastructure table
-- `6d74928` 2026-08-17T01:59:44+08:00 - feat: add console tag detail timeline
-- `42be2b7` 2026-08-17T01:58:15+08:00 - feat: add nested console command selectors
-- `1ebf7cd` 2026-08-17T01:52:14+08:00 - feat: add console home month navigation
-- `f11a264` 2026-08-17T01:48:10+08:00 - feat: add console tag index
-- `383b755` 2026-08-17T01:45:10+08:00 - fix: normalize console setting commands
-- `4486454` 2026-08-17T01:41:31+08:00 - refactor: isolate display mode resolution
-- `3614b9b` 2026-08-17T01:32:50+08:00 - test: specify display mode persistence contract
-- `060dfd9` 2026-08-17T01:31:19+08:00 - feat: apply console language commands
-- `c08f7a9` 2026-08-17T01:28:39+08:00 - feat: add horizontal console section navigation
-- `47b9865` 2026-08-17T01:22:09+08:00 - fix: preserve literal capture ids during lookup
-- `5805c3b` 2026-08-17T01:19:35+08:00 - feat: add console monthly archive navigation
-- `f304c2a` 2026-08-17T01:13:39+08:00 - fix: execute console suggestions on selection
-- `036a025` 2026-08-17T01:09:21+08:00 - fix: preserve case-sensitive console route ids
-- `00bc21f` 2026-08-17T01:06:46+08:00 - fix: initialize console mode before mount
-- `df8b627` 2026-08-17T01:04:32+08:00 - fix: suppress decorative effects in console mode
-- `ee25652` 2026-08-17T01:01:03+08:00 - feat: add desktop console mode control
-- `0549686` 2026-08-17T00:58:17+08:00 - feat: mount desktop Nexus Console shell
-- `11b1334` 2026-08-17T00:49:42+08:00 - feat: add console shell and settings panels
-- `e745974` 2026-08-17T00:42:32+08:00 - fix: keep desktop-first mode across mobile visits
-- `8475345` 2026-08-17T00:40:57+08:00 - feat: add console session command execution
-- `7e70ce3` 2026-08-17T00:35:56+08:00 - feat: persist desktop console display mode
-- `0e243c7` 2026-08-17T00:35:37+08:00 - feat: add console command registry
-- `9a05987` 2026-08-17T00:32:50+08:00 - test: specify console command registry
-- `cea30d7` 2026-08-17T00:25:39+08:00 - feat: add console command and timeline core
-- `4287fbe` 2026-08-17T00:17:54+08:00 - test: specify console command and timeline contracts
-- `778d535` 2026-08-17T00:04:06+08:00 - docs: define Nexus Console implementation
+- `6438ae8` 2026-08-17T22:28:10+08:00 - chore: ignore local claude worktrees
+- `9094f64` 2026-08-17T22:26:17+08:00 - style: align the console prompt caret with every option row
+- `a944005` 2026-08-17T22:09:40+08:00 - feat: align selected console output with the top of the page
+- `de175d4` 2026-08-17T21:46:26+08:00 - fix: unbreak build by dropping the png import from site config
+- `502ff81` 2026-08-17T21:43:33+08:00 - refactor: scroll the console with the whole document
+- `ded705d` 2026-08-17T21:06:03+08:00 - feat: widen monochrome contrast and tie heart cursors to accent
+- `e488913` 2026-08-17T20:19:31+08:00 - Merge branch 'worktree-monochrome-schemes'
+- `b29ff54` 2026-08-17T20:12:51+08:00 - test: pin the scheme label and preview swatch
+- `d30be27` 2026-08-17T20:08:06+08:00 - feat: use terminal mark for console toggle
+- `4d49d85` 2026-08-17T20:05:05+08:00 - refactor: hide root slash from console menu
+- `590c629` 2026-08-17T20:02:38+08:00 - feat: make console portrait configurable
+- `f17c4d5` 2026-08-17T19:56:32+08:00 - feat: add console title and classic switch
+- `19ad2b6` 2026-08-17T19:50:37+08:00 - fix: flow console prompt after results
+- `d93f0f2` 2026-08-17T19:46:11+08:00 - fix: restore console tag navigation
+- `96e913d` 2026-08-17T19:46:04+08:00 - test: chain the color scheme suite into test:console
+- `57d2f3d` 2026-08-17T19:42:29+08:00 - fix: keep the scheme swatch visible on the light theme
+- `a7ba1ae` 2026-08-17T19:42:29+08:00 - feat: add white and black monochrome color schemes
+- `7dbff48` 2026-08-17T19:35:46+08:00 - fix: restore console capture context
+- `8179293` 2026-08-17T18:12:03+08:00 - test: align color scheme suite with sibling conventions
+- `b09f380` 2026-08-17T17:56:50+08:00 - fix: bound console capture previews
+- `de76c6e` 2026-08-17T17:44:34+08:00 - refactor: derive color scheme guard from the registry
+- `82ea8ce` 2026-08-17T17:41:55+08:00 - refactor: compact and pin console overview
+- `4bfb581` 2026-08-17T16:53:02+08:00 - feat: replace console month arrows with date tabs
+- `78f6ed1` 2026-08-17T16:47:21+08:00 - feat: make console menus cyclic and reversible
+- `7a87303` 2026-08-17T16:00:04+08:00 - refactor: remove obsolete console commands
+- `601413e` 2026-08-17T15:31:53+08:00 - fix: flush console portrait and open panels downward
+- `45c8036` 2026-08-17T15:31:52+08:00 - test: lock console thirds and downward panels
+- `2987614` 2026-08-17T14:41:22+08:00 - fix: isolate console chrome and comments
+- `bc3d3ef` 2026-08-17T14:41:22+08:00 - feat: dock console input and reveal output
+- `9a84399` 2026-08-17T14:41:21+08:00 - feat: add rich console overview header
+- `08e911b` 2026-08-17T14:24:58+08:00 - refactor: share home stats and footer data
+- `94ba27a` 2026-08-17T14:12:49+08:00 - feat: wire explicit console comments
+- `e9dad01` 2026-08-17T14:12:48+08:00 - feat: add console root and canonical home route
+- `5749c49` 2026-08-17T14:03:31+08:00 - feat: define shared site overview model
+- `66d52ea` 2026-08-17T14:03:30+08:00 - feat: define explicit console comment state
+- `4094d17` 2026-08-17T12:57:18+08:00 - test: define console v2 contracts
+- `a81e64b` 2026-08-17T05:14:11+08:00 - fix: constrain console command workspace
+- `2a8b46d` 2026-08-17T05:10:13+08:00 - fix: respect console route feature flags
+- `65fbdcc` 2026-08-17T04:35:19+08:00 - fix: ignore unknown console data targets
+- `78fcc9e` 2026-08-17T04:34:53+08:00 - fix: stabilize console viewport and keyboard flow
+- `3bba123` 2026-08-17T04:34:33+08:00 - fix: preserve console document and search actions
+- `cc4b746` 2026-08-17T03:47:29+08:00 - fix: complete console empty and section navigation
+- `9a78f7e` 2026-08-17T03:34:49+08:00 - style: stabilize console typography
+- `bb31704` 2026-08-17T03:29:13+08:00 - fix: preserve console route parity
+- `4083d83` 2026-08-17T03:19:07+08:00 - fix: complete console keyboard navigation
+- `4c65f8f` 2026-08-17T03:06:57+08:00 - fix: preserve console route controls
+- `865bcd8` 2026-08-17T02:44:39+08:00 - fix: track console result viewport scrolling
+- `9124e1c` 2026-08-17T02:41:09+08:00 - fix: align console comments and footer
+- `24d0a91` 2026-08-17T02:40:22+08:00 - feat: move console document navigation above content
+- `ac675a0` 2026-08-17T02:37:12+08:00 - feat: add console capture timeline and detail
+- `461f55d` 2026-08-17T02:36:14+08:00 - fix: stabilize console month entry rendering
+- `fcec073` 2026-08-17T02:31:15+08:00 - style: flatten console route layouts
+- `4c56e25` 2026-08-17T02:29:12+08:00 - feat: add console search result table
+- `1bf44a8` 2026-08-17T02:27:17+08:00 - fix: disable page progress decoration in console
+- `1165df3` 2026-08-17T02:25:22+08:00 - feat: add console not-found result
+- `b26f3d7` 2026-08-17T02:25:12+08:00 - fix: reset console panel on shell remount
+- `f07d84f` 2026-08-17T02:22:24+08:00 - fix: remove hidden console controls from tab order
+- `713f9d8` 2026-08-17T02:20:53+08:00 - feat: add console about contact panel
+- `908d62d` 2026-08-17T02:19:31+08:00 - style: normalize shared console result rows
+- `1806299` 2026-08-17T02:17:20+08:00 - feat: add console friends table
+- `0d066f7` 2026-08-17T02:11:00+08:00 - fix: avoid double decoding console route params
+- `19b99ab` 2026-08-17T02:10:20+08:00 - feat: add console project table
+- `5e940fe` 2026-08-17T02:04:49+08:00 - feat: add console infrastructure table
+- `86a1266` 2026-08-17T01:59:44+08:00 - feat: add console tag detail timeline
+- `d39dbd4` 2026-08-17T01:58:15+08:00 - feat: add nested console command selectors
+- `1a7ba99` 2026-08-17T01:52:14+08:00 - feat: add console home month navigation
+- `8c873d8` 2026-08-17T01:48:10+08:00 - feat: add console tag index
+- `5c29edd` 2026-08-17T01:45:10+08:00 - fix: normalize console setting commands
+- `918b163` 2026-08-17T01:41:31+08:00 - refactor: isolate display mode resolution
+- `0897d96` 2026-08-17T01:32:50+08:00 - test: specify display mode persistence contract
+- `9b8d4f8` 2026-08-17T01:31:19+08:00 - feat: apply console language commands
+- `53ff725` 2026-08-17T01:28:39+08:00 - feat: add horizontal console section navigation
+- `df64240` 2026-08-17T01:22:09+08:00 - fix: preserve literal capture ids during lookup
+- `96dc327` 2026-08-17T01:19:35+08:00 - feat: add console monthly archive navigation
+- `17bd2a3` 2026-08-17T01:13:39+08:00 - fix: execute console suggestions on selection
+- `ad97f2d` 2026-08-17T01:09:21+08:00 - fix: preserve case-sensitive console route ids
+- `91e8b4b` 2026-08-17T01:06:46+08:00 - fix: initialize console mode before mount
+- `a63e548` 2026-08-17T01:04:32+08:00 - fix: suppress decorative effects in console mode
+- `5e4e69f` 2026-08-17T01:01:03+08:00 - feat: add desktop console mode control
+- `870be5b` 2026-08-17T00:58:17+08:00 - feat: mount desktop Nexus Console shell
+- `aabf104` 2026-08-17T00:49:42+08:00 - feat: add console shell and settings panels
+- `6e0d4ab` 2026-08-17T00:42:32+08:00 - fix: keep desktop-first mode across mobile visits
+- `d767e0e` 2026-08-17T00:40:57+08:00 - feat: add console session command execution
+- `40bf9df` 2026-08-17T00:35:56+08:00 - feat: persist desktop console display mode
+- `fe859ab` 2026-08-17T00:35:37+08:00 - feat: add console command registry
+- `1aae246` 2026-08-17T00:32:50+08:00 - test: specify console command registry
+- `c8a1c22` 2026-08-17T00:25:39+08:00 - feat: add console command and timeline core
+- `0105092` 2026-08-17T00:17:54+08:00 - test: specify console command and timeline contracts
 - `b83e727` 2026-08-16T20:21:39+08:00 - fix(markdown): handle speaker clicks on svg icons
 - `905c058` 2026-08-15T01:08:22+08:00 - fix(navigation): follow article hashes after async render
 - `425feeb` 2026-08-14T23:58:18+08:00 - refactor(markdown): generate stable heading anchors
