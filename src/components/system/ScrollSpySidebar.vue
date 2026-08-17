@@ -1,5 +1,13 @@
 <template>
-  <aside v-if="items.length" class="scroll-spy" :class="`scroll-spy--${mode}`">
+  <aside v-if="items.length" class="scroll-spy" :class="`scroll-spy--${effectiveMode}`">
+    <button
+      v-if="effectiveMode === 'console'"
+      class="scroll-spy__arrow"
+      type="button"
+      aria-label="Previous section"
+      title="Previous section"
+      @click="scrollNav(-1)"
+    >&lt;</button>
     <div class="scroll-spy__status">
       <div class="scroll-spy__progress">
         <div class="scroll-spy__bar">
@@ -20,11 +28,19 @@
         {{ item.title }}
       </button>
     </nav>
+    <button
+      v-if="effectiveMode === 'console'"
+      class="scroll-spy__arrow"
+      type="button"
+      aria-label="Next section"
+      title="Next section"
+      @click="scrollNav(1)"
+    >&gt;</button>
   </aside>
 </template>
 
 <script setup>
-import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { setReadingPath, useScrollRequests } from '../../composables/useReadingPath'
 import {
@@ -33,6 +49,7 @@ import {
   scrollHeadingIntoView,
   waitForHeading,
 } from '../../utils/headingNavigation'
+import { useDisplayModePreference } from '../../composables/useDisplayModePreference'
 
 const props = defineProps({
   rootSelector: { type: String, default: 'body' },
@@ -68,6 +85,7 @@ let handledHash = ''
 let handledRequestHash = ''
 let ignoredRouteHash = ''
 let spyEl = null
+let scrollContainer = null
 
 function registerButton(id, el) {
   if (el) buttonEls.set(id, el)
@@ -78,8 +96,12 @@ function findRoot() {
   return document.querySelector(props.rootSelector) || document.body
 }
 
+function activeScrollContainer() {
+  return effectiveMode.value === 'console' ? scrollContainer : null
+}
+
 function shouldEnable() {
-  return props.mode === 'mobile' || !mediaQuery || !mediaQuery.matches
+  return effectiveMode.value === 'mobile' || effectiveMode.value === 'console' || !mediaQuery || !mediaQuery.matches
 }
 
 function clearHeadings() {
@@ -100,6 +122,11 @@ function updateEnabledState() {
 }
 
 function measureTop(el) {
+  const container = activeScrollContainer()
+  if (container) {
+    const containerRect = container.getBoundingClientRect()
+    return el.getBoundingClientRect().top - containerRect.top + container.scrollTop
+  }
   return el.getBoundingClientRect().top + window.scrollY
 }
 
@@ -146,12 +173,16 @@ function collectHeadings() {
 
 function updateProgress() {
   if (!isEnabled) return
-  const max = document.documentElement.scrollHeight - window.innerHeight
+  const container = activeScrollContainer()
+  const max = container
+    ? container.scrollHeight - container.clientHeight
+    : document.documentElement.scrollHeight - window.innerHeight
   if (max <= 0) {
     if (progress.value !== 0) progress.value = 0
     return
   }
-  const ratio = Math.min(1, Math.max(0, window.scrollY / max))
+  const current = container ? container.scrollTop : window.scrollY
+  const ratio = Math.min(1, Math.max(0, current / max))
   const nextProgress = Math.round(ratio * 100)
   if (nextProgress !== progress.value) progress.value = nextProgress
 }
@@ -159,7 +190,7 @@ function updateProgress() {
 function updateActive() {
   if (!isEnabled) return
   if (!headings.length) return
-  const threshold = window.scrollY + props.offset
+  const threshold = (activeScrollContainer()?.scrollTop ?? window.scrollY) + props.offset
   let current = headings[0]
 
   for (const item of headings) {
@@ -226,7 +257,12 @@ async function scrollToHash(hash, shouldEmit = false) {
     })
   }
 
-  scrollHeadingIntoView(target, props.offset)
+  const container = activeScrollContainer()
+  if (container) {
+    container.scrollTo({ top: Math.max(0, measureTop(target) - props.offset), behavior: 'smooth' })
+  } else {
+    scrollHeadingIntoView(target, props.offset)
+  }
   if (shouldEmit) emit('navigate', target.id)
 }
 
@@ -262,6 +298,17 @@ function scrollToHeading(id) {
 }
 
 function followActive() {
+  if (effectiveMode.value === 'console') {
+    const button = buttonEls.get(activeId.value)
+    const nav = navRef.value
+    if (button && nav) {
+      const navRect = nav.getBoundingClientRect()
+      const buttonRect = button.getBoundingClientRect()
+      if (buttonRect.left < navRect.left) nav.scrollLeft -= navRect.left - buttonRect.left + 12
+      else if (buttonRect.right > navRect.right) nav.scrollLeft += buttonRect.right - navRect.right + 12
+    }
+    return
+  }
   if (props.mode !== 'desktop') return
   const button = buttonEls.get(activeId.value)
   const nav = navRef.value
@@ -280,8 +327,29 @@ function followActive() {
 }
 
 function onSidebarWheel(event) {
+  if (effectiveMode.value === 'console' && navRef.value) {
+    event.preventDefault()
+    navRef.value.scrollLeft += event.deltaY
+    return
+  }
   event.preventDefault()
   window.scrollBy({ top: event.deltaY, behavior: 'auto' })
+}
+
+function scrollNav(delta) {
+  const nav = navRef.value
+  if (!nav) return
+  const currentIndex = headings.findIndex((item) => item.id === activeId.value)
+  const nextIndex = Math.min(
+    Math.max((currentIndex < 0 ? 0 : currentIndex) + delta, 0),
+    headings.length - 1,
+  )
+  const target = headings[nextIndex]
+  if (target) {
+    scrollToHeading(target.id)
+    return
+  }
+  nav.scrollBy({ left: delta * Math.max(nav.clientWidth * 0.72, 120), behavior: 'auto' })
 }
 
 function onScroll() {
@@ -315,6 +383,16 @@ watch(activeId, () => {
   nextTick(followActive)
 })
 
+const { isConsole } = useDisplayModePreference()
+const effectiveMode = computed(() => isConsole.value ? 'console' : props.mode)
+
+watch(effectiveMode, () => {
+  void nextTick(() => {
+    scheduleCollectHeadings()
+    updateNow()
+  })
+})
+
 watch(scrollRequests, (request) => {
   if (request?.id) scrollToHeading(request.id)
 })
@@ -345,6 +423,9 @@ function onContentMutation() {
 
 onMounted(async () => {
   await nextTick()
+  // The wrapper exists in both desktop modes (`display: contents` in standard),
+  // so a live mode switch can reuse the same element without remounting the route.
+  scrollContainer = document.querySelector('.desktop-layout__result')
   mediaQuery = window.matchMedia('(max-width: 900px)')
   updateEnabledState()
   if (!isEnabled) return
@@ -368,6 +449,7 @@ onMounted(async () => {
   }
 
   window.addEventListener('scroll', onScroll, { passive: true })
+  scrollContainer?.addEventListener('scroll', onScroll, { passive: true })
   window.addEventListener('resize', onResize)
 
   const root = findRoot()
@@ -404,7 +486,9 @@ onBeforeUnmount(() => {
     mediaQuery?.removeListener?.(updateEnabledState)
   }
   window.removeEventListener('scroll', onScroll)
+  scrollContainer?.removeEventListener('scroll', onScroll)
   window.removeEventListener('resize', onResize)
+  scrollContainer = null
 })
 </script>
 
@@ -538,6 +622,45 @@ onBeforeUnmount(() => {
 .scroll-spy__nav button:focus-visible::before,
 .scroll-spy__nav button.is-active::before {
   opacity: 1;
+}
+
+.scroll-spy--console {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) 34px;
+  align-items: center;
+  gap: 7px;
+  width: 100%;
+  max-height: none;
+  overflow: visible;
+  padding: 0 0 10px;
+}
+
+.scroll-spy--console .scroll-spy__status {
+  display: none;
+}
+
+.scroll-spy--console .scroll-spy__nav {
+  display: flex;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+}
+
+.scroll-spy__arrow {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--console-border-strong, var(--site-border));
+  border-radius: 0;
+  color: var(--console-accent, var(--site-accent));
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+}
+
+.scroll-spy__arrow:hover,
+.scroll-spy__arrow:focus-visible {
+  color: var(--console-text, var(--site-text));
+  background: var(--console-selection, transparent);
+  outline: none;
 }
 
 .scroll-spy--mobile {

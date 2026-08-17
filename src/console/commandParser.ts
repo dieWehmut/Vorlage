@@ -1,0 +1,110 @@
+import type { ConsoleCommand, ParsedConsoleInput, SilentConsoleInput } from './types'
+
+const FIXED_SEGMENTS = new Set([
+  'about',
+  'archive',
+  'agent',
+  'background',
+  'capture',
+  'classic',
+  'color',
+  'config',
+  'doctor',
+  'friends',
+  'help',
+  'home',
+  'infra',
+  'language',
+  'list',
+  'mode',
+  'model',
+  'notes',
+  'permissions',
+  'project',
+  'search',
+  'status',
+  'tags',
+  'theme',
+  'terminal',
+  'workspace',
+  'post',
+  'note',
+])
+
+const MODE_VALUES = new Set(['classic', 'standard', 'console', 'terminal'])
+const FIXED_CHILD_VALUES: Record<string, Set<string>> = {
+  mode: MODE_VALUES,
+  theme: new Set(['light', 'dark']),
+  color: new Set(['green', 'purple', 'pink']),
+  background: new Set(['on', 'off']),
+  language: new Set(['zh', 'zh_tw', 'en', 'ja', 'de', 'la']),
+}
+
+function silent(rawInput: string): SilentConsoleInput {
+  return { kind: 'silent', rawInput }
+}
+
+function splitSuffix(value: string) {
+  const queryIndex = value.indexOf('?')
+  const hashIndex = value.indexOf('#')
+  let pathEnd = value.length
+
+  if (queryIndex >= 0) pathEnd = Math.min(pathEnd, queryIndex)
+  if (hashIndex >= 0) pathEnd = Math.min(pathEnd, hashIndex)
+
+  const path = value.slice(0, pathEnd)
+  const suffix = value.slice(pathEnd)
+  const suffixHashIndex = suffix.indexOf('#')
+  const query = suffix.startsWith('?')
+    ? suffix.slice(1, suffixHashIndex >= 0 ? suffixHashIndex : undefined)
+    : ''
+  const hash = suffixHashIndex >= 0 ? suffix.slice(suffixHashIndex) : ''
+
+  return { path, query, hash }
+}
+
+export function parseConsoleInput(input: string): ParsedConsoleInput {
+  const rawInput = typeof input === 'string' ? input : String(input ?? '')
+  const trimmed = rawInput.trim()
+  if (!trimmed || !trimmed.startsWith('/')) return silent(rawInput)
+
+  try {
+    const { path, query, hash } = splitSuffix(trimmed)
+    const decodedSegments = path
+      .split('/')
+      .filter(Boolean)
+      .map((segment) => decodeURIComponent(segment))
+
+    const head = decodedSegments[0]?.toLowerCase() || ''
+    const segments = decodedSegments.map((segment, index) => {
+      const lower = segment.toLowerCase()
+
+      // Fixed command vocabulary is case-insensitive. Dynamic IDs and tags
+      // are intentionally untouched, even when they resemble a command.
+      if (index === 0 && FIXED_SEGMENTS.has(lower)) return lower
+      if (index === 1 && FIXED_CHILD_VALUES[head]?.has(lower)) return lower
+      return segment
+    })
+
+    const command: ConsoleCommand = {
+      kind: 'command',
+      rawInput,
+      segments,
+      canonicalInput: '/',
+      query,
+      hash,
+    }
+    command.canonicalInput = toConsoleRoutePath(command)
+    return command
+  } catch {
+    return silent(rawInput)
+  }
+}
+
+export function toConsoleRoutePath(input: ConsoleCommand | ParsedConsoleInput): string {
+  if (input.kind !== 'command') return ''
+  const path = input.segments.length
+    ? `/${input.segments.map((segment) => encodeURIComponent(segment)).join('/')}`
+    : '/'
+  return `${path}${input.query ? `?${input.query}` : ''}${input.hash || ''}`
+}

@@ -1,5 +1,9 @@
 <template>
-  <div class="float-controls" :class="{ 'is-top-hidden': atTop }" aria-label="Quick controls">
+  <div
+    class="float-controls"
+    :class="{ 'is-top-hidden': atTop, 'is-console': isConsole }"
+    aria-label="Quick controls"
+  >
     <div class="float-controls__langs" :class="{ 'is-open': languageOpen }">
       <button
         v-for="lang in languages"
@@ -9,6 +13,8 @@
         type="button"
         :title="lang.name"
         :aria-label="lang.name"
+        :aria-hidden="!languageOpen"
+        :tabindex="languageOpen ? 0 : -1"
         @click="selectLanguage(lang.code)"
       >
         {{ lang.label }}
@@ -24,6 +30,8 @@
         type="button"
         :title="scheme.label"
         :aria-label="scheme.label"
+        :aria-hidden="!colorSchemeOpen"
+        :tabindex="colorSchemeOpen ? 0 : -1"
         :style="{ '--scheme-color': scheme.preview }"
         @click="selectColorScheme(scheme.id)"
       >
@@ -32,11 +40,28 @@
     </div>
 
     <button
+      v-if="isDesktop"
+      class="float-controls__button float-controls__opt-mode"
+      :class="{ 'is-visible': settingsOpen, 'is-active': isConsole }"
+      type="button"
+      :title="isConsole ? 'Switch to standard layout' : 'Switch to Nexus Console'"
+      :aria-label="isConsole ? 'Switch to standard layout' : 'Switch to Nexus Console'"
+      :aria-pressed="isConsole"
+      :aria-hidden="!settingsOpen"
+      :tabindex="settingsOpen ? 0 : -1"
+      @click="toggleDisplayMode"
+    >
+      <el-icon><Monitor /></el-icon>
+    </button>
+
+    <button
       class="float-controls__button float-controls__opt-dynamic"
       :class="{ 'is-visible': settingsOpen, 'is-active': dynamicBackgroundEnabled }"
       type="button"
       title="Toggle dynamic background"
       aria-label="Toggle dynamic background"
+      :aria-hidden="!settingsOpen"
+      :tabindex="settingsOpen ? 0 : -1"
       @click="toggleDynamicBackground"
     >
       <el-icon><MagicStick /></el-icon>
@@ -48,6 +73,9 @@
       type="button"
       title="Language"
       aria-label="Language"
+      :aria-expanded="languageOpen"
+      :aria-hidden="!settingsOpen"
+      :tabindex="settingsOpen ? 0 : -1"
       @click="toggleLanguagePanel"
     >
       <span class="float-controls__globe">Aa</span>
@@ -59,6 +87,9 @@
       type="button"
       title="Color scheme"
       aria-label="Color scheme"
+      :aria-expanded="colorSchemeOpen"
+      :aria-hidden="!settingsOpen"
+      :tabindex="settingsOpen ? 0 : -1"
       @click="toggleColorSchemePanel"
     >
       <el-icon><Brush /></el-icon>
@@ -70,6 +101,8 @@
       type="button"
       title="Toggle theme"
       aria-label="Toggle theme"
+      :aria-hidden="!settingsOpen"
+      :tabindex="settingsOpen ? 0 : -1"
       @click="toggleTheme"
     >
       <el-icon><Sunny v-if="theme === 'dark'" /><Moon v-else /></el-icon>
@@ -80,6 +113,7 @@
       type="button"
       title="Settings"
       aria-label="Settings"
+      :aria-expanded="settingsOpen"
       @click="toggleSettings"
     >
       <el-icon><Setting /></el-icon>
@@ -98,35 +132,47 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { nextTick, ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Brush, MagicStick, Setting, Top, Moon, Sunny } from '@element-plus/icons-vue'
+import { Brush, MagicStick, Monitor, Setting, Top, Moon, Sunny } from '@element-plus/icons-vue'
 import { useBackgroundPreference } from '../../composables/useBackgroundPreference'
 import { useColorSchemePreference } from '../../composables/useColorSchemePreference'
 import { useThemePreference } from '../../composables/useThemePreference'
+import { useDisplayModePreference } from '../../composables/useDisplayModePreference'
 
 const { locale } = useI18n()
 const { dynamicBackgroundEnabled, toggleDynamicBackground } = useBackgroundPreference()
 const { colorScheme, colorSchemeOptions, setColorScheme } = useColorSchemePreference()
 const { theme, toggleTheme: toggleThemePreference } = useThemePreference()
+const { isDesktop, isConsole, toggleDisplayMode: toggleDisplayModePreference } = useDisplayModePreference()
 
 const settingsOpen = ref(false)
 const languageOpen = ref(false)
 const colorSchemeOpen = ref(false)
 const atTop = ref(true)
 
+function activeScrollContainer() {
+  if (!isConsole.value || typeof document === 'undefined') return null
+  return document.querySelector('.desktop-layout--console .desktop-layout__result')
+}
+
 function onScroll() {
-  atTop.value = window.scrollY < 60
+  const container = activeScrollContainer()
+  atTop.value = (container?.scrollTop ?? window.scrollY) < 60
 }
 
 onMounted(() => {
   window.addEventListener('scroll', onScroll, { passive: true })
+  document.addEventListener('scroll', onScroll, { passive: true, capture: true })
   onScroll()
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', onScroll)
+  document.removeEventListener('scroll', onScroll, true)
 })
+
+watch([isConsole, isDesktop], () => void nextTick(onScroll))
 
 const languages = [
   { code: 'zh', label: 'CN', name: 'Simplified Chinese' },
@@ -167,11 +213,20 @@ function selectColorScheme(scheme) {
 }
 
 function scrollToTop() {
+  const container = activeScrollContainer()
+  if (container) {
+    container.scrollTo({ top: 0, behavior: 'auto' })
+    return
+  }
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 function toggleTheme() {
   toggleThemePreference()
+}
+
+function toggleDisplayMode() {
+  toggleDisplayModePreference()
 }
 </script>
 
@@ -293,6 +348,7 @@ function toggleTheme() {
 }
 
 .float-controls__opt-dynamic,
+.float-controls__opt-mode,
 .float-controls__opt-language,
 .float-controls__opt-color,
 .float-controls__opt-theme {
@@ -333,11 +389,20 @@ function toggleTheme() {
   bottom: 250px;
 }
 
+.float-controls__opt-mode {
+  bottom: 300px;
+}
+
+.float-controls.is-top-hidden .float-controls__opt-mode {
+  bottom: 250px;
+}
+
 .float-controls.is-top-hidden .float-controls__opt-dynamic {
   bottom: 200px;
 }
 
 .float-controls__opt-dynamic.is-visible,
+.float-controls__opt-mode.is-visible,
 .float-controls__opt-language.is-visible,
 .float-controls__opt-color.is-visible,
 .float-controls__opt-theme.is-visible {
@@ -467,6 +532,34 @@ function toggleTheme() {
   to { transform: rotate(360deg); }
 }
 
+.float-controls.is-console .float-controls__button {
+  border-radius: 0;
+  box-shadow: none !important;
+  transition: none !important;
+}
+
+.float-controls.is-console .float-controls__settings {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.float-controls.is-console .float-controls__settings :deep(.el-icon) {
+  animation: none;
+}
+
+.float-controls.is-console .float-controls__button:hover,
+.float-controls.is-console .float-controls__button:focus-visible {
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.float-controls.is-console .float-controls__langs,
+.float-controls.is-console .float-controls__schemes,
+.float-controls.is-console .float-controls__lang,
+.float-controls.is-console .float-controls__scheme {
+  transition: none !important;
+}
+
 @media (max-width: 900px) {
   .float-controls {
     right: 4px;
@@ -514,6 +607,10 @@ function toggleTheme() {
 
   .float-controls__opt-dynamic {
     bottom: 230px;
+  }
+
+  .float-controls__opt-mode {
+    display: none !important;
   }
 
   .float-controls.is-top-hidden .float-controls__opt-dynamic {

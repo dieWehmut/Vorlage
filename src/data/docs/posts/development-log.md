@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-08-16T20:21:39+08:00
+date: 2026-08-17T05:14:11+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,59 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `483f003` 2026-08-17T05:14:11+08:00 - fix: constrain console command workspace
+- `b791256` 2026-08-17T05:10:13+08:00 - fix: respect console route feature flags
+- `e7fe9bb` 2026-08-17T04:35:19+08:00 - fix: ignore unknown console data targets
+- `348493c` 2026-08-17T04:34:53+08:00 - fix: stabilize console viewport and keyboard flow
+- `582f92f` 2026-08-17T04:34:33+08:00 - fix: preserve console document and search actions
+- `0a2952b` 2026-08-17T03:47:29+08:00 - fix: complete console empty and section navigation
+- `6366dc7` 2026-08-17T03:34:49+08:00 - style: stabilize console typography
+- `6acf29b` 2026-08-17T03:29:13+08:00 - fix: preserve console route parity
+- `c37c195` 2026-08-17T03:19:07+08:00 - fix: complete console keyboard navigation
+- `dc53755` 2026-08-17T03:06:57+08:00 - fix: preserve console route controls
+- `c7554cf` 2026-08-17T02:44:39+08:00 - fix: track console result viewport scrolling
+- `5d67a2d` 2026-08-17T02:41:09+08:00 - fix: align console comments and footer
+- `c3de4d2` 2026-08-17T02:40:22+08:00 - feat: move console document navigation above content
+- `486ff7f` 2026-08-17T02:37:12+08:00 - feat: add console capture timeline and detail
+- `82a29ff` 2026-08-17T02:36:14+08:00 - fix: stabilize console month entry rendering
+- `f0c9203` 2026-08-17T02:31:15+08:00 - style: flatten console route layouts
+- `7b5e6dc` 2026-08-17T02:29:12+08:00 - feat: add console search result table
+- `6b74e77` 2026-08-17T02:27:17+08:00 - fix: disable page progress decoration in console
+- `7a2c6b4` 2026-08-17T02:25:22+08:00 - feat: add console not-found result
+- `a34ae2e` 2026-08-17T02:25:12+08:00 - fix: reset console panel on shell remount
+- `234d73e` 2026-08-17T02:22:24+08:00 - fix: remove hidden console controls from tab order
+- `d8a85ce` 2026-08-17T02:20:53+08:00 - feat: add console about contact panel
+- `b369119` 2026-08-17T02:19:31+08:00 - style: normalize shared console result rows
+- `b729f12` 2026-08-17T02:17:20+08:00 - feat: add console friends table
+- `dd3c9e4` 2026-08-17T02:11:00+08:00 - fix: avoid double decoding console route params
+- `6833a33` 2026-08-17T02:10:20+08:00 - feat: add console project table
+- `db413b8` 2026-08-17T02:04:49+08:00 - feat: add console infrastructure table
+- `6d74928` 2026-08-17T01:59:44+08:00 - feat: add console tag detail timeline
+- `42be2b7` 2026-08-17T01:58:15+08:00 - feat: add nested console command selectors
+- `1ebf7cd` 2026-08-17T01:52:14+08:00 - feat: add console home month navigation
+- `f11a264` 2026-08-17T01:48:10+08:00 - feat: add console tag index
+- `383b755` 2026-08-17T01:45:10+08:00 - fix: normalize console setting commands
+- `4486454` 2026-08-17T01:41:31+08:00 - refactor: isolate display mode resolution
+- `3614b9b` 2026-08-17T01:32:50+08:00 - test: specify display mode persistence contract
+- `060dfd9` 2026-08-17T01:31:19+08:00 - feat: apply console language commands
+- `c08f7a9` 2026-08-17T01:28:39+08:00 - feat: add horizontal console section navigation
+- `47b9865` 2026-08-17T01:22:09+08:00 - fix: preserve literal capture ids during lookup
+- `5805c3b` 2026-08-17T01:19:35+08:00 - feat: add console monthly archive navigation
+- `f304c2a` 2026-08-17T01:13:39+08:00 - fix: execute console suggestions on selection
+- `036a025` 2026-08-17T01:09:21+08:00 - fix: preserve case-sensitive console route ids
+- `00bc21f` 2026-08-17T01:06:46+08:00 - fix: initialize console mode before mount
+- `df8b627` 2026-08-17T01:04:32+08:00 - fix: suppress decorative effects in console mode
+- `ee25652` 2026-08-17T01:01:03+08:00 - feat: add desktop console mode control
+- `0549686` 2026-08-17T00:58:17+08:00 - feat: mount desktop Nexus Console shell
+- `11b1334` 2026-08-17T00:49:42+08:00 - feat: add console shell and settings panels
+- `e745974` 2026-08-17T00:42:32+08:00 - fix: keep desktop-first mode across mobile visits
+- `8475345` 2026-08-17T00:40:57+08:00 - feat: add console session command execution
+- `7e70ce3` 2026-08-17T00:35:56+08:00 - feat: persist desktop console display mode
+- `0e243c7` 2026-08-17T00:35:37+08:00 - feat: add console command registry
+- `9a05987` 2026-08-17T00:32:50+08:00 - test: specify console command registry
+- `cea30d7` 2026-08-17T00:25:39+08:00 - feat: add console command and timeline core
+- `4287fbe` 2026-08-17T00:17:54+08:00 - test: specify console command and timeline contracts
+- `778d535` 2026-08-17T00:04:06+08:00 - docs: define Nexus Console implementation
 - `b83e727` 2026-08-16T20:21:39+08:00 - fix(markdown): handle speaker clicks on svg icons
 - `905c058` 2026-08-15T01:08:22+08:00 - fix(navigation): follow article hashes after async render
 - `425feeb` 2026-08-14T23:58:18+08:00 - refactor(markdown): generate stable heading anchors

@@ -1,27 +1,51 @@
 <template>
-  <div class="desktop-layout">
-    <SiteSidebar class="desktop-layout__sidebar" />
+  <div
+    class="desktop-layout"
+    :class="{ 'desktop-layout--console': isConsole }"
+    :data-console-mode="isConsole ? 'on' : 'off'"
+  >
+    <SiteSidebar v-if="!isConsole" class="desktop-layout__sidebar" />
     <div class="desktop-layout__content">
-      <RouteBreadcrumb />
-      <main class="desktop-layout__main">
-        <RouterView v-slot="{ Component, route }">
-          <Transition name="page-fade" mode="out-in">
-            <component :is="Component" :key="routeViewKey(route)" />
-          </Transition>
-        </RouterView>
-      </main>
-      <GiscusComments layout="desktop" />
-      <Footer />
+      <ConsoleShell v-if="isConsole" />
+      <RouteBreadcrumb v-else />
+      <div ref="resultRef" class="desktop-layout__result">
+        <main class="desktop-layout__main">
+          <RouterView v-slot="{ Component, route }">
+            <Transition name="page-fade" mode="out-in">
+              <component :is="Component" :key="routeViewKey(route)" />
+            </Transition>
+          </RouterView>
+        </main>
+        <GiscusComments layout="desktop" />
+        <Footer />
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { RouterView } from 'vue-router'
+import { nextTick, ref, watch } from 'vue'
+import { RouterView, useRoute } from 'vue-router'
 import SiteSidebar from '../components/navigation/SiteSidebar.vue'
 import Footer from '../components/system/Footer.vue'
 import GiscusComments from '../components/system/GiscusComments.vue'
 import RouteBreadcrumb from '../components/system/RouteBreadcrumb.vue'
+import ConsoleShell from '../components/console/ConsoleShell.vue'
+import { useDisplayModePreference } from '../composables/useDisplayModePreference'
+
+const { isConsole } = useDisplayModePreference()
+const route = useRoute()
+const resultRef = ref(null)
+
+function resetConsoleScroll() {
+  if (!isConsole.value) return
+  void nextTick(() => resultRef.value?.scrollTo({ top: 0, behavior: 'auto' }))
+}
+
+watch(() => route.path, resetConsoleScroll)
+watch(isConsole, (enabled) => {
+  if (enabled) resetConsoleScroll()
+})
 
 function routeViewKey(route) {
   return String(route.fullPath || '').split('#')[0]
@@ -33,6 +57,10 @@ function routeViewKey(route) {
   position: relative;
   z-index: 2;
   min-height: 100vh;
+}
+
+.desktop-layout__result {
+  display: contents;
 }
 
 .desktop-layout__sidebar {
@@ -58,6 +86,79 @@ function routeViewKey(route) {
   background-size: var(--site-mesh-background-size);
 }
 
+.desktop-layout--console {
+  --console-font: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --console-bg: var(--site-bg);
+  --console-surface: color-mix(in srgb, var(--site-bg) 90%, var(--site-text));
+  --console-text: var(--site-text);
+  --console-muted: color-mix(in srgb, var(--site-text) 70%, transparent);
+  --console-dim: color-mix(in srgb, var(--site-text) 44%, transparent);
+  --console-accent: var(--site-accent);
+  --console-border: color-mix(in srgb, var(--site-text) 18%, transparent);
+  --console-border-strong: color-mix(in srgb, var(--site-accent) 48%, var(--site-text));
+  --console-selection: color-mix(in srgb, var(--site-accent) 12%, transparent);
+  height: 100vh;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.desktop-layout--console .desktop-layout__content {
+  height: 100%;
+  min-height: 0;
+  margin-left: 0;
+  overflow: hidden;
+  background: var(--console-bg);
+  background-attachment: initial;
+  background-image: none;
+}
+
+.desktop-layout--console .desktop-layout__result {
+  display: block;
+  flex: 1;
+  min-height: 0;
+  width: min(
+    1180px,
+    calc(100vw - 2 * var(--site-desktop-content-gutter))
+  );
+  margin: 0 auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 12px 0 58px;
+  scrollbar-color: var(--console-border-strong) transparent;
+  scrollbar-width: thin;
+}
+
+.desktop-layout--console .desktop-layout__result::-webkit-scrollbar {
+  width: 8px;
+}
+
+.desktop-layout--console .desktop-layout__result::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 0;
+  background: var(--console-border-strong);
+  background-clip: padding-box;
+}
+
+.desktop-layout--console .desktop-layout__main {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+}
+
+.desktop-layout--console :deep(.giscus-comments),
+.desktop-layout--console :deep(.footer) {
+  width: min(1180px, calc(100vw - 2 * var(--site-desktop-content-gutter)));
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.desktop-layout--console :deep(.giscus-comments) {
+  padding-top: 16px;
+  border-top: 1px solid var(--console-border);
+  font-family: var(--console-font);
+}
+
 :root.dynamic-background-enabled .desktop-layout__content {
   background:
     var(--site-mesh-line-row),
@@ -65,6 +166,12 @@ function routeViewKey(route) {
     transparent;
   background-attachment: fixed;
   background-size: var(--site-mesh-background-size);
+}
+
+:root.dynamic-background-enabled .desktop-layout--console .desktop-layout__content {
+  background: var(--console-bg);
+  background-attachment: initial;
+  background-image: none;
 }
 
 .desktop-layout__main {
@@ -120,6 +227,14 @@ function routeViewKey(route) {
     width: calc(
       100vw - var(--site-sidebar-width) - var(--site-desktop-content-gutter) - var(--site-desktop-content-end-gutter)
     );
+  }
+
+  .desktop-layout--console .desktop-layout__main {
+    width: 100%;
+  }
+
+  .desktop-layout--console .desktop-layout__result {
+    width: calc(100vw - 2 * var(--site-desktop-content-gutter));
   }
 }
 </style>

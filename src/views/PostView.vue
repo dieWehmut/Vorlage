@@ -1,5 +1,6 @@
 <template>
   <section class="post-view page-surface">
+    <ScrollSpySidebar v-if="isConsole" root-selector=".page-surface" />
     <div class="post-view__main">
       <div v-if="post" class="post-view__card">
           <h1 class="post-view__title">{{ post.title }}</h1>
@@ -10,6 +11,7 @@
             :reading-minutes="post.readingMinutes"
             :tags="post.tags"
           />
+          <ArticleExportButton v-if="isConsole && post.body" variant="console" />
           <DocLoading v-if="isLoading">Loading post...</DocLoading>
           <div v-if="loadError" class="post-view__loading" role="alert">{{ loadError }}</div>
           <MarkdownContent
@@ -27,7 +29,7 @@
       </div>
     </div>
 
-    <ScrollSpySidebar root-selector=".page-surface" />
+    <ScrollSpySidebar v-if="!isConsole" root-selector=".page-surface" />
   </section>
 </template>
 
@@ -35,13 +37,16 @@
 import { computed, ref, watch } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import ArticleMeta from '../components/content/ArticleMeta.vue'
+import ArticleExportButton from '../components/content/ArticleExportButton.vue'
 import DocLoading from '../components/content/DocLoading.vue'
 import MarkdownContent from '../components/content/MarkdownContent.vue'
 import ScrollSpySidebar from '../components/system/ScrollSpySidebar.vue'
 import { getPosts, loadDoc, docContentVersion } from '../data'
 import type { ArchivePost } from '../types/content'
+import { useDisplayModePreference } from '../composables/useDisplayModePreference'
 
 const route = useRoute()
+const { isConsole } = useDisplayModePreference()
 const body = ref('')
 const isLoading = ref(false)
 const loadError = ref('')

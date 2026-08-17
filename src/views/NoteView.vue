@@ -1,5 +1,6 @@
 <template>
   <section class="note-view page-surface">
+    <ScrollSpySidebar v-if="isConsole" root-selector=".page-surface" />
     <div class="note-view__main">
       <div v-if="note" class="note-view__card">
           <h1 class="note-view__title">{{ note.title }}</h1>
@@ -10,6 +11,7 @@
             :reading-minutes="note.readingMinutes"
             :tags="note.tags"
           />
+          <ArticleExportButton v-if="isConsole && note.body" variant="console" />
           <DocLoading v-if="isLoading">Loading note...</DocLoading>
           <div v-if="loadError" class="note-view__loading" role="alert">{{ loadError }}</div>
           <MarkdownContent
@@ -25,7 +27,7 @@
       </div>
     </div>
 
-    <ScrollSpySidebar root-selector=".page-surface" />
+    <ScrollSpySidebar v-if="!isConsole" root-selector=".page-surface" />
   </section>
 </template>
 
@@ -33,13 +35,16 @@
 import { computed, ref, watch } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import ArticleMeta from '../components/content/ArticleMeta.vue'
+import ArticleExportButton from '../components/content/ArticleExportButton.vue'
 import DocLoading from '../components/content/DocLoading.vue'
 import MarkdownContent from '../components/content/MarkdownContent.vue'
 import ScrollSpySidebar from '../components/system/ScrollSpySidebar.vue'
 import { getNotes, loadDoc, docContentVersion } from '../data'
 import type { NoteEntry } from '../types/content'
+import { useDisplayModePreference } from '../composables/useDisplayModePreference'
 
 const route = useRoute()
+const { isConsole } = useDisplayModePreference()
 const body = ref('')
 const isLoading = ref(false)
 const loadError = ref('')

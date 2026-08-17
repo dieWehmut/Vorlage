@@ -1,6 +1,23 @@
 <template>
   <section class="search-view page-surface">
-    <div class="search-view__main">
+    <div v-if="isConsole" class="console-search">
+      <header class="console-search__summary">
+        <span>/search</span>
+        <strong>{{ results.length }} results</strong>
+      </header>
+      <SearchInput v-model="query" />
+
+      <div class="console-search__results">
+        <SearchResultItem
+          v-for="result in results"
+          :key="result.id"
+          :result="result"
+        />
+        <p v-if="query && filteredResults.length === 0" class="console-search__empty">No results found.</p>
+      </div>
+    </div>
+
+    <div v-else class="search-view__main">
       <SearchInput v-model="query" />
 
       <div class="search-view__results">
@@ -13,7 +30,7 @@
       </div>
     </div>
 
-    <ScrollSpySidebar root-selector=".page-surface" />
+    <ScrollSpySidebar v-if="!isConsole" root-selector=".page-surface" />
   </section>
 </template>
 
@@ -26,7 +43,9 @@ import { getSearchDocuments } from '../data'
 import { getCaptureSearchDocuments } from '../data/capture'
 import type { SearchDocument, SearchResult } from '../types/content'
 import { getDateSortTimestamp } from '../utils/date'
+import { useDisplayModePreference } from '../composables/useDisplayModePreference'
 
+const { isConsole } = useDisplayModePreference()
 const query = ref('')
 
 function sortDocuments(docs: SearchDocument[]): SearchDocument[] {
@@ -92,6 +111,66 @@ const results = computed(() => filteredResults.value)
 </script>
 
 <style scoped>
+.console-search {
+  display: grid;
+  gap: 12px;
+  width: 100%;
+  color: var(--console-text, var(--site-text));
+  font-family: var(--console-font, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
+}
+
+.console-search__summary {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 38px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--console-border, var(--site-border));
+}
+
+.console-search__summary span {
+  color: var(--console-accent, var(--site-accent));
+  font-weight: 700;
+}
+
+.console-search__summary strong {
+  color: var(--console-muted, var(--site-muted));
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.console-search :deep(.search-input) {
+  margin: 0;
+  min-height: 44px;
+  padding: 0 10px;
+  border-radius: 0;
+  border-color: var(--console-border-strong, var(--site-border));
+  background: var(--console-surface, transparent);
+  font-family: inherit;
+}
+
+.console-search :deep(.search-input input) {
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+.console-search__results {
+  display: grid;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.console-search__empty {
+  color: var(--console-muted, var(--site-muted));
+}
+
+@media (max-width: 900px) {
+  .console-search {
+    display: none;
+  }
+}
+
 .search-view {
   display: flex;
   align-items: flex-start;

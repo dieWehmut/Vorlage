@@ -47,10 +47,40 @@ export function getCaptureAssets(): CaptureAsset[] {
     .sort((a, b) => getDateSortTimestamp(b.date) - getDateSortTimestamp(a.date))
 }
 
+export function getCaptureGroupId(date: string): string {
+  const slug = String(date || 'undated')
+    .toLowerCase()
+    .replace(/[^a-z0-9\u4e00-\u9fff]+/g, '-')
+    .replace(/^-+|-+$/g, '') || 'undated'
+  return `capture-${slug}`
+}
+
+export function getCaptureRouteIds(): Set<string> {
+  const routeIds = new Set<string>()
+  for (const asset of getCaptureAssets()) {
+    routeIds.add(asset.id)
+    routeIds.add(getCaptureGroupId(asset.date || 'undated'))
+  }
+  return routeIds
+}
+
 export function getCaptureAssetById(id: string): CaptureAsset | null {
-  const normalizedId = decodeURIComponent(id).trim()
-  if (!normalizedId) return null
-  return getCaptureAssets().find((asset) => asset.id === normalizedId) || null
+  const rawId = String(id || '').trim()
+  if (!rawId) return null
+
+  const assets = getCaptureAssets()
+  // Route params are normally decoded by vue-router, while a few callers
+  // still pass an encoded search URL. Prefer the exact ID first so a literal
+  // "%20" in a capture ID is never mistaken for a space.
+  const directMatch = assets.find((asset) => asset.id === rawId)
+  if (directMatch) return directMatch
+
+  try {
+    const decodedId = decodeURIComponent(rawId)
+    return assets.find((asset) => asset.id === decodedId) || null
+  } catch {
+    return null
+  }
 }
 
 export function getCaptureSearchDocuments(): SearchDocument[] {
