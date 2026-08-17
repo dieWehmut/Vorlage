@@ -26,7 +26,15 @@ function check(label, condition) {
 }
 
 const rootCommand = parser.parseConsoleInput('/')
-check('root command resolves Home', rootCommand?.kind === 'command' && rootCommand.canonicalInput === '/')
+check('root command keeps the console landing path', rootCommand?.kind === 'command' && rootCommand.canonicalInput === '/')
+
+const homeCommand = parser.parseConsoleInput('/HOME')
+check('home command is case insensitive', homeCommand?.segments?.[0] === 'home')
+check('home command uses its canonical route', homeCommand?.canonicalInput === '/home')
+
+const commentCommand = parser.parseConsoleInput('/COMMENT')
+check('comment action is case insensitive', commentCommand?.segments?.[0] === 'comment')
+check('comment action has a stable canonical command', commentCommand?.canonicalInput === '/comment')
 
 const noteCommand = parser.parseConsoleInput('/NOTE/CurrentAffairsReading')
 check('fixed command segments are case insensitive', noteCommand?.segments?.[0] === 'note')
@@ -53,6 +61,20 @@ check('hash is retained', withHash?.hash === '#section-one')
 check('non slash input stays silent', parser.parseConsoleInput('archive')?.kind === 'silent')
 check('blank input stays silent', parser.parseConsoleInput('   ')?.kind === 'silent')
 check('malformed percent encoding stays silent', parser.parseConsoleInput('/note/bad%2')?.kind === 'silent')
+
+const removedCommands = [
+  '/agent',
+  '/list',
+  '/status',
+  '/permissions',
+  '/docker',
+  '/workspace',
+  '/model',
+]
+for (const input of removedCommands) {
+  check(`${input} stays silent after removal`, parser.parseConsoleInput(input)?.kind === 'silent')
+  check(`${input.toUpperCase()} stays silent after removal`, parser.parseConsoleInput(input.toUpperCase())?.kind === 'silent')
+}
 
 const failures = checks.filter(([, ok]) => !ok)
 for (const [label, ok] of checks) console.log(`${ok ? 'PASS' : 'FAIL'} ${label}`)

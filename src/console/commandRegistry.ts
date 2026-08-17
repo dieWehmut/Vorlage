@@ -5,15 +5,9 @@
 export type ConsoleMode = 'console' | 'standard'
 
 export type ConsolePanel =
-  | 'agent'
   | 'help'
-  | 'status'
   | 'config'
-  | 'permissions'
-  | 'list'
   | 'doctor'
-  | 'model'
-  | 'workspace'
   | 'theme'
   | 'color'
   | 'background'
@@ -37,6 +31,7 @@ export interface ConsoleCommandAvailability {
 
 export type ConsoleResolution =
   | { kind: 'route'; path: string; routeName: string }
+  | { kind: 'comment' }
   | { kind: 'panel'; panel: ConsolePanel; value?: string }
   | { kind: 'mode'; mode: ConsoleMode }
   | { kind: 'silent' }
@@ -54,15 +49,9 @@ const ROUTES: Record<string, { path: string; routeName: string }> = {
 }
 
 const PANELS: Record<string, ConsolePanel> = {
-  agent: 'agent',
   help: 'help',
-  status: 'status',
   config: 'config',
-  permissions: 'permissions',
-  list: 'list',
   doctor: 'doctor',
-  model: 'model',
-  workspace: 'workspace',
 }
 
 const PANEL_VALUES: Record<string, { panel: ConsolePanel; values: Set<string> }> = {
@@ -100,9 +89,14 @@ export function resolveConsoleCommand(
   const key = head.toLowerCase()
   const secondKey = second?.toLowerCase()
 
-  if (!head) return { kind: 'route', path: routeWithSuffix('/', command), routeName: 'home' }
+  if (!head) return { kind: 'route', path: routeWithSuffix('/', command), routeName: 'root' }
   if (key === 'home' && second === undefined) {
-    return { kind: 'route', path: routeWithSuffix('/', command), routeName: 'home' }
+    return { kind: 'route', path: routeWithSuffix('/home', command), routeName: 'home' }
+  }
+  if (key === 'comment') {
+    return second === undefined && !rest.length && !command.query && !command.hash
+      ? { kind: 'comment' }
+      : { kind: 'silent' }
   }
 
   if (key === 'mode') {
@@ -155,15 +149,11 @@ export function resolveConsoleCommand(
 
 export function listConsoleCommands(availability: ConsoleCommandAvailability = {}) {
   const commands = [
-    { input: '/', description: 'Home overview' },
-    { input: '/agent', description: 'Show agent workspace' },
-    { input: '/list', description: 'List available commands' },
-    { input: '/status', description: 'Show workspace status' },
+    { input: '/', description: 'Return to the Console landing' },
+    { input: '/home', description: 'Browse the Home timeline' },
+    { input: '/comment', description: 'Toggle comments for the current page' },
     { input: '/config', description: 'Show resolved configuration' },
-    { input: '/permissions', description: 'Show effective permissions' },
     { input: '/doctor', description: 'Run availability checks' },
-    { input: '/workspace', description: 'Show workspace details' },
-    { input: '/model', description: 'Show configured model' },
     { input: '/archive', description: 'Browse posts by date' },
     { input: '/post', description: 'Select a post' },
     { input: '/notes', description: 'Browse notes by date' },

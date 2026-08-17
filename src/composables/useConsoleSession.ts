@@ -14,6 +14,8 @@ import { useColorSchemePreference } from './useColorSchemePreference'
 import { useDisplayModePreference } from './useDisplayModePreference'
 import { useThemePreference } from './useThemePreference'
 import { useBackgroundPreference } from './useBackgroundPreference'
+import { useConsoleCommentSession } from './useConsoleCommentSession'
+import { requestConsoleOutputReveal } from './useConsoleOutputReveal'
 import type { SiteColorScheme } from '../types/content'
 import { getNotes, getPosts, getTagGroups } from '../data'
 import { siteConfig } from '../data/site/config'
@@ -38,6 +40,7 @@ export function useConsoleSession() {
   const theme = useThemePreference()
   const color = useColorSchemePreference()
   const background = useBackgroundPreference()
+  const comments = useConsoleCommentSession()
   const commandAvailability = {
     infra: siteConfig.enableInfra,
     project: siteConfig.enableProject,
@@ -134,6 +137,8 @@ export function useConsoleSession() {
       if (!isKnownConsoleCommandTarget(parsed, catalog)) return false
     }
 
+    if (resolution.kind === 'comment' && !(await comments.canToggleCurrentPage())) return false
+
     executing.value = true
     lastResolution.value = resolution
     history.value = addConsoleHistoryEntry(history.value, parsed.canonicalInput)
@@ -145,12 +150,18 @@ export function useConsoleSession() {
       if (resolution.kind === 'route') {
         activePanel.value = null
         await router.push(resolution.path)
+        requestConsoleOutputReveal(resolution.path.split(/[?#]/)[0] === '/' ? 'root' : 'route')
       } else if (resolution.kind === 'mode') {
         displayMode.setDisplayMode(resolution.mode)
         feedback.value = resolution.mode === 'console'
           ? 'Nexus Console enabled.'
           : 'Standard layout enabled.'
         activePanel.value = null
+      } else if (resolution.kind === 'comment') {
+        await comments.toggleCurrentPage()
+        feedback.value = comments.isOpen.value ? 'Comments opened.' : 'Comments closed.'
+        activePanel.value = null
+        if (comments.isOpen.value) requestConsoleOutputReveal('comment')
       } else {
         setPanel(resolution.panel, resolution.value)
         await applyPanelValue(resolution.panel, resolution.value)

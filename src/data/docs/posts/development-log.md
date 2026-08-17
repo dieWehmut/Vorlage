@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-08-17T05:14:11+08:00
+date: 2026-08-17T16:00:04+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,19 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `9cefcc0` 2026-08-17T16:00:04+08:00 - refactor: remove obsolete console commands
+- `01ca37e` 2026-08-17T15:31:53+08:00 - fix: flush console portrait and open panels downward
+- `38d9e7c` 2026-08-17T15:31:52+08:00 - test: lock console thirds and downward panels
+- `db0d94f` 2026-08-17T14:41:22+08:00 - fix: isolate console chrome and comments
+- `20350d8` 2026-08-17T14:41:22+08:00 - feat: dock console input and reveal output
+- `b90af7e` 2026-08-17T14:41:21+08:00 - feat: add rich console overview header
+- `2493eb9` 2026-08-17T14:24:58+08:00 - refactor: share home stats and footer data
+- `85252bb` 2026-08-17T14:12:49+08:00 - feat: wire explicit console comments
+- `184057f` 2026-08-17T14:12:48+08:00 - feat: add console root and canonical home route
+- `c16169c` 2026-08-17T14:03:31+08:00 - feat: define shared site overview model
+- `7b78b13` 2026-08-17T14:03:30+08:00 - feat: define explicit console comment state
+- `309406b` 2026-08-17T12:57:18+08:00 - test: define console v2 contracts
+- `68af422` 2026-08-17T12:35:10+08:00 - docs: define nexus console v2
 - `483f003` 2026-08-17T05:14:11+08:00 - fix: constrain console command workspace
 - `b791256` 2026-08-17T05:10:13+08:00 - fix: respect console route feature flags
 - `e7fe9bb` 2026-08-17T04:35:19+08:00 - fix: ignore unknown console data targets

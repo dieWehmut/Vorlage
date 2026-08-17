@@ -31,6 +31,10 @@ const props = defineProps({
     type: String,
     default: 'site',
   },
+  explicit: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const route = useRoute()
@@ -86,14 +90,15 @@ const configHint = computed(() =>
 )
 
 const shouldRender = computed(() =>
-  isActiveLayout.value && (props.layout === 'inline' || !excludedRouteNames.has(String(route.name || '')))
+  isActiveLayout.value
+    && (props.explicit || props.layout === 'inline' || !excludedRouteNames.has(String(route.name || '')))
 )
 
 const routeTerm = computed(() => {
   const explicitTerm = props.term.trim()
   if (explicitTerm) return explicitTerm
 
-  const name = String(route.name || 'route')
+  const name = route.name === 'root' ? 'home' : String(route.name || 'route')
   const path = route.path === '/' ? 'home' : route.path.replace(/^\/+/, '').replace(/\/+$/g, '')
   return `route:${name}:${path || 'home'}`
 })
