@@ -8,11 +8,13 @@
     <div class="desktop-layout__content">
       <RouteBreadcrumb v-if="!isConsole" />
       <ConsoleOverviewHeader v-if="isConsole" />
-      <div class="desktop-layout__result">
+      <div
+        class="desktop-layout__result"
+        :class="{ 'desktop-layout__result--empty': isConsole && route.name === 'root' }"
+      >
         <main
           ref="outputRef"
           class="desktop-layout__main"
-          :class="{ 'desktop-layout__main--empty': isConsole && route.name === 'root' }"
           data-console-output-start
         >
           <RouterView v-slot="{ Component, route: viewRoute }">
@@ -23,7 +25,7 @@
         </main>
 
         <section
-          v-if="isConsole && commentsOpen && commentTarget"
+          v-if="isConsole && commentTarget"
           ref="commentRef"
           class="desktop-layout__comment"
           data-console-comment-start
@@ -59,7 +61,7 @@ import { useConsoleOutputReveal } from '../composables/useConsoleOutputReveal'
 import { useDisplayModePreference } from '../composables/useDisplayModePreference'
 
 const { isConsole } = useDisplayModePreference()
-const { isOpen: commentsOpen, target: commentTarget, close: closeComments } = useConsoleCommentSession()
+const { target: commentTarget } = useConsoleCommentSession()
 const { revealRequest } = useConsoleOutputReveal()
 const route = useRoute()
 const outputRef = ref<HTMLElement | null>(null)
@@ -93,6 +95,23 @@ function afterLayout(callback: () => void) {
   })
 }
 
+/**
+ * Giscus builds its editor inside a cross-origin iframe on an idle callback, so
+ * the frame can still be missing right after a navigation and the page can only
+ * ever hand focus to the frame itself, not to the textarea inside it. Retry for
+ * a bounded while, and stop if the user has navigated on in the meantime.
+ */
+function focusCommentFrame(routePath: string, attempt = 0) {
+  if (typeof window === 'undefined' || route.fullPath !== routePath) return
+  const frame = commentRef.value?.querySelector<HTMLIFrameElement>('iframe.giscus-frame')
+  if (frame) {
+    frame.focus()
+    return
+  }
+  if (attempt >= 20) return
+  window.setTimeout(() => focusCommentFrame(routePath, attempt + 1), 100)
+}
+
 function revealRouteOutput() {
   pendingRouteReveal = false
   if (route.name === 'root') scrollToTop()
@@ -113,7 +132,10 @@ watch(
       return
     }
     if (request.kind === 'comment') {
-      afterLayout(() => scrollToAnchor(commentRef.value))
+      afterLayout(() => {
+        scrollToAnchor(commentRef.value)
+        focusCommentFrame(route.fullPath)
+      })
       return
     }
 
@@ -134,7 +156,6 @@ watch(
 watch(isConsole, (enabled) => {
   if (!enabled) {
     pendingRouteReveal = false
-    closeComments()
     return
   }
   pendingRouteReveal = true
@@ -180,14 +201,37 @@ watch(isConsole, (enabled) => {
   --console-font: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --console-bg: var(--site-bg);
   --console-surface: color-mix(in srgb, var(--site-bg) 90%, var(--site-text));
+  /* The command input should read as the page's own paper rather than a raised
+     panel. Light themes keep it flush with the background; dark themes still
+     need the lift, since no rule is left to outline the field. */
+  --console-canvas: var(--console-surface);
   --console-text: var(--site-text);
   --console-muted: color-mix(in srgb, var(--site-text) 70%, transparent);
   --console-dim: color-mix(in srgb, var(--site-text) 44%, transparent);
   --console-accent: var(--site-accent);
-  --console-border: color-mix(in srgb, var(--site-text) 18%, transparent);
-  --console-border-strong: color-mix(in srgb, var(--site-accent) 48%, var(--site-text));
+  /* The console draws no rules. Every frame line in console mode resolves
+     through these two tokens, so keeping them invisible retires the lines in
+     one place while the 1px they occupy keeps the spacing rhythm intact. */
+  --console-border: transparent;
+  --console-border-strong: transparent;
   --console-selection: color-mix(in srgb, var(--site-accent) 12%, transparent);
+  /* One edge for every square console thumbnail — friend avatars, capture
+     thumbnails, the "+n more" tile. Their scale is a single number here rather
+     than one literal per view, so a fork can retune all of them at once. */
+  --console-thumb: 88px;
+  /* With the frame rules retired a control can no longer be outlined, so a
+     tinted fill carries the affordance instead and hover deepens it. */
+  --console-control: color-mix(in srgb, var(--site-accent) 10%, transparent);
+  --console-control-strong: color-mix(in srgb, var(--site-accent) 24%, transparent);
+  /* The air an output block leaves under itself: the seam before the comments on a
+     route that has them, before the prompt on a route that does not. One number so
+     a fork retunes the console's vertical rhythm in a single place. */
+  --console-block-tail: 14px;
   min-height: 100vh;
+}
+
+html[data-theme='light'] .desktop-layout--console {
+  --console-canvas: var(--console-bg);
 }
 
 .desktop-layout--console .desktop-layout__content {
@@ -204,29 +248,36 @@ watch(isConsole, (enabled) => {
   display: block;
   min-width: 0;
   width: 100%;
+  /* Reserve a full viewport for the output block as a whole, so short routes can
+     still scroll their own top to the top of the page — which is what the `/`
+     reveal aligns against. Reserving it on the route output alone would spend the
+     slack between that output and its comments instead of after them. */
+  min-height: 100vh;
   margin: 0;
+  padding: 0;
+}
+
+/* The root route prints nothing above the prompt, so it needs neither the reserve
+   nor the padding that would hold the prompt away from an empty box. */
+.desktop-layout--console .desktop-layout__result--empty {
+  min-height: 0;
+}
+
+.desktop-layout--console .desktop-layout__result--empty .desktop-layout__main {
   padding: 0;
 }
 
 .desktop-layout--console .desktop-layout__main {
   width: min(1180px, calc(100vw - 2 * var(--site-desktop-content-gutter)));
-  /* Reserve a full viewport so short routes can still scroll their own top to
-     the top of the page, which is what the `/` reveal aligns against. */
-  min-height: 100vh;
   margin: 0 auto;
-  padding: 28px 0 58px;
+  padding: 28px 0 var(--console-block-tail);
   overflow: visible;
-}
-
-.desktop-layout--console .desktop-layout__main--empty {
-  min-height: 0;
-  padding: 0;
 }
 
 .desktop-layout__comment {
   width: min(1180px, calc(100vw - 2 * var(--site-desktop-content-gutter)));
   margin: 0 auto;
-  padding: 18px 0 42px;
+  padding: 0 0 var(--console-block-tail);
   border-top: 1px solid var(--console-border-strong);
 }
 
@@ -235,6 +286,15 @@ watch(isConsole, (enabled) => {
   z-index: 3;
   min-width: 0;
   width: 100%;
+}
+
+/* While option rows are open the dock rides the bottom edge of the viewport,
+   with the last row flush against it and the prompt above. Sticky rather than
+   fixed so the dock keeps its box in the flow: opening the rows cannot change
+   the document height, and therefore cannot move the page's scroll offset. */
+.desktop-layout--console .desktop-layout__command-dock.console-shell--expanded {
+  position: sticky;
+  bottom: 0;
 }
 
 .desktop-layout--console :deep(.desktop-layout__comment .giscus-comments) {

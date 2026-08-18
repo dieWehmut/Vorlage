@@ -2,10 +2,9 @@
   <section class="search-view page-surface">
     <div v-if="isConsole" class="console-search">
       <header class="console-search__summary">
-        <span>/search</span>
         <strong>{{ results.length }} results</strong>
+        <span class="console-search__query">{{ queryHint }}</span>
       </header>
-      <SearchInput v-model="query" />
 
       <div class="console-search__results">
         <SearchResultItem
@@ -35,7 +34,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import SearchInput from '../components/search/SearchInput.vue'
 import SearchResultItem from '../components/search/SearchResultItem.vue'
 import ScrollSpySidebar from '../components/system/ScrollSpySidebar.vue'
@@ -46,7 +46,23 @@ import { getDateSortTimestamp } from '../utils/date'
 import { useDisplayModePreference } from '../composables/useDisplayModePreference'
 
 const { isConsole } = useDisplayModePreference()
-const query = ref('')
+const route = useRoute()
+
+/**
+ * The console has no search box of its own — the command line is the box, and
+ * `/search vue` puts the term in the route. Reading the query from the route
+ * also makes a `?q=` link open pre-filled, in either layout.
+ */
+function routeQuery(): string {
+  return typeof route.query.q === 'string' ? route.query.q : ''
+}
+
+const query = ref(routeQuery())
+watch(() => route.query.q, () => {
+  query.value = routeQuery()
+})
+
+const queryHint = computed(() => (query.value ? `/search ${query.value}` : '/search <text>'))
 
 function sortDocuments(docs: SearchDocument[]): SearchDocument[] {
   return docs.slice().sort((a, b) => {
@@ -129,30 +145,15 @@ const results = computed(() => filteredResults.value)
   border-bottom: 1px solid var(--console-border, var(--site-border));
 }
 
-.console-search__summary span {
-  color: var(--console-accent, var(--site-accent));
-  font-weight: 700;
-}
-
 .console-search__summary strong {
   color: var(--console-muted, var(--site-muted));
   font-size: 0.78rem;
   font-weight: 500;
 }
 
-.console-search :deep(.search-input) {
-  margin: 0;
-  min-height: 44px;
-  padding: 0 10px;
-  border-radius: 0;
-  border-color: var(--console-border-strong, var(--site-border));
-  background: var(--console-surface, transparent);
-  font-family: inherit;
-}
-
-.console-search :deep(.search-input input) {
-  font-family: inherit;
-  font-size: 0.95rem;
+.console-search__query {
+  color: var(--console-dim, var(--site-muted));
+  font-size: 0.78rem;
 }
 
 .console-search__results {

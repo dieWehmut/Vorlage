@@ -2,9 +2,7 @@ import { ref } from 'vue'
 import type { InfraEntry } from '../../types/content'
 
 // Sample endpoints — replace with your own services.
-// Each entry will be probed via /api/ping (dev) or direct fetch (prod),
-// and optionally enriched by an Uptime Kuma status page if configured
-// in siteConfig.kuma.
+// Each entry is reported as online or offline via a binary reachability probe.
 const initialInfra: InfraEntry[] = [
   { name: 'Demo Site', key: 'demo', url: 'https://diewehmut.github.io/diesuwa-starter/', date: '2026-05-01' },
   { name: 'GitHub', key: 'github', url: 'https://github.com', date: '2026-05-01' },

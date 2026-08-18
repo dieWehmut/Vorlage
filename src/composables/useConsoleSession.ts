@@ -1,9 +1,10 @@
-import { computed, nextTick, ref } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { addConsoleHistoryEntry } from '../console/history'
 import { parseConsoleInput } from '../console/commandParser'
 import { isKnownConsoleCommandTarget, type ConsoleCommandTargetCatalog } from '../console/commandTarget'
+import { filterConsoleSuggestions } from '../console/suggestions'
 import {
   listConsoleCommands,
   resolveConsoleCommand,
@@ -15,6 +16,7 @@ import { useDisplayModePreference } from './useDisplayModePreference'
 import { useThemePreference } from './useThemePreference'
 import { useBackgroundPreference } from './useBackgroundPreference'
 import { useConsoleCommentSession } from './useConsoleCommentSession'
+import { hasExportableArticle, useArticlePdfExport } from './useArticlePdfExport'
 import { requestConsoleOutputReveal } from './useConsoleOutputReveal'
 import type { SiteColorScheme } from '../types/content'
 import { getNotes, getPosts, getTagGroups } from '../data'
@@ -31,6 +33,16 @@ const feedback = ref('')
 const executing = ref(false)
 const panelStack = ref<Array<{ panel: ConsolePanel; value?: string }>>([])
 const menuReturnState = ref<{ input: string; cursor: number } | null>(null)
+/**
+ * The panel that was collapsed by choosing one of its values, kept only so the
+ * next Escape can put it back. Any other input drops it: "the previous step"
+ * means the step just taken, not one from minutes ago.
+ */
+const committedPanel = ref<{
+  panel: ConsolePanel
+  stack: Array<{ panel: ConsolePanel; value?: string }>
+  menu: { input: string; cursor: number } | null
+} | null>(null)
 
 function normalizePrefix(value: string) {
   return value.trim().toLowerCase()
@@ -44,6 +56,7 @@ export function useConsoleSession() {
   const color = useColorSchemePreference()
   const background = useBackgroundPreference()
   const comments = useConsoleCommentSession()
+  const { exportArticlePdf } = useArticlePdfExport()
   const commandAvailability = {
     infra: siteConfig.enableInfra,
     project: siteConfig.enableProject,
@@ -53,9 +66,6 @@ export function useConsoleSession() {
     const prefix = normalizePrefix(commandInput.value)
     if (!prefix.startsWith('/')) return []
 
-    const options = listConsoleCommands(commandAvailability)
-    if (prefix === '/') return options
-
     const dynamicOptions = prefix.startsWith('/note/')
       ? getNotes().map((note) => ({ input: `/note/${note.id}`, description: note.title || note.id }))
       : prefix.startsWith('/post/')
@@ -64,9 +74,32 @@ export function useConsoleSession() {
           ? getTagGroups().map((group) => ({ input: `/tags/${group.tag}`, description: `${group.count} entries` }))
           : []
 
-    return [...dynamicOptions, ...options]
-      .filter((option) => option.input.toLowerCase().startsWith(prefix))
+    return filterConsoleSuggestions(prefix, listConsoleCommands(commandAvailability), dynamicOptions)
   })
+
+  /**
+   * `/search` previews itself: the result page follows the prompt, so the query
+   * runs while it is still being typed and Enter is only needed to leave the
+   * command in the history. No other command previews — navigating on a
+   * half-typed `/post/...` would be noise rather than a preview.
+   */
+  function previewSearch(value: string) {
+    const parsed = parseConsoleInput(value)
+    if (parsed.kind !== 'command' || parsed.segments[0] !== 'search') return
+    const resolution = resolveConsoleCommand(parsed, commandAvailability)
+    if (resolution.kind !== 'route') return
+
+    // Refining the term replaces, so a long query does not bury the page the
+    // search started from under one history entry per keystroke. Only the first
+    // arrival pushes, and only it scrolls the results into view.
+    if (router.currentRoute.value.name === 'search') {
+      void router.replace(resolution.path)
+      return
+    }
+    void router.push(resolution.path).then(() => requestConsoleOutputReveal('route'))
+  }
+
+  watch(commandInput, previewSearch)
 
   function resetNavigation() {
     historyCursor.value = null
@@ -75,6 +108,7 @@ export function useConsoleSession() {
 
   function setInput(value: string) {
     commandInput.value = value
+    committedPanel.value = null
     resetNavigation()
   }
 
@@ -99,6 +133,37 @@ export function useConsoleSession() {
     activePanel.value = null
     panelStack.value = []
     menuReturnState.value = null
+    committedPanel.value = null
+  }
+
+  /**
+   * A chosen value ends the interaction: the rows have nothing left to offer, so
+   * the dock drops back to the bare prompt instead of sitting there showing the
+   * menu the choice came from. The panel is remembered as the Escape
+   * destination, so revisiting or changing the choice is one key away.
+   */
+  function collapseCommittedPanel(panel: ConsolePanel) {
+    committedPanel.value = {
+      panel,
+      stack: [...panelStack.value],
+      menu: menuReturnState.value,
+    }
+    activePanel.value = null
+    feedback.value = ''
+  }
+
+  function reopenCommittedPanel() {
+    const committed = committedPanel.value
+    if (!committed) return false
+
+    panelStack.value = committed.stack
+    menuReturnState.value = committed.menu
+    activePanel.value = { panel: committed.panel }
+    committedPanel.value = null
+    feedback.value = ''
+    commandInput.value = ''
+    resetNavigation()
+    return true
   }
 
   function returnToPreviousMenu() {
@@ -123,7 +188,7 @@ export function useConsoleSession() {
     }
 
     const target = consoleEscapeTarget({ input: commandInput.value, hasPanel: false })
-    if (target === null) return false
+    if (target === null) return reopenCommittedPanel()
     commandInput.value = target
     feedback.value = ''
     resetNavigation()
@@ -178,7 +243,10 @@ export function useConsoleSession() {
       if (!isKnownConsoleCommandTarget(parsed, catalog)) return false
     }
 
-    if (resolution.kind === 'comment' && !(await comments.canToggleCurrentPage())) return false
+    if (resolution.kind === 'comment' && !(await comments.ensureTarget())) return false
+    // `/export` reads the article back out of the page, so on a route without
+    // one there is nothing to act on and the command stays as quiet as a typo.
+    if (resolution.kind === 'export' && !hasExportableArticle()) return false
 
     const sourceMenu = {
       input: commandInput.value,
@@ -192,6 +260,7 @@ export function useConsoleSession() {
     resetNavigation()
     commandInput.value = ''
     feedback.value = ''
+    committedPanel.value = null
 
     try {
       if (resolution.kind === 'route') {
@@ -205,14 +274,21 @@ export function useConsoleSession() {
           : 'Standard layout enabled.'
         clearPanelNavigation()
       } else if (resolution.kind === 'comment') {
-        await comments.toggleCurrentPage()
-        feedback.value = comments.isOpen.value ? 'Comments opened.' : 'Comments closed.'
+        // The thread is already on the page; `/comment` only takes the user to
+        // it. Leaving feedback empty keeps the dock collapsed so nothing hides
+        // the comment box the command just scrolled to.
         clearPanelNavigation()
-        if (comments.isOpen.value) requestConsoleOutputReveal('comment')
+        requestConsoleOutputReveal('comment')
+      } else if (resolution.kind === 'export') {
+        clearPanelNavigation()
+        feedback.value = await exportArticlePdf()
+          ? 'Article exported as PDF.'
+          : 'Article could not be exported.'
       } else {
-        if (!resolution.value && sourcePanel && sourcePanel.panel !== resolution.panel) {
+        const commits = Boolean(resolution.value)
+        if (!commits && sourcePanel && sourcePanel.panel !== resolution.panel) {
           panelStack.value.push(sourcePanel)
-        } else if (!sourcePanel && !resolution.value) {
+        } else if (!commits && !sourcePanel) {
           menuReturnState.value = {
             input: sourceMenu.input.startsWith('/') ? sourceMenu.input : '/',
             cursor: sourceMenu.cursor,
@@ -220,6 +296,7 @@ export function useConsoleSession() {
         }
         setPanel(resolution.panel, resolution.value)
         await applyPanelValue(resolution.panel, resolution.value)
+        if (commits) collapseCommittedPanel(resolution.panel)
       }
     } catch {
       feedback.value = 'Navigation could not be completed.'

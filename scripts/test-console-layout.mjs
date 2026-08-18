@@ -21,16 +21,23 @@ const mobileLayout = read('src/layouts/MobileDrawerLayout.vue')
 const siteShell = read('src/layouts/SiteShell.vue')
 const floatButton = read('src/components/system/FloatButton.vue')
 const captureView = read('src/views/CaptureView.vue')
+const friendsView = read('src/views/FriendsView.vue')
+const aboutView = read('src/views/AboutView.vue')
+const notFoundView = read('src/views/NotFoundView.vue')
 const consoleShell = read('src/components/console/ConsoleShell.vue')
 const consoleSession = read('src/composables/useConsoleSession.ts')
 const consoleOverview = readOptional('src/components/console/ConsoleOverviewHeader.vue')
 const consolePanel = read('src/components/console/ConsolePanelView.vue')
 const commandRegistry = read('src/console/commandRegistry.ts')
+const consoleRowAccent = read('src/composables/useConsoleRowAccent.ts')
+const consoleBlockCaret = read('src/composables/useConsoleBlockCaret.ts')
+const monthNavigator = read('src/components/console/ConsoleMonthNavigator.vue')
 const routeBreadcrumb = read('src/components/system/RouteBreadcrumb.vue')
 const postView = read('src/views/PostView.vue')
 const noteView = read('src/views/NoteView.vue')
 const homeView = read('src/views/HomeView.vue')
 const displayPreference = read('src/composables/useDisplayModePreference.ts')
+const scrollSpy = read('src/components/system/ScrollSpySidebar.vue')
 const consoleStyles = read('src/styles/console.scss')
 const router = read('src/router.ts')
 const desktopTemplate = desktopLayout.split('<script setup')[0]
@@ -38,6 +45,7 @@ const consoleLayoutBlock = desktopLayout.match(/\.desktop-layout--console \{[\s\
 const consoleContentBlock = desktopLayout.match(/\.desktop-layout--console \.desktop-layout__content \{[\s\S]*?\n\}/)?.[0] || ''
 const consoleResultBlock = desktopLayout.match(/\.desktop-layout--console \.desktop-layout__result \{[\s\S]*?\n\}/)?.[0] || ''
 const consoleShellTemplate = consoleShell.split('<script setup')[0]
+const consoleOverviewAvatarBlock = consoleOverview.match(/\.console-overview__avatar \{[^}]*\}/)?.[0] || ''
 const footerTags = componentTags(desktopTemplate, 'Footer')
 const desktopCommentTags = componentTags(desktopTemplate, 'GiscusComments')
 const homeStatsTags = [
@@ -74,8 +82,34 @@ check(
 )
 check(
   'Console route output can always reach the top of the page',
-  /\.desktop-layout--console \.desktop-layout__main \{[\s\S]*?min-height:\s*100vh\s*;/.test(desktopLayout)
-    && /\.desktop-layout--console \.desktop-layout__main--empty \{[\s\S]*?min-height:\s*0\s*;/.test(desktopLayout),
+  // The reserve belongs to the output block as a whole. Held on the route output
+  // alone it would have spent its slack between that output and its comments,
+  // which is the gap this places after them instead.
+  /min-height:\s*100vh\s*;/.test(consoleResultBlock)
+    && !/\.desktop-layout--console \.desktop-layout__main \{[^}]*min-height/.test(desktopLayout)
+    && /\.desktop-layout--console \.desktop-layout__result--empty \{[^}]*min-height:\s*0\s*;/.test(desktopLayout)
+    && desktopTemplate.includes("'desktop-layout__result--empty': isConsole && route.name === 'root'"),
+)
+check(
+  'the comment block reads as the tail of the output it belongs to',
+  /--console-block-tail:\s*\d+px/.test(consoleLayoutBlock)
+    && /\.desktop-layout--console \.desktop-layout__main \{[^}]*padding:[^;]*var\(--console-block-tail\)/.test(desktopLayout)
+    && /\.desktop-layout__comment \{[^}]*padding: 0 0 var\(--console-block-tail\)/.test(desktopLayout),
+)
+check(
+  'both console top rows ride the top of the viewport out of one recipe',
+  /\.desktop-layout--console \.console-top-row \{[^}]*position: sticky/.test(consoleStyles)
+    && /\.desktop-layout--console \.console-top-row \{[^}]*top: 0/.test(consoleStyles)
+    && /\.desktop-layout--console \.console-top-row \{[^}]*background: var\(--console-bg\)/.test(consoleStyles)
+    && scrollSpy.includes("'console-top-row': effectiveMode === 'console'")
+    && monthNavigator.includes('console-month-navigator__header console-top-row')
+    // The rule that used to flatten the sidebar also un-stuck it.
+    && !/\.desktop-layout--console \.scroll-spy \{[^}]*position: static/.test(consoleStyles),
+)
+check(
+  'a stuck row leaves the wheel to the page it is pinned over',
+  /effectiveMode\.value === 'console'\) return/.test(scrollSpy)
+    && !/navRef\.value\.scrollLeft \+= event\.deltaY/.test(scrollSpy),
 )
 check(
   'router hands the scroller to Console mode',
@@ -105,17 +139,80 @@ check(
 check(
   'console prompt caret and every option row share one left edge',
   /--console-prompt-indent:\s*34px/.test(consoleShell)
-    && /\.console-shell__prompt-symbol \{[\s\S]*?width:\s*var\(--console-prompt-indent\)/.test(consoleShell)
-    && /\.console-shell__suggestion \{[\s\S]*?padding:[^;]*var\(--console-prompt-indent\)/.test(consoleShell)
-    && /\.console-panel__heading \{[\s\S]*?padding-left:\s*var\(--console-prompt-indent/.test(consolePanel)
-    && /\.console-panel__row \{[\s\S]*?padding:[^;]*var\(--console-prompt-indent/.test(consolePanel),
+    && /\.console-shell__prompt-symbol \{[^}]*width:\s*var\(--console-prompt-indent\)/.test(consoleShell)
+    && /\.console-shell__suggestion \{[^}]*padding:[^;]*var\(--console-prompt-indent\)/.test(consoleShell)
+    && /\.console-panel__heading \{[^}]*padding-left:\s*var\(--console-prompt-indent/.test(consolePanel)
+    && /\.console-panel__row \{[^}]*padding:[^;]*var\(--console-prompt-indent/.test(consolePanel),
+)
+check(
+  'a measured block replaces the browser caret in the prompt',
+  /\.console-shell__input \{[^}]*caret-color: transparent/.test(consoleShell)
+    && consoleShellTemplate.includes('class="console-shell__caret"')
+    && consoleShellTemplate.includes('`${caretWidth}px`')
+    && consoleShellTemplate.includes('translate(${caretOffset}px, -50%)')
+    && /\.console-shell__caret \{[^}]*background: var\(--console-accent\)/.test(consoleShell),
+)
+check(
+  'the block is measured from the field it covers, at the same size',
+  /getComputedStyle\(input\)/.test(consoleBlockCaret)
+    && /measureText\(text\)\.width/.test(consoleBlockCaret)
+    && /paddingLeft\) \+ parseFloat\(styles\.borderLeftWidth\)/.test(consoleBlockCaret)
+    && /input\.scrollLeft/.test(consoleBlockCaret)
+    && /\.console-shell__input \{[^}]*font-size: var\(--console-input-size\)/.test(consoleShell)
+    && /\.console-shell__caret \{[^}]*font-size: var\(--console-input-size\)/.test(consoleShell),
+)
+check(
+  'the block only reads the selection and never touches a key binding',
+  !/keydown|preventDefault|event\.key/.test(consoleBlockCaret)
+    && /requestAnimationFrame\(measure\)/.test(consoleBlockCaret)
+    && (consoleShellTemplate.match(/@keydown="handleShellKeydown"/g) || []).length === 1
+    && consoleShell.includes('handleSessionInputKeydown(event)'),
+)
+check(
+  'the block blinks like a terminal and holds still for reduced motion',
+  /animation: console-caret-blink [^;]*step-end infinite/.test(consoleShell)
+    && /@media \(prefers-reduced-motion: reduce\) \{\s*\.console-shell__caret \{[^}]*animation: none/.test(consoleShell),
+)
+check(
+  'the INSERT marker rides the far end of the row, clear of the slash column',
+  consoleShellTemplate.includes('-- INSERT --')
+    && consoleShellTemplate.indexOf('console-shell__mode') > consoleShellTemplate.indexOf('console-shell__field')
+    && consoleShellTemplate.indexOf('console-shell__mode') < consoleShellTemplate.indexOf('console-shell__submit'),
 )
 check('shared article PDF export remains in standard mode', routeBreadcrumb.includes('ArticleExportButton'))
-check('shared article PDF export remains in console posts', postView.includes('ArticleExportButton'))
-check('shared article PDF export remains in console notes', noteView.includes('ArticleExportButton'))
+check(
+  'console article pages carry no export button of their own',
+  !postView.includes('ArticleExportButton') && !noteView.includes('ArticleExportButton'),
+)
+check(
+  'the console exports the current article through /export',
+  consoleSession.includes("from './useArticlePdfExport'")
+    && /resolution\.kind === 'export' && !hasExportableArticle\(\)/.test(consoleSession)
+    && /resolution\.kind === 'export'\)[\s\S]*?await exportArticlePdf\(\)/.test(consoleSession),
+)
 check('console mode marks the document for native cursor overrides', displayPreference.includes('console-mode-active'))
 check('console uses the terminal text cursor everywhere', consoleStyles.includes('cursor: text !important'))
-check('console suggestions keep the selected row visible', consoleShell.includes('suggestionsRef') && consoleShell.includes('scrollIntoView'))
+check(
+  'console option rows are a fixed window that travels with the cursor',
+  consoleShell.includes("from '../../console/suggestions'")
+    && /const visibleSuggestions = computed\([\s\S]*?consoleOptionWindowStart\(suggestionCursor\.value, suggestions\.value\.length\)/.test(consoleShell)
+    && consoleShell.includes('v-for="{ suggestion, index } in visibleSuggestions"')
+    && /const visibleOptions = computed\([\s\S]*?consoleOptionWindowStart\(selectedIndex\.value, panelOptions\.value\.length\)/.test(consolePanel)
+    && consolePanel.includes('v-for="{ option, index } in visibleOptions"'),
+)
+check(
+  'the windowed rows replace scrolling inside the dock',
+  !consoleShell.includes('scrollIntoView')
+    && !consolePanel.includes('scrollIntoView')
+    && !consoleShell.includes('suggestionsRef'),
+)
+check(
+  'an expanded dock rides the viewport bottom without moving the page',
+  consoleShell.includes("'console-shell--expanded': hasTransient")
+    && /const hasTransient = computed\([\s\S]*?feedback\.value && !activePanel\.value/.test(consoleShell)
+    && /\.desktop-layout__command-dock\.console-shell--expanded \{[^}]*position: sticky;[^}]*bottom: 0;/.test(desktopLayout),
+)
+
 check(
   'nested panels return to the previous menu with Escape',
   consolePanel.includes("event.key === 'Escape'")
@@ -123,11 +220,38 @@ check(
     && consoleSession.includes('panelStack.value.pop()'),
 )
 check(
-  'root slash suggestions expose every registered command',
-  /if \(prefix === ['"]\/['"]\) return options\s/.test(consoleSession)
+  'choosing a value collapses the dock back to the bare prompt',
+  /if \(commits\) collapseCommittedPanel\(resolution\.panel\)/.test(consoleSession)
+    && /function collapseCommittedPanel\([\s\S]*?activePanel\.value = null[\s\S]*?feedback\.value = ''/.test(consoleSession),
+)
+check(
+  'Escape reopens the panel a choice collapsed',
+  /function reopenCommittedPanel\([\s\S]*?activePanel\.value = \{ panel: committed\.panel \}/.test(consoleSession)
+    && /if \(target === null\) return reopenCommittedPanel\(\)/.test(consoleSession),
+)
+check(
+  'the collapsed panel is only the step just taken',
+  /function setInput\([^}]*committedPanel\.value = null/.test(consoleSession)
+    && /function clearPanelNavigation\([^}]*committedPanel\.value = null/.test(consoleSession),
+)
+check(
+  'suggestion filtering lives in the pure console module',
+  consoleSession.includes("from '../console/suggestions'")
+    && /return filterConsoleSuggestions\(prefix, listConsoleCommands\(commandAvailability\), dynamicOptions\)/.test(consoleSession)
     && !consoleSession.includes('options.slice(0, 12)'),
 )
-const removedPanelCommands = ['agent', 'list', 'status', 'permissions', 'docker', 'workspace', 'model']
+const removedPanelCommands = [
+  'agent',
+  'list',
+  'status',
+  'permissions',
+  'docker',
+  'workspace',
+  'model',
+  'archive',
+  'config',
+  'doctor',
+]
 for (const removedCommand of removedPanelCommands) {
   check(
     `removed /${removedCommand} command has no dedicated panel entry`,
@@ -195,16 +319,32 @@ check(
 )
 check(
   'Console overview exposes a direct classic mode switch',
-  consoleOverview.includes('console-overview__classic')
-    && consoleOverview.includes("setDisplayMode('standard')")
+  consoleOverview.includes("setDisplayMode('standard')")
     && consoleOverview.includes('aria-label="Switch to classic mode"'),
 )
 check(
   'Console overview columns share a fixed one-third-height row',
   /aspect-ratio:\s*3\s*\/\s*1/.test(consoleOverview)
-    && /\.console-overview__avatar[\s\S]*?height:\s*100%/.test(consoleOverview)
+    && /\.console-overview__portrait \{[^}]*height:\s*100%/.test(consoleOverview)
     && consoleOverview.includes('overflow: clip'),
 )
+check(
+  'the portrait plate keeps its size while the icon inside is nearly plate-sized',
+  avatarInset() >= 90
+    && avatarInset() < 100
+    && !/height:\s*100%/.test(consoleOverviewAvatarBlock)
+    && /\.console-overview__portrait \{[^}]*place-items: center/.test(consoleOverview),
+)
+
+/**
+ * How much of the plate the icon takes, as a whole percent, and 0 unless both
+ * axes agree — an icon inset on one axis only would gain a lopsided margin.
+ */
+function avatarInset() {
+  const width = consoleOverviewAvatarBlock.match(/width:\s*(\d+)%/)?.[1]
+  const height = consoleOverviewAvatarBlock.match(/height:\s*(\d+)%/)?.[1]
+  return width && width === height ? Number(width) : 0
+}
 check(
   'Console overview renders shared statistics and footer metadata',
   /v-for="[^\"]*stat/.test(consoleOverview)
@@ -227,7 +367,167 @@ check(
 check('mobile keeps automatic comments', mobileLayout.includes('<GiscusComments layout="mobile" />'))
 check('mobile keeps its Footer', mobileLayout.includes('<Footer />'))
 check('mobile keeps one shared route outlet', (mobileLayout.match(/<RouterView\b/g) || []).length === 1)
+check(
+  'theme and color rows preview the moment the cursor lands on them',
+  /livePreview: \{ kind: 'theme'/.test(consolePanel)
+    && /livePreview: \{ kind: 'color'/.test(consolePanel)
+    && /function selectIndex\([\s\S]*?previewIndex\(selectedIndex\.value\)/.test(consolePanel)
+    && /function moveSelection\([\s\S]*?previewIndex\(selectedIndex\.value\)/.test(consolePanel),
+)
+check(
+  'only click or Enter commits the previewed preference',
+  consolePanel.includes('@click="commitIndex(index)"')
+    && /function commitIndex\([\s\S]*?previewBaseline = null[\s\S]*?emit\('execute'/.test(consolePanel)
+    && /function activateSelection\(\)[\s\S]*?commitIndex\(selectedIndex\.value\)/.test(consolePanel),
+)
+check(
+  'leaving a preference panel rolls the preview back',
+  /function cancelPreview\(\)[\s\S]*?applyPreference\(previewBaseline\)/.test(consolePanel)
+    && /function closePanel\(\)[\s\S]*?cancelPreview\(\)/.test(consolePanel)
+    && /event\.key === 'Escape'[\s\S]*?cancelPreview\(\)/.test(consolePanel)
+    && /watch\(\s*\[\(\) => props\.panel[\s\S]*?cancelPreview\(\)/.test(consolePanel),
+)
+check(
+  'opening a preference panel starts on the option that is already live',
+  consolePanel.includes('findIndex((option) => option.current)'),
+)
+check(
+  'light themes keep the command input on the page background',
+  /--console-canvas: var\(--console-surface\)/.test(desktopLayout)
+    && /html\[data-theme='light'\] \.desktop-layout--console \{[^}]*--console-canvas: var\(--console-bg\)/.test(desktopLayout)
+    && /\.console-shell__prompt \{[^}]*background: var\(--console-canvas/.test(consoleShell),
+)
+check(
+  'the avatar plate takes the banner background in both themes',
+  /\.console-overview__portrait \{[^}]*background: var\(--console-bg\)/.test(consoleOverview)
+    && !consoleOverview.includes('--console-canvas'),
+)
+check(
+  'console section chips are sized like the month chips, so several fit the row',
+  /\.desktop-layout--console \.scroll-spy__nav button \{[^}]*width: auto !important;[^}]*max-width: 25% !important;/
+    .test(consoleStyles)
+    && /\.desktop-layout--console \.scroll-spy__nav button \{[^}]*white-space: nowrap !important;/.test(consoleStyles)
+    && /\.desktop-layout--console \.scroll-spy__nav button \{[^}]*text-overflow: ellipsis !important;/.test(consoleStyles)
+    && /\.console-month-navigator__header button \{[^}]*white-space: nowrap;/.test(monthNavigator),
+)
+check(
+  'every console panel is a list of options, so the detail table is gone',
+  !consolePanel.includes('console-panel__details')
+    && !consolePanel.includes('detailLines')
+    && /const panelOptions = computed<PanelOption\[\]>/.test(consolePanel),
+)
+check(
+  'console mode draws no rules',
+  /\.desktop-layout--console \{[^}]*--console-border: transparent;[^}]*--console-border-strong: transparent;/
+    .test(desktopLayout),
+)
+check(
+  'the cursored row borrows another colour scheme, cycling by row index',
+  /filter\(\(id\) => id !== colorScheme\.value\)/.test(consoleRowAccent)
+    && /siteColorSchemes\[id\]\[theme\.value\]\.accent/.test(consoleRowAccent)
+    && /accents\[index % accents\.length\]/.test(consoleRowAccent),
+)
+check(
+  'both option lists paint the cursor with that row accent',
+  [consoleShell, consolePanel].every((source) => source.includes("'--console-row-accent': rowAccent(index)"))
+    && /\.console-shell__suggestion\.is-selected \{[^}]*var\(--console-row-accent/.test(consoleShell)
+    && /\.console-shell__suggestion\.is-selected code \{[^}]*var\(--console-row-accent/.test(consoleShell)
+    && /\.console-panel__row\.is-selected \{[^}]*var\(--console-row-accent/.test(consolePanel)
+    && /\.console-panel__row\.is-selected code \{[^}]*var\(--console-row-accent/.test(consolePanel),
+)
+check(
+  'every line in a console rule resolves through a border token',
+  paintedConsoleLines().length === 0,
+)
+check(
+  'one token sizes every square console thumbnail',
+  /--console-thumb: \d+px/.test(consoleLayoutBlock)
+    && /\.console-capture-asset \{[^}]*var\(--console-thumb/.test(captureView)
+    && /\.console-capture-group__overflow \{[^}]*var\(--console-thumb/.test(captureView)
+    && /\.console-friends__avatar \{[^}]*var\(--console-thumb/.test(friendsView)
+    && !/flex: 0 0 \d+px/.test(captureView),
+)
+check(
+  'one recipe styles every console button, out of the fill tokens',
+  /--console-control: [^;]*var\(--site-accent\)/.test(consoleLayoutBlock)
+    && /--console-control-strong: [^;]*var\(--site-accent\)/.test(consoleLayoutBlock)
+    && /\.desktop-layout--console \.console-button \{[^}]*background: var\(--console-control\)/.test(consoleStyles)
+    && /\.console-button:focus-visible \{[^}]*background: var\(--console-control-strong\)/.test(consoleStyles)
+    && /\.console-button--icon \{/.test(consoleStyles),
+)
+check(
+  'the views delegate their buttons to that recipe instead of restating it',
+  [captureView, notFoundView, consoleOverview, consoleShell].every((source) => source.includes('console-button'))
+    && !/\.console-capture-group__upload \{/.test(captureView)
+    && !/\.console-overview__classic \{/.test(consoleOverview)
+    && !/\.console-not-found__link \{/.test(notFoundView)
+    && !/\.console-shell__submit \{[^}]*background/.test(consoleShell),
+)
+check(
+  'a capture row is titled by its heading, never by its route id',
+  !captureView.includes('<code>/capture/')
+    && captureView.includes('class="console-capture-group__title"')
+    && /asCaptureGroup\(item\)\.heading/.test(captureView),
+)
+check(
+  'appending to a capture group is not gated on a display limit',
+  !/asCaptureGroup\(item\)\.assets\.length < capturePreviewLimit/.test(captureView)
+    && /v-if="canEdit"[\s\S]{0,320}\+ append/.test(captureView),
+)
+check(
+  'console mode restyles the about contact block rather than replacing it',
+  !aboutView.includes('console-about-contact')
+    && aboutView.includes('about-contact__icon--github')
+    && aboutView.includes('<Message />')
+    && aboutView.includes('id="contact-me"')
+    && /\.about-layout--console \.about-contact \{/.test(aboutView),
+)
+check(
+  'the dashboard lists the profile and template repositories above CONTENT',
+  consoleOverview.includes('>LINKS<')
+    && consoleOverview.indexOf('>LINKS<') < consoleOverview.indexOf('>CONTENT<')
+    && consoleOverview.includes('githubProfileUrl')
+    && consoleOverview.includes('repositoryUrl')
+    && /\.console-overview__links dd \{[^}]*text-overflow: ellipsis/.test(consoleOverview),
+)
+
+/**
+ * Console mode stays rule-free by keeping its two border tokens transparent, so
+ * a line that names any other colour escapes that switch. This walks the whole
+ * stylesheet surface rather than a list of files, so a console block added
+ * later cannot quietly reintroduce one.
+ */
+function paintedConsoleLines() {
+  const lineProperty = /^(?:border|outline)(?:-(?:top|right|bottom|left))?(?:-color)?$/
+  const painted = []
+  for (const file of styleFiles(path.join(root, 'src'))) {
+    const source = fs.readFileSync(file, 'utf8')
+    for (const [, selector, body] of source.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
+      if (!/console/i.test(selector)) continue
+      for (const declaration of body.split(';')) {
+        const separator = declaration.indexOf(':')
+        if (separator < 0) continue
+        const property = declaration.slice(0, separator).trim()
+        const value = declaration.slice(separator + 1).replace('!important', '').trim()
+        if (!lineProperty.test(property)) continue
+        if (/^(?:0|none)$/.test(value)) continue
+        if (/\btransparent\b/.test(value) || value.includes('--console-border')) continue
+        painted.push(`${file} :: ${selector.trim()} :: ${property}: ${value}`)
+      }
+    }
+  }
+  return painted
+}
+
+function styleFiles(directory) {
+  return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    const full = path.join(directory, entry.name)
+    if (entry.isDirectory()) return styleFiles(full)
+    return /\.(?:vue|scss|css)$/.test(entry.name) ? [full] : []
+  })
+}
 
 const failures = checks.filter(([, ok]) => !ok)
 for (const [label, ok] of checks) console.log(`${ok ? 'PASS' : 'FAIL'} ${label}`)
+for (const painted of paintedConsoleLines()) console.log(`     ${painted}`)
 if (failures.length) process.exitCode = 1

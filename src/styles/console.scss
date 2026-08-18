@@ -124,23 +124,53 @@ html.console-mode-active .sakura-burst-overlay {
 .desktop-layout--console .friends-card:hover,
 .desktop-layout--console .tag-card:hover,
 .desktop-layout--console .capture-card:hover,
-.desktop-layout--console .search-result:hover {
+.desktop-layout--console .search-result:hover,
+.desktop-layout--console .feed-entry-card:hover,
+.desktop-layout--console .feed-entry-card:focus-visible {
   border-color: var(--console-border-strong) !important;
   transform: none !important;
 }
 
+/*
+ * Whatever row a console page puts at its top — the month strip on a list, the
+ * section chips on an article — rides the top of the viewport once the page has
+ * scrolled past it, so the percentage and the boxes it steers stay reachable from
+ * anywhere in the page. A row joins by wearing this class; nothing here needs to
+ * know which rows exist. The fill is what makes it readable while the content
+ * passes underneath, and the layer stays below the prompt dock.
+ */
+.desktop-layout--console .console-top-row {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--console-bg);
+}
+
 .desktop-layout--console .scroll-spy {
-  position: static !important;
   width: 100% !important;
   margin: 0 0 14px !important;
   padding: 0 0 8px !important;
   border: 0 !important;
   border-bottom: 1px solid var(--console-border) !important;
-  background: transparent !important;
 }
 
 .desktop-layout--console .scroll-spy__status {
+  position: static !important;
+  display: flex !important;
+  align-items: center !important;
+  padding: 0 12px 0 0 !important;
+  background: transparent !important;
+  backdrop-filter: none !important;
+}
+
+.desktop-layout--console .scroll-spy__bar {
   display: none !important;
+}
+
+.desktop-layout--console .scroll-spy__percent {
+  color: var(--console-accent) !important;
+  font-size: inherit !important;
+  font-weight: 700 !important;
 }
 
 .desktop-layout--console .scroll-spy__nav {
@@ -148,24 +178,37 @@ html.console-mode-active .sakura-burst-overlay {
   gap: 4px !important;
   width: 100% !important;
   overflow-x: auto !important;
-  scrollbar-width: thin;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
+.desktop-layout--console .scroll-spy__nav::-webkit-scrollbar {
+  display: none;
+}
+
+/*
+ * Section chips match the month row: sized to their label instead of inheriting
+ * the sidebar's full-width block, and capped at a quarter of the row so four
+ * boxes stay reachable no matter how long a heading runs.
+ */
 .desktop-layout--console .scroll-spy__nav button {
   flex: 0 0 auto !important;
-  min-height: 28px !important;
-  padding: 3px 8px !important;
-  border: 1px solid transparent !important;
+  width: auto !important;
+  max-width: 25% !important;
+  min-height: 38px !important;
+  padding: 5px 12px !important;
+  border: 0 !important;
   color: var(--console-muted) !important;
   background: transparent !important;
   box-shadow: none !important;
   transform: none !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
 }
 
 .desktop-layout--console .scroll-spy__nav button:hover,
 .desktop-layout--console .scroll-spy__nav button:focus-visible,
 .desktop-layout--console .scroll-spy__nav button.is-active {
-  border-color: var(--console-border-strong) !important;
   color: var(--console-accent) !important;
   background: var(--console-selection) !important;
   outline: none !important;
@@ -182,6 +225,50 @@ html.console-mode-active .sakura-burst-overlay {
 .desktop-layout--console :is([class*="glow"], [class*="shine"], [class*="pulse"]) {
   animation: none !important;
   text-shadow: none !important;
+}
+
+/*
+ * One recipe for every push-button the console draws. With the frame rules
+ * retired a button can only read as a button by its fill, so that fill is
+ * defined once here instead of being restated in each view's scoped block —
+ * where four near-identical copies had already drifted apart.
+ */
+.desktop-layout--console .console-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: fit-content;
+  min-height: 30px;
+  padding: 3px 10px;
+  border: 1px solid var(--console-border-strong);
+  border-radius: 0 !important;
+  color: var(--console-accent);
+  background: var(--console-control);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.74rem;
+  text-decoration: none;
+}
+
+.desktop-layout--console .console-button:hover,
+.desktop-layout--console .console-button:focus-visible {
+  color: var(--console-text);
+  background: var(--console-control-strong);
+  outline: none;
+}
+
+.desktop-layout--console .console-button:disabled {
+  cursor: progress;
+  opacity: 0.55;
+}
+
+/* Square variant for buttons whose whole label is one glyph. */
+.desktop-layout--console .console-button--icon {
+  width: 32px;
+  min-width: 32px;
+  padding: 0;
+  font-size: 0.9rem;
 }
 
 .desktop-layout--console .search-input {
@@ -225,6 +312,18 @@ html.console-mode-active .sakura-burst-overlay {
 .desktop-layout--console .search-result-infra,
 .desktop-layout--console .search-result-capture {
   min-height: 42px;
+}
+
+/*
+ * Rules drawn by shared components out of site tokens, which the console
+ * tokens cannot reach from here. Recolouring rather than removing keeps the
+ * 1px they occupy, so silencing them shifts nothing.
+ */
+.desktop-layout--console .search-result__feed,
+.desktop-layout--console .search-result-infra > a,
+.desktop-layout--console .search-result-capture__media,
+.desktop-layout--console .giscus-comments__header {
+  border-color: var(--console-border) !important;
 }
 
 .desktop-layout--console .markdown-body pre,

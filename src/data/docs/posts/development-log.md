@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-08-17T22:28:10+08:00
+date: 2026-08-18T23:22:58+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,36 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `dc92aef` 2026-08-18T23:22:58+08:00 - feat: pin the console progress row to the top of the page
+- `b9d7972` 2026-08-18T23:08:39+08:00 - fix: seat the console comment block against the content above it
+- `caadf1e` 2026-08-18T22:36:15+08:00 - fix: let the left and right keys steer a detail page's section row
+- `d128331` 2026-08-18T21:59:46+08:00 - feat: scale console thumbnails and buttons from shared tokens
+- `c097566` 2026-08-18T21:58:24+08:00 - feat: list the profile and template repositories in the console dashboard
+- `b2aa78c` 2026-08-18T21:55:58+08:00 - fix: restore the console about page's contact icons
+- `5645fa0` 2026-08-18T20:35:59+08:00 - feat: draw a vim block caret on the console prompt
+- `d9abf5e` 2026-08-18T15:53:56+08:00 - fix: black out the dark portrait plate and shrink console section chips
+- `372178a` 2026-08-18T15:21:34+08:00 - feat: grow the console portrait icon to nearly fill its plate
+- `f76a991` 2026-08-18T15:09:26+08:00 - feat: mark the console cursor with another scheme's accent
+- `6d51f25` 2026-08-18T14:26:31+08:00 - feat: strip every rule from console mode
+- `6b19408` 2026-08-18T12:27:39+08:00 - merge: fix infra binary status probing
+- `2fe08bb` 2026-08-18T12:16:04+08:00 - test(infra): validate generated starter deployment
+- `de6eb4a` 2026-08-18T12:08:09+08:00 - test(infra): enforce production probe dispatch
+- `1b71d7c` 2026-08-18T11:44:22+08:00 - fix(infra): use binary reachability on static hosting
+- `ef82cb8` 2026-08-18T11:37:32+08:00 - feat: inset the console portrait icon without moving its plate
+- `6f3f7a9` 2026-08-18T11:36:34+08:00 - test(infra): define binary production status contract
+- `05a3105` 2026-08-18T11:06:09+08:00 - feat: turn /help into a page that documents the console
+- `514cb9b` 2026-08-18T09:57:33+08:00 - feat: search from the console prompt as the term is typed
+- `7e556a1` 2026-08-18T08:53:48+08:00 - feat: add /posts /notes list commands and an /export article action
+- `cd84f6f` 2026-08-18T07:19:35+08:00 - feat: collapse the console dock once an option has been chosen
+- `28e8455` 2026-08-18T07:13:19+08:00 - feat: keep console comments on the page and make /comment jump to them
+- `09a4d56` 2026-08-18T02:10:20+08:00 - feat: show five console option rows in a window that rides the viewport bottom
+- `4b898e7` 2026-08-18T01:51:16+08:00 - refactor: state console bar position as a percentage instead of arrows
+- `bbd5f82` 2026-08-18T01:27:46+08:00 - feat: reveal console sub-entries only once their parent is typed
+- `8b35951` 2026-08-18T00:12:42+08:00 - refactor: retire the /doctor /config /notes /archive console commands
+- `7333cfa` 2026-08-17T23:54:27+08:00 - feat: lead console friend rows with an avatar instead of the raw id
+- `9080dca` 2026-08-17T23:48:52+08:00 - refactor: stop echoing each console page's own route above its content
+- `009bf58` 2026-08-17T23:15:24+08:00 - feat: preview theme and color while the cursor roams the options
+- `320e4b3` 2026-08-17T23:15:12+08:00 - feat: report theme and color in the console runtime panel
 - `6438ae8` 2026-08-17T22:28:10+08:00 - chore: ignore local claude worktrees
 - `9094f64` 2026-08-17T22:26:17+08:00 - style: align the console prompt caret with every option row
 - `a944005` 2026-08-17T22:09:40+08:00 - feat: align selected console output with the top of the page

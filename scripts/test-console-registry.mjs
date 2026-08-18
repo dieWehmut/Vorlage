@@ -39,7 +39,7 @@ check(
   homeResolution.kind === 'route' && homeResolution.path === '/home' && homeResolution.routeName === 'home',
 )
 check('comment resolves a current-page action', registry.resolveConsoleCommand(command(['comment'])).kind === 'comment')
-check('archive resolves internal route', registry.resolveConsoleCommand(command(['archive'])).path === '/archive')
+check('capture resolves internal route', registry.resolveConsoleCommand(command(['capture'])).path === '/capture')
 check('post id is encoded exactly once', registry.resolveConsoleCommand(command(['post', 'A Study'])).path === '/post/A%20Study')
 check('tag matching is case-insensitive at command level', registry.resolveConsoleCommand(command(['tags', 'Vue'])).path === '/tags/Vue')
 check('theme opens a panel', registry.resolveConsoleCommand(command(['theme'])).kind === 'panel' && registry.resolveConsoleCommand(command(['theme'])).panel === 'theme')
@@ -62,7 +62,93 @@ check('command reference includes Friends', registry.listConsoleCommands().some(
 check('command reference includes the canonical Home route', registry.listConsoleCommands().some((item) => item.input === '/home'))
 check('command reference includes current-page comments', registry.listConsoleCommands().some((item) => item.input === '/comment'))
 check('command reference omits the standalone root slash', !registry.listConsoleCommands().some((item) => item.input === '/'))
-const removedCommands = ['agent', 'list', 'status', 'permissions', 'docker', 'workspace', 'model']
+
+const postsResolution = registry.resolveConsoleCommand(command(['posts']))
+check(
+  'posts is the command name for the archive route',
+  postsResolution.kind === 'route' && postsResolution.path === '/archive' && postsResolution.routeName === 'archive',
+)
+const notesResolution = registry.resolveConsoleCommand(command(['notes']))
+check(
+  'notes resolves the note index route',
+  notesResolution.kind === 'route' && notesResolution.path === '/notes' && notesResolution.routeName === 'notes',
+)
+check(
+  'the list routes stay distinct from the pickers',
+  registry.resolveConsoleCommand(command(['post'])).panel === 'post-picker'
+    && registry.resolveConsoleCommand(command(['note'])).panel === 'note-picker',
+)
+check(
+  'posts and notes both reject extra segments',
+  registry.resolveConsoleCommand(command(['posts', 'extra'])).kind === 'silent'
+    && registry.resolveConsoleCommand(command(['notes', 'extra'])).kind === 'silent',
+)
+check('export resolves a current-page action', registry.resolveConsoleCommand(command(['export'])).kind === 'export')
+check(
+  'export rejects segments, query and hash suffixes',
+  registry.resolveConsoleCommand(command(['export', 'pdf'])).kind === 'silent'
+    && registry.resolveConsoleCommand(command(['export'], { query: 'format=pdf' })).kind === 'silent'
+    && registry.resolveConsoleCommand(command(['export'], { hash: '#top' })).kind === 'silent',
+)
+check(
+  'command reference lists the list routes and the article export',
+  ['/posts', '/notes', '/export'].every((input) => registry.listConsoleCommands().some((item) => item.input === input)),
+)
+
+const bareSearch = registry.resolveConsoleCommand(command(['search']))
+check(
+  'a bare search opens the plain result page',
+  bareSearch.kind === 'route' && bareSearch.path === '/search' && bareSearch.routeName === 'search',
+)
+const termSearch = registry.resolveConsoleCommand(command(['search', 'vue router']))
+check(
+  'a search term travels as the q query parameter',
+  termSearch.kind === 'route' && termSearch.path === '/search?q=vue%20router' && termSearch.routeName === 'search',
+)
+check(
+  'a slash-separated search term rejoins into one query',
+  registry.resolveConsoleCommand(command(['search', 'vue', 'router'])).path === '/search?q=vue%20router',
+)
+check(
+  'a search term rejects query and hash suffixes of its own',
+  registry.resolveConsoleCommand(command(['search', 'vue'], { query: 'q=other' })).kind === 'silent'
+    && registry.resolveConsoleCommand(command(['search', 'vue'], { hash: '#top' })).kind === 'silent',
+)
+check(
+  'the search command reference teaches the free-text form',
+  registry.listConsoleCommands().some((item) => item.input === '/search' && item.description.includes('/search vue')),
+)
+const helpResolution = registry.resolveConsoleCommand(command(['help']))
+check(
+  'help resolves a page rather than a dock panel',
+  helpResolution.kind === 'route' && helpResolution.path === '/help' && helpResolution.routeName === 'help',
+)
+check('help rejects extra segments', registry.resolveConsoleCommand(command(['help', 'commands'])).kind === 'silent')
+const groupIds = new Set(registry.consoleCommandGroups.map((group) => group.id))
+check(
+  'every command is filed under a declared group',
+  registry.listConsoleCommands().every((item) => groupIds.has(item.group)),
+)
+check(
+  'every declared group has at least one command to show',
+  registry.consoleCommandGroups.every(
+    (group) => registry.listConsoleCommands().some((item) => item.group === group.id),
+  ),
+)
+
+const removedCommands = [
+  'agent',
+  'list',
+  'status',
+  'permissions',
+  'docker',
+  'workspace',
+  'model',
+  // The archive page answers to /posts instead, so its own path is not a command.
+  'archive',
+  'config',
+  'doctor',
+]
 for (const removedCommand of removedCommands) {
   check(
     `removed /${removedCommand} command resolves silently`,

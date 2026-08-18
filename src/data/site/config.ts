@@ -49,15 +49,6 @@ export const siteConfig: SiteConfig = {
     backendToken: viteEnv.VITE_CODE_RUNNER_API_TOKEN || processEnv.VITE_CODE_RUNNER_API_TOKEN || '',
   },
 
-  // --- Uptime Kuma (optional) ---
-  // Point this at a public Kuma status page to enrich /infra entries
-  // with real heartbeat data. Leave undefined to skip.
-  // kuma: {
-  //   baseUrl: 'https://kuma.example.com',
-  //   slug: 'public',
-  //   refreshMs: 60_000,
-  // },
-
   // --- Social Links ---
   links: [
     { label: 'GitHub', url: 'https://github.com/your-github-username' },

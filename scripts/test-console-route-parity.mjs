@@ -23,9 +23,28 @@ const consoleStyles = read('src/styles/console.scss')
 const monthNavigator = read('src/components/console/ConsoleMonthNavigator.vue')
 const consoleShell = read('src/components/console/ConsoleShell.vue')
 const searchView = read('src/views/SearchView.vue')
+const searchConsoleBranch = searchView.slice(
+  searchView.indexOf('<div v-if="isConsole"'),
+  searchView.indexOf('<div v-else'),
+)
+const consoleSession = read('src/composables/useConsoleSession.ts')
 const tagsView = read('src/views/TagsView.vue')
 const tagDetailView = read('src/views/TagDetailView.vue')
 const consoleSelection = read('src/console/selection.ts')
+const rowNavigation = read('src/composables/useConsoleRowNavigation.ts')
+const friendsView = read('src/views/FriendsView.vue')
+const scrollSpySidebar = read('src/components/system/ScrollSpySidebar.vue')
+const helpView = read('src/views/HelpView.vue')
+const panelView = read('src/components/console/ConsolePanelView.vue')
+const commandRegistry = read('src/console/commandRegistry.ts')
+const consolePanelUnion = commandRegistry.slice(
+  commandRegistry.indexOf('export type ConsolePanel ='),
+  commandRegistry.indexOf('export interface ConsoleCommandShape'),
+)
+const optionPanelsSet = consoleShell.slice(
+  consoleShell.indexOf('const optionPanels'),
+  consoleShell.indexOf('])', consoleShell.indexOf('const optionPanels')),
+)
 
 const checks = [
   ['project console keeps site links', projectView.includes('console-project__link--site')],
@@ -93,13 +112,63 @@ const checks = [
       && !monthNavigator.includes('Next month'),
   ],
   [
-    'empty console prompt forwards horizontal keys to the month tabs',
-    consoleShell.includes('CONSOLE_MONTH_NAVIGATION_EVENT')
-      && consoleShell.includes('ArrowLeft')
-      && consoleShell.includes('ArrowRight'),
+    'monthly navigation leads with the same percentage as the section bar',
+    monthNavigator.includes('{{ percent }}%')
+      && !monthNavigator.includes('Dates:</span>')
+      && /const percent = computed\([\s\S]*?props\.months\.length \* 100/.test(monthNavigator)
+      && /\.console-month-navigator__header \{[\s\S]*?scrollbar-width: none/.test(monthNavigator)
+      && monthNavigator.includes('.console-month-navigator__header::-webkit-scrollbar'),
   ],
-  ['console section arrows select adjacent headings', read('src/components/system/ScrollSpySidebar.vue').includes('scrollToHeading(target.id)')],
+  [
+    // Two rows can occupy the top of a console page — the month strip on a list,
+    // the section chips on an article — and only one is ever mounted. So the shell
+    // names the event after that role and both rows subscribe through one
+    // composable, instead of the shell having to know which page it is driving.
+    'empty console prompt forwards horizontal keys to whichever top row is mounted',
+    consoleShell.includes('CONSOLE_ROW_NAVIGATION_EVENT')
+      && consoleShell.includes('ArrowLeft')
+      && consoleShell.includes('ArrowRight')
+      && consoleSelection.includes('CONSOLE_ROW_NAVIGATION_EVENT')
+      && rowNavigation.includes('addEventListener(CONSOLE_ROW_NAVIGATION_EVENT')
+      && rowNavigation.includes('removeEventListener(CONSOLE_ROW_NAVIGATION_EVENT')
+      && monthNavigator.includes('useConsoleRowNavigation(move)')
+      && !monthNavigator.includes('addEventListener'),
+  ],
+  [
+    'the section bar steps its own row, so detail pages answer the same keys',
+    scrollSpySidebar.includes('useConsoleRowNavigation(stepSection)')
+      && /function stepSection\([\s\S]{0,400}?moveConsoleSelection\(index, delta, items\.value\.length\)/.test(scrollSpySidebar)
+      && /function stepSection\([\s\S]{0,400}?scrollToHeading\(next\.id\)/.test(scrollSpySidebar),
+  ],
+  [
+    'the console section bar is a percentage plus one row of section boxes',
+    !scrollSpySidebar.includes('scroll-spy__arrow')
+      && !scrollSpySidebar.includes('function scrollNav')
+      && scrollSpySidebar.includes('{{ displayProgress }}%')
+      && /const displayProgress = computed\([\s\S]*?items\.value\.length \* 100/.test(scrollSpySidebar)
+      && /\.scroll-spy--console \{[\s\S]*?grid-template-columns: auto minmax\(0, 1fr\);/.test(scrollSpySidebar),
+  ],
+  [
+    'the console section bar shows its percentage and hides its scrollbar',
+    !/\.desktop-layout--console \.scroll-spy__status \{[^}]*display: none/.test(consoleStyles)
+      && /\.desktop-layout--console \.scroll-spy__nav \{[^}]*overflow-x: auto[^}]*scrollbar-width: none/.test(consoleStyles)
+      && consoleStyles.includes('.desktop-layout--console .scroll-spy__nav::-webkit-scrollbar'),
+  ],
   ['console search reuses typed result behavior', (searchView.match(/<SearchResultItem\b/g) || []).length >= 2],
+  [
+    'the command line is the console search box',
+    !searchConsoleBranch.includes('<SearchInput')
+      && searchView.includes('<SearchInput v-model="query" />')
+      && searchView.includes("typeof route.query.q === 'string'"),
+  ],
+  [
+    'typing /search previews its results without Enter',
+    consoleSession.includes('function previewSearch(')
+      && consoleSession.includes('watch(commandInput, previewSearch)')
+      && consoleSession.includes("segments[0] !== 'search'")
+      && consoleSession.includes('router.replace(resolution.path)')
+      && consoleSession.includes('router.push(resolution.path)'),
+  ],
   [
     'console tag index supports cyclic arrow selection and Enter from the command prompt',
     tagsView.includes('moveConsoleSelection')
@@ -119,6 +188,52 @@ const checks = [
     'console tag capture entries link to their stable group route',
     tagDetailView.includes('captureGroupUrl(asCaptureTimelineItem(item).group)')
       && !tagDetailView.includes("group.assets[0]?.id || ''"),
+  ],
+  [
+    'console views no longer echo their own route above the content',
+    ![friendsView, infraView, projectView, searchView, captureView, tagsView, tagDetailView]
+      .some((view) => /<(?:span|code)>\/[a-z]+<\/(?:span|code)>/.test(view))
+      && !captureView.includes('<code>/capture/{{ selectedGroup.id }}</code>')
+      && !tagsView.includes('console-tag-index__prompt'),
+  ],
+  [
+    // A tag name is a label a reader recognises, so it stays. A capture group id
+    // is a slug the reader never chose, so those rows are labelled by what the
+    // group actually is and only navigate to the id.
+    'console rows are labelled readably and never by an opaque route id',
+    !captureView.includes('<code>/capture/')
+      && !tagDetailView.includes('<code>/capture/')
+      && captureView.includes('asCaptureGroup(item).heading')
+      && tagDetailView.includes('asCaptureTimelineItem(item).group.assets.length')
+      && tagDetailView.includes('captureGroupUrl(asCaptureTimelineItem(item).group)')
+      && tagsView.includes('<code>/tags/{{ group.tag }}</code>'),
+  ],
+  [
+    'console friend rows lead with an avatar instead of a duplicate identifier',
+    friendsView.includes('class="console-friends__avatar"')
+      && friendsView.includes('console-friends__avatar--fallback')
+      && !friendsView.includes('<code>{{ friend.id }}</code>')
+      && /\.console-friends__row \{[^}]*grid-template-columns: var\(--console-thumb/.test(friendsView),
+  ],
+  [
+    'the command reference is a routed page, not a dock panel',
+    /path:\s*['"]\/help['"][^\n]+name:\s*['"]help['"][^\n]+component:\s*viewLoaders\.help/.test(router)
+      && /\[['"]\/help['"],\s*viewLoaders\.help\]/.test(router)
+      && routeBreadcrumb.includes("help: { label: 'Help', to: '/help' }")
+      && !consolePanelUnion.includes("'help'")
+      && !panelView.includes("case 'help'")
+      && !optionPanelsSet.includes("'help'"),
+  ],
+  [
+    'the help page derives its command tables from the registry',
+    helpView.includes('listConsoleCommands(')
+      && helpView.includes('consoleCommandGroups')
+      && helpView.includes('command.group === group.id'),
+  ],
+  [
+    'the help page feeds the console section bar with its own headings',
+    /<ScrollSpySidebar\s+v-if="isConsole"[\s\S]*?heading-selector="h2"/.test(helpView)
+      && (helpView.match(/<h2\b/g) || []).length >= 2,
   ],
 ]
 

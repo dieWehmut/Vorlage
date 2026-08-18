@@ -68,7 +68,10 @@
                   class="console-tag-detail__capture-route"
                   :to="captureGroupUrl(asCaptureTimelineItem(item).group)"
                 >
-                  <code>/capture/{{ encodeURIComponent(asCaptureTimelineItem(item).group.id) }}</code>
+                  <!-- The row already states its title and date, so the link
+                       carries the one fact it does not: how much is inside. The
+                       opaque route id it used to print was not meant to be read. -->
+                  {{ asCaptureTimelineItem(item).group.assets.length }} assets
                 </RouterLink>
               </div>
             </div>
@@ -516,15 +519,15 @@ watch(tag, loadCaptures)
 
 .console-tag-detail__capture-overflow:hover,
 .console-tag-detail__capture-overflow:focus-visible {
-  border-color: var(--console-accent, var(--site-accent));
   color: var(--console-text, var(--site-text));
   background: var(--console-selection, transparent);
   outline: none;
 }
 
+/* A thumbnail has no text to recolour, so it answers the cursor by fading. */
 .console-tag-detail__capture-assets button:hover,
 .console-tag-detail__capture-assets button:focus-visible {
-  border-color: var(--console-accent, var(--site-accent));
+  opacity: 0.68;
   outline: none;
 }
 

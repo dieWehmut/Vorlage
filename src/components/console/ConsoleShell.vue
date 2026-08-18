@@ -1,5 +1,9 @@
 <template>
-  <section class="console-shell" aria-label="Nexus Console">
+  <section
+    class="console-shell"
+    :class="{ 'console-shell--expanded': hasTransient }"
+    aria-label="Nexus Console"
+  >
     <div v-if="history.length" class="console-shell__history" aria-label="Recent commands">
       <span class="console-shell__history-label">recent</span>
       <button v-for="entry in history" :key="entry" type="button" @click="executeCommand(entry)">{{ entry }}</button>
@@ -7,47 +11,56 @@
 
     <form class="console-shell__prompt" @submit.prevent="executeCommand()">
       <label class="console-shell__prompt-symbol" for="console-command-input">&gt;_</label>
-      <input
-        id="console-command-input"
-        ref="inputRef"
-        data-console-input
-        class="console-shell__input"
-        role="combobox"
-        :value="commandInput"
-        :aria-expanded="Boolean(activeListboxId)"
-        :aria-controls="activeListboxId || undefined"
-        :aria-activedescendant="activeOptionId || undefined"
-        aria-autocomplete="list"
-        autocomplete="off"
-        autocapitalize="off"
-        spellcheck="false"
-        inputmode="text"
-        placeholder="/help"
-        aria-label="Console command"
-        @input="setInput(($event.target as HTMLInputElement).value)"
-        @keydown="handleShellKeydown"
-      />
-      <button class="console-shell__submit" type="submit" aria-label="Run command" title="Run command">Enter</button>
+      <span class="console-shell__field">
+        <input
+          id="console-command-input"
+          ref="inputRef"
+          data-console-input
+          class="console-shell__input"
+          role="combobox"
+          :value="commandInput"
+          :aria-expanded="Boolean(activeListboxId)"
+          :aria-controls="activeListboxId || undefined"
+          :aria-activedescendant="activeOptionId || undefined"
+          aria-autocomplete="list"
+          autocomplete="off"
+          autocapitalize="off"
+          spellcheck="false"
+          inputmode="text"
+          placeholder="/help"
+          aria-label="Console command"
+          @input="setInput(($event.target as HTMLInputElement).value)"
+          @keydown="handleShellKeydown"
+        />
+        <span
+          v-if="caretActive"
+          class="console-shell__caret"
+          aria-hidden="true"
+          :style="{ width: `${caretWidth}px`, transform: `translate(${caretOffset}px, -50%)` }"
+        >{{ caretGlyph }}</span>
+      </span>
+      <span v-if="caretActive" class="console-shell__mode" aria-hidden="true">-- INSERT --</span>
+      <button class="console-button console-shell__submit" type="submit" aria-label="Run command" title="Run command">Enter</button>
     </form>
 
     <div
-      v-if="suggestions.length || activePanel || (feedback && !activePanel)"
+      v-if="hasTransient"
       class="console-shell__transient"
     >
       <div
         v-if="suggestions.length"
         :id="suggestionListboxId"
-        ref="suggestionsRef"
         class="console-shell__suggestions"
         role="listbox"
         aria-label="Command suggestions"
       >
         <button
-          v-for="(suggestion, index) in suggestions"
+          v-for="{ suggestion, index } in visibleSuggestions"
           :id="suggestionOptionId(index)"
           :key="suggestion.input"
           class="console-shell__suggestion"
           :class="{ 'is-selected': suggestionCursor === index }"
+          :style="{ '--console-row-accent': rowAccent(index) }"
           type="button"
           role="option"
           tabindex="-1"
@@ -72,7 +85,6 @@
       <ConsolePanelView
         ref="panelRef"
         :panel="activePanel?.panel || null"
-        :value="activePanel?.value"
         :feedback="feedback"
         :listbox-id="panelListboxId"
         @execute="executeCommand"
@@ -88,21 +100,22 @@
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import ConsolePanelView from './ConsolePanelView.vue'
 import { useConsoleSession } from '../../composables/useConsoleSession'
+import { useConsoleBlockCaret } from '../../composables/useConsoleBlockCaret'
+import { useConsoleRowAccent } from '../../composables/useConsoleRowAccent'
 import type { ConsolePanel } from '../../console/commandRegistry'
+import { CONSOLE_OPTION_WINDOW, consoleOptionWindowStart } from '../../console/suggestions'
 import {
   CONSOLE_RESULT_NAVIGATION_EVENT,
+  CONSOLE_ROW_NAVIGATION_EVENT,
   type ConsoleResultNavigationAction,
 } from '../../console/selection'
-import { CONSOLE_MONTH_NAVIGATION_EVENT } from '../../console/timeline'
 
 const inputRef = ref<HTMLInputElement | null>(null)
 const panelRef = ref<InstanceType<typeof ConsolePanelView> | null>(null)
-const suggestionsRef = ref<HTMLElement | null>(null)
 const panelActiveOptionId = ref('')
 const suggestionListboxId = 'console-command-suggestions'
 const panelListboxId = 'console-panel-options'
 const optionPanels = new Set<ConsolePanel>([
-  'help',
   'mode',
   'theme',
   'color',
@@ -125,10 +138,27 @@ const {
   setPanel,
   returnToPreviousMenu,
 } = useConsoleSession()
+const { rowAccent } = useConsoleRowAccent()
+const { caretActive, caretOffset, caretWidth, caretGlyph } = useConsoleBlockCaret(inputRef, commandInput)
 
 const hasPanelListbox = computed(() => Boolean(
   activePanel.value && optionPanels.has(activePanel.value.panel),
 ))
+/** Whether the dock currently shows anything below the prompt. */
+const hasTransient = computed(() => Boolean(
+  suggestions.value.length || activePanel.value || (feedback.value && !activePanel.value),
+))
+/**
+ * Only a fixed number of rows is ever rendered. The window travels with the
+ * cursor instead of the rows scrolling inside a box, which keeps the dock a
+ * constant height and leaves the page scroll position alone.
+ */
+const visibleSuggestions = computed(() => {
+  const start = consoleOptionWindowStart(suggestionCursor.value, suggestions.value.length)
+  return suggestions.value
+    .slice(start, start + CONSOLE_OPTION_WINDOW)
+    .map((suggestion, offset) => ({ suggestion, index: start + offset }))
+})
 const activeListboxId = computed(() => {
   if (suggestions.value.length) return suggestionListboxId
   return hasPanelListbox.value ? panelListboxId : ''
@@ -203,22 +233,13 @@ function handleShellKeydown(event: KeyboardEvent) {
     && (event.key === 'ArrowLeft' || event.key === 'ArrowRight')
   ) {
     event.preventDefault()
-    window.dispatchEvent(new CustomEvent(CONSOLE_MONTH_NAVIGATION_EVENT, {
+    window.dispatchEvent(new CustomEvent(CONSOLE_ROW_NAVIGATION_EVENT, {
       detail: event.key === 'ArrowLeft' ? -1 : 1,
     }))
     return
   }
   handleSessionInputKeydown(event)
 }
-
-watch(suggestionCursor, (index) => {
-  if (index < 0) return
-  void nextTick(() => {
-    suggestionsRef.value
-      ?.querySelector<HTMLElement>(`[data-suggestion-index="${index}"]`)
-      ?.scrollIntoView({ block: 'nearest' })
-  })
-})
 
 watch(activePanel, (panel) => {
   if (!panel) panelActiveOptionId.value = ''
@@ -235,6 +256,9 @@ onMounted(() => {
   /* Single column that the prompt caret, the suggestion rows and the panel rows
      all start from, so every `/` lines up under the one being typed. */
   --console-prompt-indent: 34px;
+  /* Shared by the field and the block caret drawn over it: the block measures
+     the text, so the two must render at one size or it would sit off the glyph. */
+  --console-input-size: 0.95rem;
   position: relative;
   display: block;
   box-sizing: border-box;
@@ -287,7 +311,7 @@ onMounted(() => {
   min-height: 46px;
   border-top: 0;
   border-bottom: 1px solid var(--console-border-strong);
-  background: var(--console-surface);
+  background: var(--console-canvas, var(--console-surface));
 }
 
 .console-shell__transient {
@@ -312,6 +336,14 @@ onMounted(() => {
   font-weight: 700;
 }
 
+.console-shell__field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  flex: 1;
+}
+
 .console-shell__input {
   min-width: 0;
   flex: 1;
@@ -320,33 +352,72 @@ onMounted(() => {
   color: var(--console-text);
   outline: none;
   background: transparent;
-  caret-color: var(--console-accent);
+  /* The block below stands in for the caret, so the browser's hairline would
+     only show through it as a darker seam. */
+  caret-color: transparent;
   font: inherit;
-  font-size: 0.95rem;
+  font-size: var(--console-input-size);
+}
+
+/*
+ * Vim's caret rather than the browser's: a block over the cell the insertion
+ * point rests on, carrying the character it covers in reverse so the text stays
+ * readable under it. Offset and width arrive as measured pixels, and the size
+ * has to match the field's or the block would land off the glyph.
+ */
+.console-shell__caret {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  height: 1.2em;
+  line-height: 1.2em;
+  color: var(--console-bg);
+  background: var(--console-accent);
+  pointer-events: none;
+  white-space: pre;
+  font-size: var(--console-input-size);
+  animation: console-caret-blink 1.06s step-end infinite;
+}
+
+/* A hard on/off square wave, the way a terminal blinks, not a soft pulse. */
+@keyframes console-caret-blink {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .console-shell__caret {
+    animation: none;
+  }
+}
+
+/*
+ * The mode marker sits at the far end of the row on purpose: dropping it beside
+ * the `>_` would push the field right and break the column every `/` lines up
+ * on.
+ */
+.console-shell__mode {
+  flex: 0 0 auto;
+  margin-right: 8px;
+  color: var(--console-muted);
+  white-space: nowrap;
+  font-size: 0.72rem;
+  font-weight: 700;
 }
 
 .console-shell__input::placeholder {
   color: var(--console-dim);
 }
 
+/* Only its place in the row belongs here; the look comes from `.console-button`. */
 .console-shell__submit {
   flex: 0 0 auto;
-  height: 30px;
   margin-right: 8px;
-  padding: 0 9px;
-  border: 1px solid var(--console-border-strong);
-  color: var(--console-muted);
-  background: transparent;
-  cursor: pointer;
-  font: inherit;
-  font-size: 0.72rem;
-}
-
-.console-shell__submit:hover,
-.console-shell__submit:focus-visible {
-  border-color: var(--console-accent);
-  color: var(--console-accent);
-  outline: none;
 }
 
 .console-shell__suggestions {
@@ -369,18 +440,29 @@ onMounted(() => {
   font: inherit;
 }
 
+/*
+ * No frame is left to mark the cursor, so the row it rests on is repainted in
+ * another scheme's accent. Because the colour is keyed to the row index, walking
+ * the list visibly changes it step by step.
+ */
 .console-shell__suggestion:hover,
 .console-shell__suggestion:focus-visible,
 .console-shell__suggestion.is-selected {
   border-color: var(--console-border-strong);
   color: var(--console-text);
-  background: var(--console-selection);
+  background: color-mix(in srgb, var(--console-row-accent, var(--console-accent)) 18%, transparent);
   outline: none;
 }
 
 .console-shell__suggestion code {
   color: var(--console-accent);
   font: inherit;
+}
+
+.console-shell__suggestion:hover code,
+.console-shell__suggestion:focus-visible code,
+.console-shell__suggestion.is-selected code {
+  color: var(--console-row-accent, var(--console-accent));
 }
 
 @media (max-width: 1100px) {

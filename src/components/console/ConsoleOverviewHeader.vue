@@ -17,13 +17,21 @@
           <strong>{{ config.title }}</strong>
         </div>
         <button
-          class="console-overview__classic"
+          class="console-button"
           type="button"
           aria-label="Switch to classic mode"
           title="Switch to classic mode"
           @click="setDisplayMode('standard')"
         >classic</button>
       </div>
+
+      <section class="console-overview__section">
+        <div class="console-overview__section-title">LINKS</div>
+        <dl class="console-overview__rows console-overview__links">
+          <div><dt>github</dt><dd><a :href="githubProfileUrl" target="_blank" rel="noopener noreferrer">{{ githubProfileUrl }}</a></dd></div>
+          <div><dt>template</dt><dd><a :href="repositoryUrl" target="_blank" rel="noopener noreferrer">{{ repositoryUrl }}</a></dd></div>
+        </dl>
+      </section>
 
       <section class="console-overview__section">
         <div class="console-overview__section-title">CONTENT</div>
@@ -38,9 +46,10 @@
       <section class="console-overview__section">
         <div class="console-overview__section-title">RUNTIME</div>
         <dl class="console-overview__rows">
-          <div><dt>started</dt><dd>{{ config.startedAt }}</dd></div>
           <div class="console-overview__uptime"><dt>uptime</dt><dd>{{ uptime.days }}d {{ uptime.hours }}h {{ uptime.minutes }}m {{ uptime.seconds }}s</dd></div>
-          <div class="console-overview__copyright"><dt>copyright</dt><dd>{{ footerMeta.copyrightText }}</dd></div>
+          <div><dt>theme</dt><dd>{{ theme }}</dd></div>
+          <div><dt>color</dt><dd>{{ colorScheme }}</dd></div>
+          <div class="console-overview__copyright"><dt>copyright</dt><dd>&copy; {{ footerMeta.copyrightYear }} <a class="console-overview__owner" :href="footerMeta.githubProfileUrl" target="_blank" rel="noopener noreferrer">{{ footerMeta.displayName }}</a></dd></div>
           <div class="console-overview__icp"><dt>icp</dt><dd><a v-if="footerMeta.icp" :href="footerMeta.icp.href" target="_blank" rel="noopener noreferrer">{{ footerMeta.icp.text }}</a><span v-else>not configured</span></dd></div>
         </dl>
       </section>
@@ -52,6 +61,8 @@
 import { RouterLink } from 'vue-router'
 import { useSiteOverview } from '../../composables/useSiteOverview'
 import { useDisplayModePreference } from '../../composables/useDisplayModePreference'
+import { useThemePreference } from '../../composables/useThemePreference'
+import { useColorSchemePreference } from '../../composables/useColorSchemePreference'
 import { getGitHubAvatarUrl } from '../../utils/githubAvatar'
 
 const {
@@ -59,8 +70,12 @@ const {
   stats,
   footerMeta,
   uptime,
+  githubProfileUrl,
+  repositoryUrl,
 } = useSiteOverview()
 const { setDisplayMode } = useDisplayModePreference()
+const { theme } = useThemePreference()
+const { colorScheme } = useColorSchemePreference()
 const configuredIcon = String(config.console?.icon || '').trim()
 const avatarUrl = configuredIcon || `${getGitHubAvatarUrl(config.githubUser)}?size=1024`
 const darkIconEffect = ['grayscale', 'whiten', 'original'].includes(config.console?.darkIconEffect || '')
@@ -89,23 +104,30 @@ const darkIconEffect = ['grayscale', 'whiten', 'original'].includes(config.conso
 
 .console-overview__portrait {
   position: relative;
-  display: block;
+  display: grid;
+  place-items: center;
   min-width: 0;
   height: 100%;
   min-height: 0;
   align-self: stretch;
   overflow: clip;
   border-right: 1px solid var(--console-border-strong);
-  background: var(--console-surface);
+  /* The plate reads as part of the banner, not as a panel laid on it, so it
+     takes the page background in both themes rather than the raised surface. */
+  background: var(--console-bg);
 }
 
 .console-overview__avatar {
   display: block;
-  width: 100%;
-  height: 100%;
+  /*
+   * The plate is sized by the banner row; only the artwork inside it is inset.
+   * Resizing the icon therefore cannot move the column edges. Centring the box
+   * splits the remaining sliver evenly instead of pooling it on two sides.
+   */
+  width: 94%;
+  height: 94%;
   max-height: none;
   object-fit: contain;
-  object-position: left top;
   filter: none;
   image-rendering: auto;
 }
@@ -169,23 +191,6 @@ const darkIconEffect = ['grayscale', 'whiten', 'original'].includes(config.conso
   white-space: nowrap;
 }
 
-.console-overview__classic {
-  min-height: 26px;
-  padding: 3px 8px;
-  border: 1px solid var(--console-border-strong);
-  border-radius: 0;
-  color: var(--console-muted);
-  background: transparent;
-  font: inherit;
-}
-
-.console-overview__classic:hover,
-.console-overview__classic:focus-visible {
-  color: var(--console-accent);
-  background: var(--console-selection);
-  outline: none;
-}
-
 .console-overview__section {
   margin-right: 20px;
   margin-left: 20px;
@@ -231,6 +236,27 @@ const darkIconEffect = ['grayscale', 'whiten', 'original'].includes(config.conso
   min-width: 0;
   margin: 0;
   overflow-wrap: anywhere;
+}
+
+.console-overview__owner {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* URLs are long enough to wrap the row in two; the banner has a fixed height, so
+   they are truncated instead of allowed to push the sections below out of it. */
+.console-overview__links dd {
+  overflow: hidden;
+  overflow-wrap: normal;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.console-overview__owner:hover,
+.console-overview__owner:focus-visible {
+  color: var(--console-accent);
+  text-decoration: underline;
+  outline: none;
 }
 
 .console-overview__stats {

@@ -5,9 +5,6 @@
 export type ConsoleMode = 'console' | 'standard'
 
 export type ConsolePanel =
-  | 'help'
-  | 'config'
-  | 'doctor'
   | 'theme'
   | 'color'
   | 'background'
@@ -32,12 +29,18 @@ export interface ConsoleCommandAvailability {
 export type ConsoleResolution =
   | { kind: 'route'; path: string; routeName: string }
   | { kind: 'comment' }
+  | { kind: 'export' }
   | { kind: 'panel'; panel: ConsolePanel; value?: string }
   | { kind: 'mode'; mode: ConsoleMode }
   | { kind: 'silent' }
 
+/**
+ * Only routes that the command line can reach. `/posts` is the command name for
+ * the archive route: the console speaks in posts and notes, so the pair reads as
+ * one family instead of borrowing the page's own title.
+ */
 const ROUTES: Record<string, { path: string; routeName: string }> = {
-  archive: { path: '/archive', routeName: 'archive' },
+  posts: { path: '/archive', routeName: 'archive' },
   notes: { path: '/notes', routeName: 'notes' },
   capture: { path: '/capture', routeName: 'capture' },
   infra: { path: '/infra', routeName: 'infra' },
@@ -45,13 +48,7 @@ const ROUTES: Record<string, { path: string; routeName: string }> = {
   tags: { path: '/tags', routeName: 'tags' },
   about: { path: '/about', routeName: 'about' },
   friends: { path: '/friends', routeName: 'friends' },
-  search: { path: '/search', routeName: 'search' },
-}
-
-const PANELS: Record<string, ConsolePanel> = {
-  help: 'help',
-  config: 'config',
-  doctor: 'doctor',
+  help: { path: '/help', routeName: 'help' },
 }
 
 const PANEL_VALUES: Record<string, { panel: ConsolePanel; values: Set<string> }> = {
@@ -100,6 +97,24 @@ export function resolveConsoleCommand(
       ? { kind: 'comment' }
       : { kind: 'silent' }
   }
+  if (key === 'export') {
+    return second === undefined && !rest.length && !command.query && !command.hash
+      ? { kind: 'export' }
+      : { kind: 'silent' }
+  }
+
+  /**
+   * `/search` is the only command that carries free text: everything after the
+   * command word is the query, so `/search vue router` reaches
+   * `/search?q=vue%20router`. The term travels as a query parameter rather than a
+   * path segment, which keeps the result page linkable outside the console.
+   */
+  if (key === 'search') {
+    const term = command.segments.slice(1).join(' ').trim()
+    if (!term) return { kind: 'route', path: routeWithSuffix('/search', command), routeName: 'search' }
+    if (command.query || command.hash) return { kind: 'silent' }
+    return { kind: 'route', path: `/search?q=${encoded(term)}`, routeName: 'search' }
+  }
 
   if (key === 'mode') {
     if (!secondKey && !rest.length) return { kind: 'panel', panel: 'mode' }
@@ -128,13 +143,6 @@ export function resolveConsoleCommand(
     return { kind: 'route', path: routeWithSuffix('/capture', command), routeName: 'capture' }
   }
 
-  const panel = PANELS[key]
-  if (panel) {
-    return second === undefined && !rest.length
-      ? { kind: 'panel', panel }
-      : { kind: 'silent' }
-  }
-
   const panelValue = PANEL_VALUES[key]
   if (panelValue) {
     if (rest.length || (secondKey && !panelValue.values.has(secondKey))) return { kind: 'silent' }
@@ -149,32 +157,46 @@ export function resolveConsoleCommand(
   return { kind: 'silent' }
 }
 
+/**
+ * Reading order of the command groups, with the heading each one gets on the
+ * `/help` page. The grouping lives here rather than in the page so that the
+ * suggestion rows and the reference page can never disagree about what a command
+ * is for.
+ */
+export const consoleCommandGroups = [
+  { id: 'navigate', title: 'Move around' },
+  { id: 'page', title: 'Act on the page you are reading' },
+  { id: 'appearance', title: 'Change how the site looks' },
+  { id: 'console', title: 'The console itself' },
+] as const
+
+export type ConsoleCommandGroup = typeof consoleCommandGroups[number]['id']
+
 export function listConsoleCommands(availability: ConsoleCommandAvailability = {}) {
   const commands = [
-    { input: '/home', description: 'Browse the Home timeline' },
-    { input: '/comment', description: 'Toggle comments for the current page' },
-    { input: '/config', description: 'Show resolved configuration' },
-    { input: '/doctor', description: 'Run availability checks' },
-    { input: '/archive', description: 'Browse posts by date' },
-    { input: '/post', description: 'Select a post' },
-    { input: '/notes', description: 'Browse notes by date' },
-    { input: '/note', description: 'Select a note' },
-    { input: '/capture', description: 'Browse captured assets' },
-    { input: '/infra', description: 'Inspect service status' },
-    { input: '/project', description: 'Browse projects' },
-    { input: '/tags', description: 'Browse tags' },
-    { input: '/about', description: 'Read site information' },
-    { input: '/friends', description: 'Browse friend links' },
-    { input: '/search', description: 'Search the workspace' },
-    { input: '/theme', description: 'Choose light or dark theme' },
-    { input: '/color', description: 'Choose a color scheme' },
-    { input: '/background', description: 'Configure the dynamic background' },
-    { input: '/language', description: 'Choose interface language' },
-    { input: '/mode', description: 'Choose Console or standard layout' },
-    { input: '/mode/classic', description: 'Return to the standard layout' },
-    { input: '/mode/console', description: 'Use Nexus Console' },
-    { input: '/help', description: 'Show command reference' },
-  ] as const
+    { input: '/home', description: 'Browse the Home timeline', group: 'navigate' },
+    { input: '/posts', description: 'Browse the post archive', group: 'navigate' },
+    { input: '/notes', description: 'Browse the note index', group: 'navigate' },
+    { input: '/comment', description: 'Jump to the comment box for this page', group: 'page' },
+    { input: '/export', description: 'Export this article as PDF', group: 'page' },
+    { input: '/post', description: 'Select a post', group: 'navigate' },
+    { input: '/note', description: 'Select a note', group: 'navigate' },
+    { input: '/capture', description: 'Browse captured assets', group: 'navigate' },
+    { input: '/infra', description: 'Inspect service status', group: 'navigate' },
+    { input: '/project', description: 'Browse projects', group: 'navigate' },
+    { input: '/tags', description: 'Browse tags', group: 'navigate' },
+    { input: '/about', description: 'Read site information', group: 'navigate' },
+    { input: '/friends', description: 'Browse friend links', group: 'navigate' },
+    { input: '/search', description: 'Search as you type, e.g. /search vue', group: 'navigate' },
+    { input: '/theme', description: 'Choose light or dark theme', group: 'appearance' },
+    { input: '/color', description: 'Choose a color scheme', group: 'appearance' },
+    { input: '/background', description: 'Configure the dynamic background', group: 'appearance' },
+    { input: '/language', description: 'Choose interface language', group: 'appearance' },
+    { input: '/mode', description: 'Choose Console or standard layout', group: 'console' },
+    { input: '/mode/classic', description: 'Return to the standard layout', group: 'console' },
+    { input: '/mode/console', description: 'Use Nexus Console', group: 'console' },
+    { input: '/help', description: 'Read the command reference', group: 'console' },
+  ] as const satisfies ReadonlyArray<{ input: string; description: string; group: ConsoleCommandGroup }>
 
   return commands.filter((command) => {
     const key = command.input.slice(1)

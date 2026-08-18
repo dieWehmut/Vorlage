@@ -58,9 +58,33 @@ const withHash = parser.parseConsoleInput('/note/CurrentAffairsReading?view=full
 check('query is retained', withHash?.query === 'view=full')
 check('hash is retained', withHash?.hash === '#section-one')
 
+const spacedSearch = parser.parseConsoleInput('/SEARCH Vue Router')
+check(
+  'a space after search opens a free-text argument',
+  spacedSearch?.segments?.length === 2
+    && spacedSearch.segments[0] === 'search'
+    && spacedSearch.segments[1] === 'Vue Router',
+)
+check('a search term stays readable in the command history', spacedSearch?.canonicalInput === '/search Vue Router')
+check('the slash form of a search term parses the same way', parser.parseConsoleInput('/search/vue')?.segments?.[1] === 'vue')
+check('a search with nothing after it has no argument', parser.parseConsoleInput('/search   ')?.segments?.length === 1)
+check(
+  'only argument commands split on a space',
+  parser.parseConsoleInput('/note Current Affairs')?.segments?.length === 1,
+)
+
 check('non slash input stays silent', parser.parseConsoleInput('archive')?.kind === 'silent')
 check('blank input stays silent', parser.parseConsoleInput('   ')?.kind === 'silent')
 check('malformed percent encoding stays silent', parser.parseConsoleInput('/note/bad%2')?.kind === 'silent')
+
+const listCommands = ['/POSTS', '/NOTES', '/EXPORT']
+for (const input of listCommands) {
+  const parsed = parser.parseConsoleInput(input)
+  check(
+    `${input} normalizes to its canonical lower-case command`,
+    parsed?.kind === 'command' && parsed.canonicalInput === input.toLowerCase(),
+  )
+}
 
 const removedCommands = [
   '/agent',
@@ -70,6 +94,10 @@ const removedCommands = [
   '/docker',
   '/workspace',
   '/model',
+  // Retired: the archive page is typed as /posts, never as its own path.
+  '/archive',
+  '/config',
+  '/doctor',
 ]
 for (const input of removedCommands) {
   check(`${input} stays silent after removal`, parser.parseConsoleInput(input)?.kind === 'silent')
