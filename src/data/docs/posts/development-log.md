@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-08-19T22:59:09+08:00
+date: 2026-08-19T23:41:25+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,7 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `e809155` 2026-08-19T23:41:25+08:00 - feat: give console capture the same contact sheet classic has
 - `9b327d0` 2026-08-19T22:59:09+08:00 - fix: stop a theme-conditional rule from repainting the whole document
 - `aaf35e3` 2026-08-19T21:44:50+08:00 - feat: slide the section strip so the selection stays in the middle
 - `2ac8237` 2026-08-19T21:18:43+08:00 - fix: let the row reach the headings the page cannot scroll to
