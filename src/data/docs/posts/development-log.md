@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-08-19T14:42:37+08:00
+date: 2026-08-19T22:59:09+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,13 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `9b327d0` 2026-08-19T22:59:09+08:00 - fix: stop a theme-conditional rule from repainting the whole document
+- `aaf35e3` 2026-08-19T21:44:50+08:00 - feat: slide the section strip so the selection stays in the middle
+- `2ac8237` 2026-08-19T21:18:43+08:00 - fix: let the row reach the headings the page cannot scroll to
+- `ccccd5b` 2026-08-19T21:02:23+08:00 - fix: let a heading the page was just sent to read as reached
+- `0a0e490` 2026-08-19T20:30:17+08:00 - fix: point the template link at the template
+- `9641d3b` 2026-08-19T20:17:03+08:00 - fix: stop the console portrait tinting itself under the cursor
+- `697bdea` 2026-08-19T20:15:17+08:00 - feat: give the dark theme a name that is not a colour
 - `d795ddc` 2026-08-19T14:42:37+08:00 - feat: teach the console to speak every language the site does
 - `af870ee` 2026-08-19T12:03:13+08:00 - feat: let a click on the console portrait cycle its icon form
 - `adaad35` 2026-08-19T00:45:35+08:00 - feat: caption the console prompt with the state its commands own

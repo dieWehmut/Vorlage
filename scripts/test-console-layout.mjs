@@ -113,6 +113,18 @@ check(
     && !/navRef\.value\.scrollLeft \+= event\.deltaY/.test(scrollSpy),
 )
 check(
+  // Nudging the strip just far enough to expose the selected box leaves that box
+  // against an edge, so on a long article the row shows nothing of the direction the
+  // reader is travelling in. Centring is the rule the prompt's own option list
+  // already follows; the boxes here are as wide as their titles, so it is written in
+  // pixels, and an assignment past either limit is clamped into the parking the
+  // helper does with Math.min/Math.max.
+  'the section strip holds the selection in the middle and re-aims only on a new section',
+  /nav\.scrollLeft \+= \(buttonRect\.left \+ buttonRect\.width \/ 2\) - \(navRect\.left \+ navRect\.width \/ 2\)/.test(scrollSpy)
+    && /if \(centredId === activeId\.value\) return/.test(scrollSpy)
+    && !/scrollLeft -= navRect\.left - buttonRect\.left \+ 12/.test(scrollSpy),
+)
+check(
   // The boxes are slot content, so they wear their host view's style scope and the
   // marker has to be global. Being global it ties with the surface those hosts give
   // their own cards, which is why the class is doubled rather than made important.
@@ -547,7 +559,11 @@ check(
   consoleOverview.includes('>LINKS<')
     && consoleOverview.indexOf('>LINKS<') < consoleOverview.indexOf('>CONTENT<')
     && consoleOverview.includes('githubProfileUrl')
-    && consoleOverview.includes('repositoryUrl')
+    // The template row names the repository the code came from, which is not this
+    // site's own: it used to be derived from githubUser/githubRepo, so every fork
+    // linked to itself under the label `template`.
+    && consoleOverview.includes('templateRepoUrl')
+    && !consoleOverview.includes('repositoryUrl')
     && /\.console-overview__links dd \{[^}]*text-overflow: ellipsis/.test(consoleOverview),
 )
 

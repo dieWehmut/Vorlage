@@ -35,7 +35,7 @@
         <div class="console-overview__section-title">LINKS</div>
         <dl class="console-overview__rows console-overview__links">
           <div><dt>github</dt><dd><a :href="githubProfileUrl" target="_blank" rel="noopener noreferrer">{{ githubProfileUrl }}</a></dd></div>
-          <div><dt>template</dt><dd><a :href="repositoryUrl" target="_blank" rel="noopener noreferrer">{{ repositoryUrl }}</a></dd></div>
+          <div><dt>template</dt><dd><a :href="templateRepoUrl" target="_blank" rel="noopener noreferrer">{{ templateRepoUrl }}</a></dd></div>
         </dl>
       </section>
 
@@ -53,8 +53,6 @@
         <div class="console-overview__section-title">RUNTIME</div>
         <dl class="console-overview__rows">
           <div class="console-overview__uptime"><dt>uptime</dt><dd>{{ uptime.days }}d {{ uptime.hours }}h {{ uptime.minutes }}m {{ uptime.seconds }}s</dd></div>
-          <div><dt>theme</dt><dd>{{ theme }}</dd></div>
-          <div><dt>color</dt><dd>{{ colorScheme }}</dd></div>
           <div class="console-overview__copyright"><dt>copyright</dt><dd>&copy; {{ footerMeta.copyrightYear }} <a class="console-overview__owner" :href="footerMeta.githubProfileUrl" target="_blank" rel="noopener noreferrer">{{ footerMeta.displayName }}</a></dd></div>
           <div class="console-overview__icp"><dt>icp</dt><dd><a v-if="footerMeta.icp" :href="footerMeta.icp.href" target="_blank" rel="noopener noreferrer">{{ footerMeta.icp.text }}</a><span v-else>not configured</span></dd></div>
         </dl>
@@ -68,8 +66,6 @@ import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useSiteOverview } from '../../composables/useSiteOverview'
 import { useDisplayModePreference } from '../../composables/useDisplayModePreference'
-import { useThemePreference } from '../../composables/useThemePreference'
-import { useColorSchemePreference } from '../../composables/useColorSchemePreference'
 import { useConsoleIconPreference } from '../../composables/useConsoleIconPreference'
 import { getGitHubAvatarUrl } from '../../utils/githubAvatar'
 
@@ -80,11 +76,9 @@ const {
   footerMeta,
   uptime,
   githubProfileUrl,
-  repositoryUrl,
+  templateRepoUrl,
 } = useSiteOverview()
 const { setDisplayMode } = useDisplayModePreference()
-const { theme } = useThemePreference()
-const { colorScheme } = useColorSchemePreference()
 const { iconForm, cycleIconForm } = useConsoleIconPreference()
 const configuredIcon = String(config.console?.icon || '').trim()
 const avatarUrl = configuredIcon || `${getGitHubAvatarUrl(config.githubUser)}?size=1024`
@@ -131,11 +125,14 @@ const avatarUrl = configuredIcon || `${getGitHubAvatarUrl(config.githubUser)}?si
   cursor: pointer;
 }
 
-/* Console mode draws no rules, so the plate marks hover and focus the way every
-   other console control does — by shifting its fill rather than ringing itself.
-   Only the sliver of plate around the inset artwork carries the shift, which is
-   enough to place the cursor without putting a line back on the page. */
-.console-overview__portrait:hover,
+/* The plate takes up a third of the banner, so shifting its fill was a third of
+   the page changing colour under a passing cursor — far more announcement than a
+   pointer needs. Hovering now says nothing; the artwork answers the click itself,
+   which is the whole affordance anyway.
+
+   Keyboard focus still has to be visible, and console mode draws no rules, so it
+   keeps the fill shift every other console control uses. Only the sliver of plate
+   around the inset artwork carries it. */
 .console-overview__portrait:focus-visible {
   background: var(--console-control-strong);
   outline: none;
@@ -178,7 +175,11 @@ const avatarUrl = configuredIcon || `${getGitHubAvatarUrl(config.githubUser)}?si
   filter: brightness(0) invert(1);
 }
 
-:global(html[data-theme="light"]) .console-overview__avatar--whiten {
+/* The scope attribute lands on the last compound selector, so the ancestor is
+   matched globally without `:global()` — which, wrapped around only the first
+   half of a descendant selector, would drop the half that names the target and
+   leave `filter: brightness(0)` on `<html>` itself. */
+:root[data-theme="light"] .console-overview__avatar--whiten {
   filter: brightness(0);
 }
 
@@ -198,7 +199,15 @@ const avatarUrl = configuredIcon || `${getGitHubAvatarUrl(config.githubUser)}?si
 .console-overview__dashboard {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  /*
+   * The sections sit at their own margins rather than being spread to fill the
+   * banner. `space-between` used to distribute the slack between them, which made
+   * the gaps a function of how much the banner happened to be taller than its
+   * contents — so trimming a row widened every gap instead of tightening the
+   * column. Pooling the slack after the last section keeps the spacing below the
+   * property of the margins alone.
+   */
+  justify-content: flex-start;
   box-sizing: border-box;
   min-width: 0;
   height: 100%;
@@ -244,13 +253,13 @@ const avatarUrl = configuredIcon || `${getGitHubAvatarUrl(config.githubUser)}?si
 }
 
 .console-overview__chrome + .console-overview__section {
-  margin-top: 12px;
+  margin-top: 9px;
 }
 
 .console-overview__section + .console-overview__section {
-  margin-top: 15px;
-  margin-bottom: 16px;
-  padding-top: 12px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding-top: 8px;
   border-top: 1px solid var(--console-border);
 }
 
