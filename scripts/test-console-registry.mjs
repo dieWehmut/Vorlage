@@ -57,6 +57,18 @@ check(
 check('theme rejects unknown values', registry.resolveConsoleCommand(command(['theme', 'nope'])).kind === 'silent')
 check('theme rejects extra segments', registry.resolveConsoleCommand(command(['theme', 'dark', 'extra'])).kind === 'silent')
 check('language accepts a supported value', registry.resolveConsoleCommand(command(['language', 'zh_tw'])).kind === 'panel')
+const bareIcon = registry.resolveConsoleCommand(command(['icon']))
+check('bare icon opens its picker', bareIcon.kind === 'panel' && bareIcon.panel === 'icon' && bareIcon.value === undefined)
+check(
+  'every icon form the plate cycles is also reachable by name',
+  ['grayscale', 'whiten', 'original', 'pixelated'].every((form) => {
+    const resolution = registry.resolveConsoleCommand(command(['icon', form]))
+    return resolution.kind === 'panel' && resolution.panel === 'icon' && resolution.value === form
+  }),
+)
+check('icon rejects unknown forms', registry.resolveConsoleCommand(command(['icon', 'sepia'])).kind === 'silent')
+check('icon rejects extra segments', registry.resolveConsoleCommand(command(['icon', 'original', 'extra'])).kind === 'silent')
+check('command reference includes the icon form picker', registry.listConsoleCommands().some((item) => item.input === '/icon'))
 check('command reference includes About', registry.listConsoleCommands().some((item) => item.input === '/about'))
 check('command reference includes Friends', registry.listConsoleCommands().some((item) => item.input === '/friends'))
 check('command reference includes the canonical Home route', registry.listConsoleCommands().some((item) => item.input === '/home'))
@@ -114,9 +126,16 @@ check(
   registry.resolveConsoleCommand(command(['search', 'vue'], { query: 'q=other' })).kind === 'silent'
     && registry.resolveConsoleCommand(command(['search', 'vue'], { hash: '#top' })).kind === 'silent',
 )
+// What the `/search` row actually says is a wording claim, so it is checked where
+// the wording lives: scripts/test-console-i18n.mjs. All the registry owes is a key.
 check(
-  'the search command reference teaches the free-text form',
-  registry.listConsoleCommands().some((item) => item.input === '/search' && item.description.includes('/search vue')),
+  'every command names its description instead of holding it',
+  registry.listConsoleCommands().every((item) => /^console\.command\.[a-z_]+$/.test(item.descriptionKey)),
+)
+check(
+  'no two commands answer to the same description key',
+  new Set(registry.listConsoleCommands().map((item) => item.descriptionKey)).size
+    === registry.listConsoleCommands().length,
 )
 const helpResolution = registry.resolveConsoleCommand(command(['help']))
 check(
@@ -125,6 +144,10 @@ check(
 )
 check('help rejects extra segments', registry.resolveConsoleCommand(command(['help', 'commands'])).kind === 'silent')
 const groupIds = new Set(registry.consoleCommandGroups.map((group) => group.id))
+check(
+  'every group names its heading instead of holding it',
+  registry.consoleCommandGroups.every((group) => /^console\.group\.[a-z]+$/.test(group.titleKey)),
+)
 check(
   'every command is filed under a declared group',
   registry.listConsoleCommands().every((item) => groupIds.has(item.group)),

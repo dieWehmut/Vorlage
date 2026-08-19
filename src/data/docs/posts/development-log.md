@@ -1,6 +1,6 @@
 ---
 title: 开发日志
-date: 2026-08-18T23:22:58+08:00
+date: 2026-08-19T14:42:37+08:00
 tags: [devlog, commit]
 ---
 
@@ -8,6 +8,10 @@ tags: [devlog, commit]
 
 本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
 
+- `d795ddc` 2026-08-19T14:42:37+08:00 - feat: teach the console to speak every language the site does
+- `af870ee` 2026-08-19T12:03:13+08:00 - feat: let a click on the console portrait cycle its icon form
+- `adaad35` 2026-08-19T00:45:35+08:00 - feat: caption the console prompt with the state its commands own
+- `6872abe` 2026-08-19T00:33:01+08:00 - feat: walk the console cursor off the progress row into the results
 - `dc92aef` 2026-08-18T23:22:58+08:00 - feat: pin the console progress row to the top of the page
 - `b9d7972` 2026-08-18T23:08:39+08:00 - fix: seat the console comment block against the content above it
 - `caadf1e` 2026-08-18T22:36:15+08:00 - fix: let the left and right keys steer a detail page's section row

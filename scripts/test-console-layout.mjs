@@ -38,6 +38,7 @@ const noteView = read('src/views/NoteView.vue')
 const homeView = read('src/views/HomeView.vue')
 const displayPreference = read('src/composables/useDisplayModePreference.ts')
 const scrollSpy = read('src/components/system/ScrollSpySidebar.vue')
+const consoleStatusLine = read('src/composables/useConsoleStatusLine.ts')
 const consoleStyles = read('src/styles/console.scss')
 const router = read('src/router.ts')
 const desktopTemplate = desktopLayout.split('<script setup')[0]
@@ -112,8 +113,49 @@ check(
     && !/navRef\.value\.scrollLeft \+= event\.deltaY/.test(scrollSpy),
 )
 check(
+  // The boxes are slot content, so they wear their host view's style scope and the
+  // marker has to be global. Being global it ties with the surface those hosts give
+  // their own cards, which is why the class is doubled rather than made important.
+  'the box under the keyboard cursor is marked globally and outranks its own surface',
+  /\.console-box-selected\.console-box-selected \{[^}]*background: color-mix\(in srgb, var\(--console-row-accent/.test(consoleStyles)
+    && monthNavigator.includes("const CONSOLE_BOX_SELECTED_CLASS = 'console-box-selected'")
+    && monthNavigator.includes('classList.toggle(CONSOLE_BOX_SELECTED_CLASS, selected)')
+    // Same accent cycle as the prompt's own menu, so one cursor reads one way.
+    && monthNavigator.includes("setProperty('--console-row-accent', rowAccent(index))")
+    && !/\.desktop-layout--console \.console-box-selected[^.{]*\{/.test(consoleStyles),
+)
+check(
+  'a box scrolling into view clears the row it is stuck under, from the row height itself',
+  /--console-top-row-height:\s*\d+px/.test(consoleLayoutBlock)
+    && /\.console-box-selected\.console-box-selected \{[^}]*scroll-margin-top: var\(--console-top-row-height\)/.test(consoleStyles)
+    && /__header \{[^}]*min-height: var\(--console-top-row-height\)/.test(monthNavigator),
+)
+check(
   'router hands the scroller to Console mode',
   /scrollBehavior\([\s\S]*?useDisplayModePreference\(\)\.isConsole\.value\) return false/.test(router),
+)
+check(
+  // One array, read straight off the live preferences, so a fork adds a reading by
+  // appending an entry rather than by touching the template.
+  'the status line reads back the state every preference command owns',
+  ['path', 'mode', 'theme', 'color', 'language', 'background']
+    .every((key) => new RegExp(`key: '${key}'`).test(consoleStatusLine))
+  && consoleStatusLine.includes('route.path')
+  && consoleStatusLine.includes('activeMode.value')
+  && consoleStatusLine.includes('dynamicBackgroundEnabled.value')
+  && consoleShell.includes('const { segments: statusSegments } = useConsoleStatusLine()')
+  && /v-for="\(segment, index\) in statusSegments"/.test(consoleShellTemplate),
+)
+check(
+  // Last in the dock: the prompt keeps its menu directly beneath it, and with
+  // nothing transient open this lands right under the input, as pictured.
+  'the status line sits below the prompt without splitting it from its suggestions',
+  consoleShellTemplate.indexOf('console-shell__status')
+    > consoleShellTemplate.indexOf('console-shell__transient')
+  && /\.console-shell__status \{[^}]*padding: 0 12px 0 var\(--console-prompt-indent\)/.test(consoleShell)
+  // Values a step brighter than the dots between them.
+  && /\.console-shell__status \{[^}]*color: var\(--console-dim\)/.test(consoleShell)
+  && /\.console-shell__status-value \{[^}]*color: var\(--console-muted\)/.test(consoleShell),
 )
 check('mobile layout does not mount the console shell', !mobileLayout.includes('ConsoleShell'))
 check('mobile layout does not mount the Console overview', !mobileLayout.includes('ConsoleOverviewHeader'))
@@ -174,8 +216,10 @@ check(
     && /@media \(prefers-reduced-motion: reduce\) \{\s*\.console-shell__caret \{[^}]*animation: none/.test(consoleShell),
 )
 check(
+  // Where the marker sits is this suite's claim; what it says is translated now, so
+  // the wording is checked in scripts/test-console-i18n.mjs instead.
   'the INSERT marker rides the far end of the row, clear of the slash column',
-  consoleShellTemplate.includes('-- INSERT --')
+  consoleShellTemplate.includes("t('console.shell.insert')")
     && consoleShellTemplate.indexOf('console-shell__mode') > consoleShellTemplate.indexOf('console-shell__field')
     && consoleShellTemplate.indexOf('console-shell__mode') < consoleShellTemplate.indexOf('console-shell__submit'),
 )
@@ -237,7 +281,12 @@ check(
 check(
   'suggestion filtering lives in the pure console module',
   consoleSession.includes("from '../console/suggestions'")
-    && /return filterConsoleSuggestions\(prefix, listConsoleCommands\(commandAvailability\), dynamicOptions\)/.test(consoleSession)
+    // The registry's rows now pass through a `map` that turns each description key
+    // into text, so the command list reaches the filter as a local rather than
+    // inline. What matters is unchanged: the registry supplies the rows and the pure
+    // module does the filtering, with no second cap applied here.
+    && /const commands = listConsoleCommands\(commandAvailability\)/.test(consoleSession)
+    && /return filterConsoleSuggestions\(prefix, commands, dynamicOptions\)/.test(consoleSession)
     && !consoleSession.includes('options.slice(0, 12)'),
 )
 const removedPanelCommands = [
@@ -298,11 +347,20 @@ check(
 check('Console overview component exists', Boolean(consoleOverview))
 check('Console avatar occupies the left third', /grid-template-columns:\s*minmax\(0,\s*1fr\)\s+minmax\(0,\s*2fr\)\s*;/.test(consoleOverview))
 check('Console overview is flush with both viewport edges', /width:\s*100%\s*;/.test(consoleOverview) && /margin:\s*0\s*;/.test(consoleOverview))
-check('Console overview avatar is grayscale only', /filter:\s*grayscale\(1\)\s*;/.test(consoleOverview))
+check('Console overview avatar draws grayscale through a form of its own', /--grayscale \{[^}]*filter:\s*grayscale\(1\)\s*;/.test(consoleOverview))
 check('Console overview avatar stays fully visible', /object-fit:\s*contain\s*;/.test(consoleOverview))
+// The four icon forms are `test-console-avatar.mjs`'s subject. All this file asks
+// is that the base rule stays neutral, so each form adds its own look rather than
+// fighting a default, and that the coarse form's sampling cannot leak onto it.
 check(
-  'Console overview avatar keeps normal bitmap rendering',
-  /image-rendering:\s*auto\s*;/.test(consoleOverview) && !/image-rendering:\s*(?:pixelated|crisp-edges)/.test(consoleOverview),
+  'the avatar rule itself stays neutral so every icon form opts in',
+  /filter:\s*none\s*;/.test(consoleOverviewAvatarBlock)
+    && /image-rendering:\s*auto\s*;/.test(consoleOverviewAvatarBlock),
+)
+check(
+  'coarse sampling is confined to the form that asks for it',
+  !/image-rendering:\s*(?:pixelated|crisp-edges)/.test(consoleOverviewAvatarBlock)
+    && /--pixelated \{[^}]*image-rendering:\s*pixelated/.test(consoleOverview),
 )
 check(
   'Console overview keeps only compact content and runtime sections',
@@ -337,13 +395,15 @@ check(
 )
 
 /**
- * How much of the plate the icon takes, as a whole percent, and 0 unless both
- * axes agree — an icon inset on one axis only would gain a lopsided margin.
+ * How much of the plate the icon takes, as a whole percent, read from the token
+ * both axes are sized from. 0 unless both axes actually resolve through it — an
+ * icon inset on one axis only would gain a lopsided margin.
  */
 function avatarInset() {
-  const width = consoleOverviewAvatarBlock.match(/width:\s*(\d+)%/)?.[1]
-  const height = consoleOverviewAvatarBlock.match(/height:\s*(\d+)%/)?.[1]
-  return width && width === height ? Number(width) : 0
+  const inset = consoleOverviewAvatarBlock.match(/--console-icon-inset:\s*(\d+)%/)?.[1]
+  const bothAxes = /width:\s*var\(--console-icon-inset\)/.test(consoleOverviewAvatarBlock)
+    && /height:\s*var\(--console-icon-inset\)/.test(consoleOverviewAvatarBlock)
+  return inset && bothAxes ? Number(inset) : 0
 }
 check(
   'Console overview renders shared statistics and footer metadata',
