@@ -19,7 +19,6 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      VITE_CODE_RUNNER_MODE: ${{ vars.VITE_CODE_RUNNER_MODE }}
       VITE_CODE_RUNNER_API_URL: ${{ vars.VITE_CODE_RUNNER_API_URL }}
       VITE_CODE_RUNNER_API_TOKEN: ${{ vars.VITE_CODE_RUNNER_API_TOKEN }}
 
@@ -56,9 +55,7 @@ jobs:
           else
             export BASE_PATH="/${repo_name}/"
           fi
-          export VITE_CODE_RUNNER_MODE="${VITE_CODE_RUNNER_MODE:-frontend}"
           echo "BASE_PATH=$BASE_PATH"
-          echo "VITE_CODE_RUNNER_MODE=$VITE_CODE_RUNNER_MODE"
           pnpm run build
 
       - name: Setup Pages
