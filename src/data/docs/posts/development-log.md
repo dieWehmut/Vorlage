@@ -1,13 +1,22 @@
 ---
 title: Development Log
-date: 2026/08/21 14:24
+date: 2026/08/21 21:25
 tags: [devlog, commit]
 ---
 
 # Development Log
 
-Generated from source commit `5160c20779f419e365f763a5f66d67abc4113a05`.
+Generated from source commit `7514d8553297e1e1a03eeae8699efbcc2698ac2c`.
 
+- 7514d85 2026-08-21T21:25:57+08:00 - fix: harden progress rail and template regression
+- d3c52d3 2026-08-21T20:58:15+08:00 - test(infra): cover strict local proxy status
+- f709cb4 2026-08-21T20:57:32+08:00 - docs(deploy): document Infra probe configuration
+- c103948 2026-08-21T20:57:17+08:00 - fix(scroll): make progress rail jumps immediate
+- cda0862 2026-08-21T20:43:03+08:00 - fix(infra): probe CORS-blocked services through proxy
+- bc8f4ac 2026-08-21T20:36:05+08:00 - fix(scroll): map progress rail to page position
+- 4326d93 2026-08-21T20:11:23+08:00 - test(scroll): define page progress mapping
+- 932301b 2026-08-21T19:56:12+08:00 - docs: plan infra probe and scroll rail implementation
+- be4449e 2026-08-21T19:50:10+08:00 - docs: design infra probe and scroll rail fixes
 - 5160c20 2026-08-21T14:24:27+08:00 - fix(infra): treat only HTTP 200 as online
 - a623884 2026-08-21T14:22:22+08:00 - test(infra): require exact HTTP 200 status
 - 213b667 2026-08-21T14:21:11+08:00 - ci(template): log target lease SHA

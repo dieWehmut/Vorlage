@@ -22,6 +22,7 @@
     "test:console-comment": "node scripts/test-console-comment.mjs",
     "test:console-i18n": "node scripts/test-console-i18n.mjs",
     "test:heading-navigation": "node scripts/test-heading-navigation.mjs",
+    "test:scroll-progress": "node scripts/test-scroll-progress.mjs",
     "test:scroll-hash-navigation": "node scripts/test-scroll-hash-navigation.mjs",
     "test:color-scheme": "node scripts/test-color-scheme.mjs",
     "test:scoped-styles": "node scripts/test-scoped-styles.mjs",
