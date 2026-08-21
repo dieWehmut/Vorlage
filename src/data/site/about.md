@@ -1,10 +1,8 @@
 ## About This Site
 
-This site is built with the [diesuwa-starter](https://github.com/dieWehmut/diesuwa-starter) template.
+This site is built with the [Vorlage](https://github.com/dieWehmut/Vorlage) template.
 
-- Template demo: [https://diewehmut.github.io/diesuwa-starter/](https://diewehmut.github.io/diesuwa-starter/)
+- Template demo: [https://diewehmut.github.io/Vorlage/](https://diewehmut.github.io/Vorlage/)
 - Production demo: [https://diewehmut.github.io/](https://diewehmut.github.io/)
 
-## Copyright
-
-All content on this site is subject to a CC-BY-NC license unless otherwise stated.
+Replace this page with your own profile and project information.

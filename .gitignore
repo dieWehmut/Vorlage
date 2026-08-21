@@ -45,5 +45,4 @@ prompt/
 sample/
 backend
 .playwright-mcp
-docs
 .claude/worktrees

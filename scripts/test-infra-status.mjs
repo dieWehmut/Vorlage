@@ -1,9 +1,17 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import { execFileSync } from 'node:child_process'
+import { fileURLToPath } from 'node:url'
 import ts from 'typescript'
+import {
+  findForbiddenIntegrationReferences,
+  listProjectFiles,
+} from './infra-integration-scan.mjs'
 
-const root = path.resolve(import.meta.dirname, '..')
+const rootFlag = process.argv.indexOf('--root')
+const requestedRoot = rootFlag === -1 ? process.env.INFRA_STATUS_ROOT : process.argv[rootFlag + 1]
+const root = requestedRoot
+  ? path.resolve(requestedRoot)
+  : path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const checks = []
 
 function check(label, condition) {
@@ -33,17 +41,31 @@ if (probe) {
     'https://service.example',
     async (input, init) => {
       directCalls.push([input, init])
-      return { ok: false, status: 503 }
+      return { ok: true, status: 200 }
     },
   )
-  check('resolved opaque request is online', directOnline === 'online')
+  check('HTTP 200 response is online', directOnline === 'online')
   check(
-    'production request opts out of CORS status reads',
-    directCalls.length === 1 && directCalls[0][1]?.mode === 'no-cors',
+    'production request reads the HTTP status',
+    directCalls.length === 1 && directCalls[0][1]?.mode === undefined,
   )
   check(
     'production request bypasses cached reachability',
     directCalls.length === 1 && directCalls[0][1]?.cache === 'no-store',
+  )
+
+  const nonOkStatuses = [0, 201, 204, 301, 400, 404, 500, 503]
+  const nonOkResults = await Promise.all(
+    nonOkStatuses.map((status) =>
+      probe.probeDirectUrl(
+        `https://service.example/status/${status}`,
+        async () => ({ ok: status >= 200 && status < 300, status }),
+      ),
+    ),
+  )
+  check(
+    'every HTTP status except 200 is offline',
+    nonOkResults.every((status) => status === 'offline'),
   )
 
   const directOffline = await probe.probeDirectUrl(
@@ -59,6 +81,12 @@ if (probe) {
     async () => ({ ok: true, json: async () => ({ online: true }) }),
   )
   check('positive local proxy result is online', proxyOnline === 'online')
+
+  const proxyNonOk = await probe.probeProxyUrl(
+    'https://service.example/status/503',
+    async () => ({ ok: true, json: async () => ({ online: false }) }),
+  )
+  check('local proxy marks a non-200 upstream response offline', proxyNonOk === 'offline')
 
   const proxyOffline = await probe.probeProxyUrl(
     'https://service.example',
@@ -76,7 +104,7 @@ if (probe) {
 
   check(
     'probe results contain only online and offline',
-    [directOnline, directOffline, proxyOnline, proxyOffline, proxyFailure].every((status) =>
+    [directOnline, ...nonOkResults, directOffline, proxyOnline, proxyNonOk, proxyOffline, proxyFailure].every((status) =>
       ['online', 'offline'].includes(status),
     ),
   )
@@ -88,16 +116,22 @@ if (probe) {
       isDev: false,
       fetchImpl: async (input, init) => {
         productionCalls.push([input, init])
-        return { ok: true }
+        return { ok: true, status: 200 }
       },
     })
     check(
-      'production dispatcher selects direct no-cors probing',
+      'production dispatcher selects direct strict-status probing',
       productionStatus === 'online' &&
         productionCalls.length === 1 &&
         productionCalls[0][0] === 'https://production.example' &&
-        productionCalls[0][1]?.mode === 'no-cors',
+        productionCalls[0][1]?.mode === undefined,
     )
+
+    const productionFailureStatus = await probe.probeUrl('https://production.example/failure', {
+      isDev: false,
+      fetchImpl: async () => ({ ok: false, status: 503 }),
+    })
+    check('production dispatcher marks HTTP 503 offline', productionFailureStatus === 'offline')
 
     const developmentCalls = []
     await probe.probeUrl('https://development.example', {
@@ -141,45 +175,12 @@ check(
 const removedComposable = path.join(root, 'src/composables', `use${'Ku' + 'ma'}Status.ts`)
 check('status-page integration composable is removed', !fs.existsSync(removedComposable))
 
-const trackedPaths = execFileSync(
-  'git',
-  ['ls-files'],
-  { cwd: root, encoding: 'utf8' },
-)
-  .split(/\r?\n/)
-  .filter(Boolean)
-  .filter((file) => fs.existsSync(path.join(root, file)))
-
-const forbiddenProduct = ['ku', 'ma'].join('')
-const forbiddenPathMatches = trackedPaths.filter((file) =>
-  file.toLowerCase().includes(forbiddenProduct),
-)
-const trackedTextFiles = trackedPaths
-  .filter((file) => /\.(?:ts|tsx|vue|mjs|js|json|ya?ml|md)$/.test(file))
-  .filter((file) => file !== 'scripts/test-infra-status.mjs')
-
-const forbiddenContentMatches = trackedTextFiles.filter((file) => {
-  const content = fs.readFileSync(path.join(root, file), 'utf8')
-  return content.toLowerCase().includes(forbiddenProduct)
-})
+const trackedPaths = listProjectFiles(root)
+const forbiddenReferences = findForbiddenIntegrationReferences(root, trackedPaths)
 check(
   'tracked application and starter files contain no status-page product integration',
-  forbiddenPathMatches.length === 0 && forbiddenContentMatches.length === 0,
+  forbiddenReferences.pathMatches.length === 0 && forbiddenReferences.contentMatches.length === 0,
 )
-
-const starterSyncPath = path.join(root, '.github/workflows/sync-starter.yml')
-if (fs.existsSync(starterSyncPath)) {
-  const starterSyncSource = fs.readFileSync(starterSyncPath, 'utf8')
-  check(
-    'starter repository description advertises binary reachability',
-    /binary infrastructure reachability dashboard/i.test(starterSyncSource) &&
-      !/server uptime monitoring/i.test(starterSyncSource),
-  )
-  check(
-    'generated starter deployment enforces the Infra status regression',
-    /Verify Infra status probing[\s\S]*?pnpm test:infra-status/.test(starterSyncSource),
-  )
-}
 
 const deploySource = fs.readFileSync(path.join(root, '.github/workflows/deploy.yml'), 'utf8')
 check(
@@ -191,8 +192,10 @@ const pingProxySource = fs
   .readFileSync(path.join(root, 'vite.config.ts'), 'utf8')
   .match(/function pingProxy\(\): Plugin \{[\s\S]*?\r?\n\}\r?\n\r?\nexport default/)?.[0] ?? ''
 check(
-  'local ping proxy returns no latency or upstream HTTP status detail',
-  Boolean(pingProxySource) && !/latency|status:\s*upstream/.test(pingProxySource),
+  'local ping proxy reports online only for upstream HTTP 200',
+  Boolean(pingProxySource) &&
+    /online:\s*upstream\.status\s*===\s*200/.test(pingProxySource) &&
+    !/latency|status:\s*upstream/.test(pingProxySource),
 )
 
 const failures = checks.filter(([, ok]) => !ok)

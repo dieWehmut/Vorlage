@@ -1,13 +1,12 @@
 import { ref } from 'vue'
+import type { SiteProjectGroup } from '../../types/content'
 
-export const apps = ref([
+export const apps = ref<SiteProjectGroup[]>([
   {
     name: 'Apps',
     autoLoad: true,
     description: 'Static apps list',
-    manualItems: [
-      // Add your apps here
-    ],
+    manualItems: [],
   },
 ])
 

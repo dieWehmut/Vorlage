@@ -1,5 +1,5 @@
 {
-  "name": "diesuwa-starter",
+  "name": "vorlage",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,7 +9,6 @@
     "content:sync": "pnpm run docs:sync && pnpm run capture:sync",
     "dev": "pnpm run content:sync && vite",
     "runner:smoke": "node scripts/smoke-code-runner.mjs",
-    "test:markdown-render": "node scripts/test-markdown-render.mjs",
     "test:console-command": "node scripts/test-console-command.mjs",
     "test:console-state": "node scripts/test-console-state.mjs",
     "test:console-selection": "node scripts/test-console-selection.mjs",
@@ -21,7 +20,6 @@
     "test:console-layout": "node scripts/test-console-layout.mjs",
     "test:console-route-parity": "node scripts/test-console-route-parity.mjs",
     "test:console-comment": "node scripts/test-console-comment.mjs",
-    "test:console-avatar": "node scripts/test-console-avatar.mjs",
     "test:console-i18n": "node scripts/test-console-i18n.mjs",
     "test:heading-navigation": "node scripts/test-heading-navigation.mjs",
     "test:scroll-hash-navigation": "node scripts/test-scroll-hash-navigation.mjs",
@@ -29,11 +27,9 @@
     "test:scoped-styles": "node scripts/test-scoped-styles.mjs",
     "test:site-overview": "node scripts/test-site-overview.mjs",
     "test:infra-status": "node scripts/test-infra-status.mjs",
-    "test:console": "pnpm test:console-command && pnpm test:console-state && pnpm test:console-selection && pnpm test:console-timeline && pnpm test:console-registry && pnpm test:console-suggestions && pnpm test:console-target && pnpm test:console-display-mode && pnpm test:console-comment && pnpm test:console-avatar && pnpm test:console-i18n && pnpm test:site-overview && pnpm test:console-layout && pnpm test:console-route-parity && pnpm test:heading-navigation && pnpm test:scroll-hash-navigation && pnpm test:color-scheme && pnpm test:scoped-styles",
     "typecheck": "vue-tsc --noEmit",
     "build": "pnpm run content:sync && node --max-old-space-size=4096 ./node_modules/vite/bin/vite.js build",
-    "preview": "vite preview",
-    "runner:smoke:docs": "node scripts/smoke-sandkasten-doc.mjs"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.2",

@@ -2,18 +2,12 @@ import type { FriendLink } from '../../types/content'
 
 export const friends: FriendLink[] = [
   {
-    id: 'nexus-author',
-    name: 'diesw',
-    description: 'diesuwa-starter template author',
+    id: 'template-author',
+    name: 'dieWehmut',
+    description: 'Vorlage template author',
     url: 'https://diewehmut.github.io/',
     avatar: 'https://avatars.githubusercontent.com/dieWehmut',
   },
-  // Add your friend links here:
-  // {
-  //   id: 'friend-1',
-  //   name: 'Friend Name',
-  //   description: 'A short description',
-  //   url: 'https://friend-site.com',
-  //   avatar: 'https://avatars.githubusercontent.com/friend-username',
-  // },
 ]
+
+export default friends

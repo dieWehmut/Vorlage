@@ -1,407 +1,424 @@
 ---
-title: 开发日志
-date: 2026-08-20T17:49:41+08:00
+title: Development Log
+date: 2026/08/21 14:24
 tags: [devlog, commit]
 ---
 
-# 开发日志
+# Development Log
 
-本文档由导出流程根据仓库 commit 历史自动生成，日期取最新 commit 时间。
+Generated from source commit `5160c20779f419e365f763a5f66d67abc4113a05`.
 
-- `a4748a7` 2026-08-20T17:49:41+08:00 - fix: give the template a config the compiler can check
-- `62738a0` 2026-08-20T00:34:53+08:00 - feat: let the status line report the icon form it was missing
-- `816c108` 2026-08-20T00:34:37+08:00 - fix: serve the console icon from the channel a CI checkout can reach
-- `e809155` 2026-08-19T23:41:25+08:00 - feat: give console capture the same contact sheet classic has
-- `9b327d0` 2026-08-19T22:59:09+08:00 - fix: stop a theme-conditional rule from repainting the whole document
-- `aaf35e3` 2026-08-19T21:44:50+08:00 - feat: slide the section strip so the selection stays in the middle
-- `2ac8237` 2026-08-19T21:18:43+08:00 - fix: let the row reach the headings the page cannot scroll to
-- `ccccd5b` 2026-08-19T21:02:23+08:00 - fix: let a heading the page was just sent to read as reached
-- `0a0e490` 2026-08-19T20:30:17+08:00 - fix: point the template link at the template
-- `9641d3b` 2026-08-19T20:17:03+08:00 - fix: stop the console portrait tinting itself under the cursor
-- `697bdea` 2026-08-19T20:15:17+08:00 - feat: give the dark theme a name that is not a colour
-- `d795ddc` 2026-08-19T14:42:37+08:00 - feat: teach the console to speak every language the site does
-- `af870ee` 2026-08-19T12:03:13+08:00 - feat: let a click on the console portrait cycle its icon form
-- `adaad35` 2026-08-19T00:45:35+08:00 - feat: caption the console prompt with the state its commands own
-- `6872abe` 2026-08-19T00:33:01+08:00 - feat: walk the console cursor off the progress row into the results
-- `dc92aef` 2026-08-18T23:22:58+08:00 - feat: pin the console progress row to the top of the page
-- `b9d7972` 2026-08-18T23:08:39+08:00 - fix: seat the console comment block against the content above it
-- `caadf1e` 2026-08-18T22:36:15+08:00 - fix: let the left and right keys steer a detail page's section row
-- `d128331` 2026-08-18T21:59:46+08:00 - feat: scale console thumbnails and buttons from shared tokens
-- `c097566` 2026-08-18T21:58:24+08:00 - feat: list the profile and template repositories in the console dashboard
-- `b2aa78c` 2026-08-18T21:55:58+08:00 - fix: restore the console about page's contact icons
-- `5645fa0` 2026-08-18T20:35:59+08:00 - feat: draw a vim block caret on the console prompt
-- `d9abf5e` 2026-08-18T15:53:56+08:00 - fix: black out the dark portrait plate and shrink console section chips
-- `372178a` 2026-08-18T15:21:34+08:00 - feat: grow the console portrait icon to nearly fill its plate
-- `f76a991` 2026-08-18T15:09:26+08:00 - feat: mark the console cursor with another scheme's accent
-- `6d51f25` 2026-08-18T14:26:31+08:00 - feat: strip every rule from console mode
-- `6b19408` 2026-08-18T12:27:39+08:00 - merge: fix infra binary status probing
-- `2fe08bb` 2026-08-18T12:16:04+08:00 - test(infra): validate generated starter deployment
-- `de6eb4a` 2026-08-18T12:08:09+08:00 - test(infra): enforce production probe dispatch
-- `1b71d7c` 2026-08-18T11:44:22+08:00 - fix(infra): use binary reachability on static hosting
-- `ef82cb8` 2026-08-18T11:37:32+08:00 - feat: inset the console portrait icon without moving its plate
-- `6f3f7a9` 2026-08-18T11:36:34+08:00 - test(infra): define binary production status contract
-- `05a3105` 2026-08-18T11:06:09+08:00 - feat: turn /help into a page that documents the console
-- `514cb9b` 2026-08-18T09:57:33+08:00 - feat: search from the console prompt as the term is typed
-- `7e556a1` 2026-08-18T08:53:48+08:00 - feat: add /posts /notes list commands and an /export article action
-- `cd84f6f` 2026-08-18T07:19:35+08:00 - feat: collapse the console dock once an option has been chosen
-- `28e8455` 2026-08-18T07:13:19+08:00 - feat: keep console comments on the page and make /comment jump to them
-- `09a4d56` 2026-08-18T02:10:20+08:00 - feat: show five console option rows in a window that rides the viewport bottom
-- `4b898e7` 2026-08-18T01:51:16+08:00 - refactor: state console bar position as a percentage instead of arrows
-- `bbd5f82` 2026-08-18T01:27:46+08:00 - feat: reveal console sub-entries only once their parent is typed
-- `8b35951` 2026-08-18T00:12:42+08:00 - refactor: retire the /doctor /config /notes /archive console commands
-- `7333cfa` 2026-08-17T23:54:27+08:00 - feat: lead console friend rows with an avatar instead of the raw id
-- `9080dca` 2026-08-17T23:48:52+08:00 - refactor: stop echoing each console page's own route above its content
-- `009bf58` 2026-08-17T23:15:24+08:00 - feat: preview theme and color while the cursor roams the options
-- `320e4b3` 2026-08-17T23:15:12+08:00 - feat: report theme and color in the console runtime panel
-- `6438ae8` 2026-08-17T22:28:10+08:00 - chore: ignore local claude worktrees
-- `9094f64` 2026-08-17T22:26:17+08:00 - style: align the console prompt caret with every option row
-- `a944005` 2026-08-17T22:09:40+08:00 - feat: align selected console output with the top of the page
-- `de175d4` 2026-08-17T21:46:26+08:00 - fix: unbreak build by dropping the png import from site config
-- `502ff81` 2026-08-17T21:43:33+08:00 - refactor: scroll the console with the whole document
-- `ded705d` 2026-08-17T21:06:03+08:00 - feat: widen monochrome contrast and tie heart cursors to accent
-- `e488913` 2026-08-17T20:19:31+08:00 - Merge branch 'worktree-monochrome-schemes'
-- `b29ff54` 2026-08-17T20:12:51+08:00 - test: pin the scheme label and preview swatch
-- `d30be27` 2026-08-17T20:08:06+08:00 - feat: use terminal mark for console toggle
-- `4d49d85` 2026-08-17T20:05:05+08:00 - refactor: hide root slash from console menu
-- `590c629` 2026-08-17T20:02:38+08:00 - feat: make console portrait configurable
-- `f17c4d5` 2026-08-17T19:56:32+08:00 - feat: add console title and classic switch
-- `19ad2b6` 2026-08-17T19:50:37+08:00 - fix: flow console prompt after results
-- `d93f0f2` 2026-08-17T19:46:11+08:00 - fix: restore console tag navigation
-- `96e913d` 2026-08-17T19:46:04+08:00 - test: chain the color scheme suite into test:console
-- `57d2f3d` 2026-08-17T19:42:29+08:00 - fix: keep the scheme swatch visible on the light theme
-- `a7ba1ae` 2026-08-17T19:42:29+08:00 - feat: add white and black monochrome color schemes
-- `7dbff48` 2026-08-17T19:35:46+08:00 - fix: restore console capture context
-- `8179293` 2026-08-17T18:12:03+08:00 - test: align color scheme suite with sibling conventions
-- `b09f380` 2026-08-17T17:56:50+08:00 - fix: bound console capture previews
-- `de76c6e` 2026-08-17T17:44:34+08:00 - refactor: derive color scheme guard from the registry
-- `82ea8ce` 2026-08-17T17:41:55+08:00 - refactor: compact and pin console overview
-- `4bfb581` 2026-08-17T16:53:02+08:00 - feat: replace console month arrows with date tabs
-- `78f6ed1` 2026-08-17T16:47:21+08:00 - feat: make console menus cyclic and reversible
-- `7a87303` 2026-08-17T16:00:04+08:00 - refactor: remove obsolete console commands
-- `601413e` 2026-08-17T15:31:53+08:00 - fix: flush console portrait and open panels downward
-- `45c8036` 2026-08-17T15:31:52+08:00 - test: lock console thirds and downward panels
-- `2987614` 2026-08-17T14:41:22+08:00 - fix: isolate console chrome and comments
-- `bc3d3ef` 2026-08-17T14:41:22+08:00 - feat: dock console input and reveal output
-- `9a84399` 2026-08-17T14:41:21+08:00 - feat: add rich console overview header
-- `08e911b` 2026-08-17T14:24:58+08:00 - refactor: share home stats and footer data
-- `94ba27a` 2026-08-17T14:12:49+08:00 - feat: wire explicit console comments
-- `e9dad01` 2026-08-17T14:12:48+08:00 - feat: add console root and canonical home route
-- `5749c49` 2026-08-17T14:03:31+08:00 - feat: define shared site overview model
-- `66d52ea` 2026-08-17T14:03:30+08:00 - feat: define explicit console comment state
-- `4094d17` 2026-08-17T12:57:18+08:00 - test: define console v2 contracts
-- `a81e64b` 2026-08-17T05:14:11+08:00 - fix: constrain console command workspace
-- `2a8b46d` 2026-08-17T05:10:13+08:00 - fix: respect console route feature flags
-- `65fbdcc` 2026-08-17T04:35:19+08:00 - fix: ignore unknown console data targets
-- `78fcc9e` 2026-08-17T04:34:53+08:00 - fix: stabilize console viewport and keyboard flow
-- `3bba123` 2026-08-17T04:34:33+08:00 - fix: preserve console document and search actions
-- `cc4b746` 2026-08-17T03:47:29+08:00 - fix: complete console empty and section navigation
-- `9a78f7e` 2026-08-17T03:34:49+08:00 - style: stabilize console typography
-- `bb31704` 2026-08-17T03:29:13+08:00 - fix: preserve console route parity
-- `4083d83` 2026-08-17T03:19:07+08:00 - fix: complete console keyboard navigation
-- `4c65f8f` 2026-08-17T03:06:57+08:00 - fix: preserve console route controls
-- `865bcd8` 2026-08-17T02:44:39+08:00 - fix: track console result viewport scrolling
-- `9124e1c` 2026-08-17T02:41:09+08:00 - fix: align console comments and footer
-- `24d0a91` 2026-08-17T02:40:22+08:00 - feat: move console document navigation above content
-- `ac675a0` 2026-08-17T02:37:12+08:00 - feat: add console capture timeline and detail
-- `461f55d` 2026-08-17T02:36:14+08:00 - fix: stabilize console month entry rendering
-- `fcec073` 2026-08-17T02:31:15+08:00 - style: flatten console route layouts
-- `4c56e25` 2026-08-17T02:29:12+08:00 - feat: add console search result table
-- `1bf44a8` 2026-08-17T02:27:17+08:00 - fix: disable page progress decoration in console
-- `1165df3` 2026-08-17T02:25:22+08:00 - feat: add console not-found result
-- `b26f3d7` 2026-08-17T02:25:12+08:00 - fix: reset console panel on shell remount
-- `f07d84f` 2026-08-17T02:22:24+08:00 - fix: remove hidden console controls from tab order
-- `713f9d8` 2026-08-17T02:20:53+08:00 - feat: add console about contact panel
-- `908d62d` 2026-08-17T02:19:31+08:00 - style: normalize shared console result rows
-- `1806299` 2026-08-17T02:17:20+08:00 - feat: add console friends table
-- `0d066f7` 2026-08-17T02:11:00+08:00 - fix: avoid double decoding console route params
-- `19b99ab` 2026-08-17T02:10:20+08:00 - feat: add console project table
-- `5e940fe` 2026-08-17T02:04:49+08:00 - feat: add console infrastructure table
-- `86a1266` 2026-08-17T01:59:44+08:00 - feat: add console tag detail timeline
-- `d39dbd4` 2026-08-17T01:58:15+08:00 - feat: add nested console command selectors
-- `1a7ba99` 2026-08-17T01:52:14+08:00 - feat: add console home month navigation
-- `8c873d8` 2026-08-17T01:48:10+08:00 - feat: add console tag index
-- `5c29edd` 2026-08-17T01:45:10+08:00 - fix: normalize console setting commands
-- `918b163` 2026-08-17T01:41:31+08:00 - refactor: isolate display mode resolution
-- `0897d96` 2026-08-17T01:32:50+08:00 - test: specify display mode persistence contract
-- `9b8d4f8` 2026-08-17T01:31:19+08:00 - feat: apply console language commands
-- `53ff725` 2026-08-17T01:28:39+08:00 - feat: add horizontal console section navigation
-- `df64240` 2026-08-17T01:22:09+08:00 - fix: preserve literal capture ids during lookup
-- `96dc327` 2026-08-17T01:19:35+08:00 - feat: add console monthly archive navigation
-- `17bd2a3` 2026-08-17T01:13:39+08:00 - fix: execute console suggestions on selection
-- `ad97f2d` 2026-08-17T01:09:21+08:00 - fix: preserve case-sensitive console route ids
-- `91e8b4b` 2026-08-17T01:06:46+08:00 - fix: initialize console mode before mount
-- `a63e548` 2026-08-17T01:04:32+08:00 - fix: suppress decorative effects in console mode
-- `5e4e69f` 2026-08-17T01:01:03+08:00 - feat: add desktop console mode control
-- `870be5b` 2026-08-17T00:58:17+08:00 - feat: mount desktop Nexus Console shell
-- `aabf104` 2026-08-17T00:49:42+08:00 - feat: add console shell and settings panels
-- `6e0d4ab` 2026-08-17T00:42:32+08:00 - fix: keep desktop-first mode across mobile visits
-- `d767e0e` 2026-08-17T00:40:57+08:00 - feat: add console session command execution
-- `40bf9df` 2026-08-17T00:35:56+08:00 - feat: persist desktop console display mode
-- `fe859ab` 2026-08-17T00:35:37+08:00 - feat: add console command registry
-- `1aae246` 2026-08-17T00:32:50+08:00 - test: specify console command registry
-- `c8a1c22` 2026-08-17T00:25:39+08:00 - feat: add console command and timeline core
-- `0105092` 2026-08-17T00:17:54+08:00 - test: specify console command and timeline contracts
-- `b83e727` 2026-08-16T20:21:39+08:00 - fix(markdown): handle speaker clicks on svg icons
-- `905c058` 2026-08-15T01:08:22+08:00 - fix(navigation): follow article hashes after async render
-- `425feeb` 2026-08-14T23:58:18+08:00 - refactor(markdown): generate stable heading anchors
-- `0a3330f` 2026-08-14T23:28:47+08:00 - feat(pdf): preserve vocabulary rows and theme colors
-- `22264a2` 2026-08-14T23:17:26+08:00 - feat(markdown): add vocabulary pronunciation playback
-- `2d9a12b` 2026-08-14T21:46:21+08:00 - 添加agentrouter codex配置
-- `6baeadf` 2026-08-14T21:42:16+08:00 - docs(reading): mark key phrases with underline
-- `e4fecd6` 2026-08-14T21:27:44+08:00 - test(markdown): add rendering regression checks
-- `4ccac80` 2026-08-14T21:22:28+08:00 - fix(markdown): restore underlines and theme-relative colors
-- `6d2542e` 2026-08-14T18:59:17+08:00 - 添加外刊md
-- `cdc3bda` 2026-08-14T00:43:33+08:00 - feat(pdf): 标题更突出、引用竖线变细、目录美化、链接补全绝对地址；网页引用与标题同步优化
-- `bb30946` 2026-08-14T00:18:47+08:00 - feat(pdf): 导出 PDF 增加目录、元信息分组与标签、代码语言头、引用强调条，排版贴近网页
-- `977ecf8` 2026-08-14T00:01:46+08:00 - fix(notes): 笔记 updated 时间大小写不敏感取 git 历史，Notes 卡片显示更新时间
-- `6107fc6` 2026-08-13T23:58:22+08:00 - feat(pdf): 改用 pdfmake 自研生成 PDF，配色跟随当前主题
-- `6024e57` 2026-08-13T23:06:40+08:00 - fix(breadcrumb): 移动端面包屑只显示两级路由，隐藏当前章节
-- `15f3156` 2026-08-13T22:42:28+08:00 - feat(breadcrumb): 文章页最右侧新增 PDF 导出按钮
-- `c339ba8` 2026-08-13T22:37:36+08:00 - feat(breadcrumb): 面包屑跟随滚动进度显示当前章节
-- `fdc0575` 2026-08-13T22:31:45+08:00 - perf(markdown): 大文章渐进分块渲染，加载时显示圆圈动画
-- `832edf7` 2026-08-13T22:18:06+08:00 - style(scrollbar): 全局滚动条再细一点
-- `96a7a46` 2026-08-13T22:02:26+08:00 - perf(infra): 轨道旋转改为 CSS 合成器动画并平滑外环路径
-- `f8aff98` 2026-08-11T14:11:55+08:00 - perf(giscus): 评论区重挂推迟到空闲时段，避免卡住页面过渡
-- `f3fdd4b` 2026-08-11T14:10:10+08:00 - perf(router): 加快页面切换：瞬时回顶、悬停预取、缩短过渡时长
-- `3271ba1` 2026-08-11T13:59:33+08:00 - style(cursor): 切向流线再细一点、再长一点
-- `2f7e271` 2026-08-11T13:59:03+08:00 - feat(cursor): 点环与流线仅在动态背景开启时显示
-- `d3b3674` 2026-08-11T13:58:48+08:00 - fix(friends): 补全 AkiMisaka 友链的 https 协议前缀
-- `0e1ba48` 2026-08-09T23:55:18+08:00 - feat(friends): 添加新朋友链接和描述 fix(generated): 更新文档的更新时间
-- `ef7ef69` 2026-07-18T19:50:34+08:00 - style(cursor): 流线更细更长并用贝塞尔弯曲，不再笔直
-- `aa37467` 2026-07-18T19:42:01+08:00 - feat(cursor): 每条弹性链最外点旋转时拖细小切向流线，颜色一致
-- `93ed5ec` 2026-07-18T19:32:06+08:00 - feat(cursor): 光标点环静止时缓慢自旋
-- `9d8370f` 2026-07-18T01:41:18+08:00 - fix(infra): 仅 HTTP 200 判为 online，其余一律 offline，移除 no-cors 误判兜底
-- `b358ebf` 2026-07-18T01:32:15+08:00 - perf(infra): 节流轨道动画重算，消除 /infra 页光标卡顿
-- `7c7fe00` 2026-07-17T23:21:07+08:00 - perf(layout): 优化页面切换过渡，快速淡出+平滑淡入更丝滑
-- `30248e7` 2026-07-17T23:17:00+08:00 - docs(about): Copyright 声明采用 CC BY-SA 4.0 许可协议
-- `07e3bfa` 2026-07-17T23:16:37+08:00 - style(infra): 固定 online 为绿色、offline 为红色，不随主题配色变化
-- `b379baa` 2026-07-17T22:47:34+08:00 - feat(theme): 打开网页时随机选定配色
-- `d2b3f2d` 2026-07-17T22:11:09+08:00 - perf(BounceCursor): 点环改用脏矩形清除，消除鼠标移动卡顿
-- `f632577` 2026-07-17T21:39:51+08:00 - feat(theme): 新增全局粉色配色方案
-- `7e3724f` 2026-07-17T21:33:10+08:00 - feat(BounceCursor): 点环颜色跟随当前主题 accent 色
-- `11542e8` 2026-07-15T21:35:46+08:00 - 小补
-- `75045d4` 2026-07-15T21:34:31+08:00 - harness自进化初探
-- `2c333ca` 2026-07-12T15:18:20+08:00 - fix(cardGroups): decouple page-list limit from capture-image preview limit
-- `0fe5c1d` 2026-07-12T15:06:11+08:00 - revert(cardGroups): restore CARD_GROUP_LIMIT back to 9
-- `5509939` 2026-07-12T15:02:54+08:00 - feat(ScrollSpySidebar): bidirectional scroll sync with page content
-- `6e824eb` 2026-07-12T14:46:38+08:00 - fix(markdown): mind map node visibility on light theme
-- `c51244e` 2026-07-12T14:45:25+08:00 - feat(ProjectListItem): add icons, only websites show Open button
-- `be984b8` 2026-07-12T14:44:21+08:00 - fix(cardGroups): remove card group limit to render all content on every page
-- `6ea007a` 2026-07-12T14:43:24+08:00 - fix(MarkdownContent): render all content synchronously instead of progressively
-- `282dc3a` 2026-07-10T22:21:30+08:00 - feat(article): restructure article header meta with CC BY-SA license
-- `3112767` 2026-07-10T22:21:21+08:00 - style(FloatButton): smooth panel expand/collapse with staggered animations
-- `2d374fd` 2026-07-10T22:21:13+08:00 - feat(i18n): add project category translations in 6 languages
-- `01a65f6` 2026-07-10T22:20:50+08:00 - fix(search): show all search results instead of capping at 9
-- `5e3ba36` 2026-07-10T20:28:22+08:00 - 添加Tauri文档
-- `0034caf` 2026-07-09T21:21:03+08:00 - Add configurable site color schemes
-- `48d32dc` 2026-07-09T21:01:57+08:00 - Show overflow counts on limited cards
-- `e024d0b` 2026-07-09T20:50:27+08:00 - Update pve setup packages
-- `6e7fcff` 2026-07-09T20:25:50+08:00 - Limit card previews and preload navigation
-- `dd25835` 2026-07-09T19:02:44+08:00 - docs: update template guide
-- `bdae720` 2026-07-09T08:29:16Z - chore: sync capture assets
-- `380c2c5` 2026-07-09T16:28:27+08:00 - feat: add cognitiveScience note and emit docs-meta.json on asset sync
-- `3533f1c` 2026-07-09T15:10:05+08:00 - infra: load service icons at runtime from diesw-assets
-- `8765dad` 2026-07-09T11:09:42+08:00 - revert: drop monogatari 404 redirect from user site
-- `1d17749` 2026-07-09T10:29:05+08:00 - feat: guide monogatari deep links from the 404 fallback
-- `9e87d0b` 2026-07-08T21:54:29+08:00 - fix(mobile): pin header calendar button to the right edge
-- `78b8965` 2026-07-08T20:42:24+08:00 - perf: cache sakura petal gradients and split vendor chunks
-- `8f9d3a7` 2026-07-08T20:20:53+08:00 - feat(project): add Templates category with starter repos
-- `c6df6b0` 2026-07-08T20:12:13+08:00 - chore: sync docs metadata timestamps
-- `5135e73` 2026-07-07T22:40:51+08:00 - docs: update agent and pve notes
-- `dddc7ca` 2026-07-07T22:39:44+08:00 - fix(infra): animate orbit nodes
-- `088d7af` 2026-07-07T21:55:26+08:00 - fix(infra): stabilize orbit layout
-- `316b5e3` 2026-07-07T20:37:09+08:00 - feat(infra): refine icons and orbit status
-- `0c423a5` 2026-07-04T13:41:27Z - chore: sync capture assets
-- `6e85f91` 2026-07-04T21:41:01+08:00 - 完善文档
-- `02b51d7` 2026-07-04T21:31:55+08:00 - fix: limit capture preview grid
-- `9384d1c` 2026-06-18T14:32:46+08:00 - fix(docs): remove \tag{} and 概念： prefixes from computingMethod notes
-- `b0f7f67` 2026-06-18T14:23:30+08:00 - fix(dev): anchor HMR scroll restore to render completion
-- `7b421a3` 2026-06-17T22:32:57+08:00 - perf(markdown): paint first chunk immediately, drain rest in batches
-- `13505d6` 2026-06-17T22:25:21+08:00 - fix(scroll-spy): reliable TOC jump and active auto-follow
-- `77e5f31` 2026-06-17T14:08:28Z - chore: sync capture assets
-- `bbc2d18` 2026-06-17T22:07:05+08:00 - feat(ui): label preview card timestamp as "Updated"
-- `17ad5e3` 2026-06-16T15:26:56+08:00 - fix(dev): preserve scroll position during markdown HMR
-- `7bbaf84` 2026-06-16T12:07:43+08:00 - style(markdown): visualize heading-anchor TOC lists as cards
-- `c5072fa` 2026-06-16T11:58:17+08:00 - feat(dev): swap full-reload md HMR for granular cache bust
-- `31187fa` 2026-06-16T11:46:59+08:00 - fix(markdown): restore KaTeX SVG vertical alignment
-- `c8ef304` 2026-06-16T11:40:08+08:00 - style(markdown): keep code toolbar on a single row on mobile
-- `b996f69` 2026-06-16T11:36:05+08:00 - style(markdown): tighten code block toolbar to button height
-- `67deea8` 2026-06-16T11:27:51+08:00 - feat(preview): keep markdown line breaks in summary cards
-- `a441a93` 2026-06-16T11:05:16+08:00 - feat(dev): hot-reload markdown sources during dev
-- `7831730` 2026-06-16T10:35:41+08:00 - 统一小驼峰命名
-- `f53ff05` 2026-06-16T00:21:42+08:00 - ci(starter): auto-update repo description & homepage on sync
-- `96984d5` 2026-06-16T00:20:12+08:00 - docs(starter): highlight Sandkasten + Uptime Kuma integration
-- `bb9da9a` 2026-06-16T00:16:14+08:00 - feat(starter): ship sample infra & project data with feature flags on
-- `1ce7b3a` 2026-06-16T00:14:01+08:00 - feat(infra): integrate Uptime Kuma status as primary source
-- `4646166` 2026-06-15T22:12:08+08:00 - 补充文档
-- `f252416` 2026-06-15T22:06:56+08:00 - fix(markdown): pin gutter widths so rendered and edit modes align
-- `9184067` 2026-06-15T21:59:33+08:00 - fix(markdown): make fold chevron clickable and bigger
-- `52133dc` 2026-06-15T21:53:37+08:00 - fix(markdown): keep fold chevron visible after sanitization
-- `e6a5ef6` 2026-06-15T21:21:31+08:00 - style(markdown): match Monaco fold chevron size and shape
-- `1097038` 2026-06-15T21:16:14+08:00 - feat(markdown): add inline fold chevrons to rendered code blocks
-- `a45f63f` 2026-06-15T21:07:01+08:00 - revert(markdown): restore line numbers and Monaco folding controls
-- `e8436fd` 2026-06-15T20:48:56+08:00 - fix(markdown): align code start position and add collapse toggle
-- `623dd54` 2026-06-15T20:20:59+08:00 - style: align code position between rendered and edit modes
-- `10db96f` 2026-06-15T19:56:47+08:00 - style: paint iframe render scrollbars with site accent green
-- `fe7dee4` 2026-06-15T19:53:47+08:00 - fix: stop auto-scrolling after run/render finishes
-- `a1c998f` 2026-06-15T19:49:26+08:00 - fix: skip 'GitHub 登录中' state when already authenticated
-- `060ccea` 2026-06-15T19:47:41+08:00 - style: align code block visuals between rendered and edit modes
-- `493a010` 2026-06-15T19:42:26+08:00 - style: drop heavy shadows under light theme
-- `fa4dd36` 2026-06-15T19:30:10+08:00 - fix: restore dynamic background visibility under content layer
-- `5ae9e31` 2026-06-15T19:04:46+08:00 - 更新文档
-- `1819fb8` 2026-06-14T16:57:09Z - style: add mesh background to view area
-- `05c5fc7` 2026-06-14T16:54:10Z - perf: speed up markdown editor activation
-- `1fd1d48` 2026-06-14T16:36:30Z - feat: gate markdown code runners
-- `839e504` 2026-06-14T14:16:00Z - Make Sandkasten examples more realistic
-- `9ca6a4b` 2026-06-14T14:15:45Z - Render markdown code blocks lighter
-- `91de74f` 2026-06-14T12:47:38Z - Block markdown shortcut keys
-- `e727984` 2026-06-14T12:22:59Z - Reduce run-all markdown output churn
-- `0a211d0` 2026-06-14T12:19:17Z - Render markdown code blocks with read-only Monaco
-- `6c9edf3` 2026-06-14T10:56:18Z - fix: send runner requests as json
-- `50bf9f6` 2026-06-14T07:31:33Z - chore: refresh Sandkasten doc metadata
-- `ff9bcbb` 2026-06-14T07:30:42Z - feat: add Monaco markdown code editor
-- `e86866f` 2026-06-14T07:30:07Z - chore: prepare Monaco markdown editor build
-- `bdcac1d` 2026-06-14T04:34:03Z - Keep Octave only and speed batch runs
-- `827f951` 2026-06-14T03:10:18Z - Improve Sandkasten login gating and runner polling
-- `3685b6a` 2026-06-14T02:46:01Z - Update content stat labels
-- `fbb159e` 2026-06-14T02:07:19Z - Improve Sandkasten rendering UX and smoke coverage
-- `f75c8b6` 2026-06-13T17:37:10Z - fix: tolerate missing private capture assets
-- `bcd5870` 2026-06-13T17:31:27Z - chore: refresh sandkasten doc metadata
-- `e2e0200` 2026-06-13T17:31:11Z - test: verify sandkasten doc examples
-- `2dcce87` 2026-06-13T06:23:38Z - fix: align sandkasten document runners
-- `4823aad` 2026-06-13T14:03:44+08:00 - feat: expand code runner to full language set, add renderable output, add ScrollSpySidebar to search page
-- `796bd5f` 2026-06-13T13:39:44+08:00 - 补充backend参考
-- `77a4084` 2026-06-13T13:37:40+08:00 - docs: add full Sandkasten runtime test post, update code runner section
-- `ebac497` 2026-06-13T13:28:22+08:00 - docs: expand README, fix about.md links, sync template title
-- `05079df` 2026-06-11T14:00:49Z - Revert "feat: add runtimes landing route"
-- `6bc9612` 2026-06-11T13:33:20Z - feat: add runtimes landing route
-- `19d3207` 2026-06-11T12:48:50Z - test: smoke code runner without preflight
-- `aeedcc9` 2026-06-11T12:46:31Z - perf: wait for short code runs in one request
-- `4c82de3` 2026-06-11T12:44:05Z - perf: avoid code runner CORS preflight
-- `d0847dd` 2026-06-11T12:29:53Z - fix: redact backend paths in code runner output
-- `be6e951` 2026-06-11T19:58:51+08:00 - fix: expand infra outer nodes horizontally
-- `6c4f876` 2026-06-11T19:47:24+08:00 - fix: tighten infra outer orbit radius
-- `e436ec1` 2026-06-11T19:43:36+08:00 - feat: refine infra orbit layout
-- `c86458e` 2026-06-11T19:42:47+08:00 - refactor: remove redundant page headings
-- `9104d46` 2026-06-11T19:41:54+08:00 - docs: update infra and setup notes
-- `52534ed` 2026-06-11T16:17:20+08:00 - 添加最后更新显示
-- `18a9f00` 2026-06-11T15:44:12+08:00 - feat: add last updated timestamp to generated documentation and views
-- `5257400` 2026-06-11T15:27:22+08:00 - Refactor timeline display in CaptureView, HomeView, NotesView, TagDetailView, and TagsView
-- `5c4d0e6` 2026-06-10T23:53:29+08:00 - fix: order tag detail entries by date
-- `16f0857` 2026-06-10T22:22:54+08:00 - feat: update .gitignore to include additional image formats and remove obsolete assets
-- `3f6ddd7` 2026-06-10T22:03:34+08:00 - feat: add infrastructure asset syncing and update InfraView component
-- `8b77aea` 2026-06-10T22:03:18+08:00 - Remove obsolete image files and update documentation structure
-- `b5f84dc` 2026-06-10T13:07:07Z - feat: attach files to runnable code blocks
-- `a1cfd5b` 2026-06-10T12:41:46Z - feat: use sandkasten backend code runner only
-- `9461839` 2026-06-09T06:13:11Z - feat: add sandkasten backend runner mode
-- `0c42f4a` 2026-06-09T13:19:28+08:00 - feat: add word count and reading minutes to posts and notes
-- `53c3126` 2026-06-09T10:30:31+08:00 - feat: add Go source normalization for comments and strings in runCode
-- `1c7a2a7` 2026-06-09T10:00:46+08:00 - Merge branch 'main' of https://github.com/dieWehmut/dieWehmut.github.io
-- `11799a2` 2026-06-09T10:00:43+08:00 - feat: add markdown documentation generation and improve content loading
-- `0e99974` 2026-06-08T15:20:47Z - chore: sync capture assets
-- `c93e35d` 2026-06-08T23:19:45+08:00 - fix go examples runner issues
-- `5a5ddc8` 2026-06-08T21:06:19+08:00 - fix: update title in go-learning.md to reflect correct terminology
-- `ae61831` 2026-06-08T00:18:34+08:00 - Update site metadata and docs
-- `cc58d8c` 2026-06-08T00:18:14+08:00 - Optimize content previews and routes
-- `55d9a9f` 2026-06-08T00:17:49+08:00 - Improve markdown media runtime
-- `6499e52` 2026-06-08T00:17:11+08:00 - Add generated study note captures
-- `6d3c409` 2026-06-07T22:38:29+08:00 - Resolve capture asset URLs under base path
-- `b1ba617` 2026-06-07T22:04:10+08:00 - Show markdown source images by default
-- `7a18a56` 2026-06-07T21:42:16+08:00 - Style editable markdown blocks
-- `de76da0` 2026-06-07T21:42:04+08:00 - Add editable markdown code and math blocks
-- `2e9925b` 2026-06-05T22:59:52+08:00 - Tighten desktop content spacing
-- `bce958b` 2026-06-05T22:51:24+08:00 - Apply mobile capture grid sizing to list
-- `ef184e5` 2026-06-05T22:41:51+08:00 - Use two-column mobile capture detail for pairs
-- `95b8739` 2026-06-05T22:39:01+08:00 - Scope capture detail thumbnail layout to mobile
-- `fee70f0` 2026-06-05T22:33:54+08:00 - Make capture detail thumbnails square
-- `74d1646` 2026-06-05T22:29:08+08:00 - Restore capture scroll after comments
-- `1469b69` 2026-06-05T22:12:39+08:00 - Show capture detail images in three columns
-- `1b00dcd` 2026-06-05T22:03:31+08:00 - Group capture comments by timestamp
-- `0427dde` 2026-06-05T19:40:58+08:00 - Split capture giscus configuration
-- `4205580` 2026-06-05T19:38:31+08:00 - Add capture detail comments view
-- `c961934` 2026-06-04T20:57:41+08:00 - docs: clarify site and starter readmes
-- `8fcc5bc` 2026-06-04T20:52:57+08:00 - feat: refine layout and starter export
-- `bd05709` 2026-06-04T00:04:39+08:00 - chore: update starter naming and license
-- `7e64af2` 2026-06-03T23:15:20+08:00 - fix: update starter template sync
-- `903984a` 2026-06-03T22:05:02+08:00 - feat: animate floating settings button
-- `cd65285` 2026-06-03T22:04:56+08:00 - feat: add calendar icon to project dates
-- `de39ac6` 2026-06-03T20:33:11+08:00 - fix: sync capture assets from assets repository
-- `1fc484a` 2026-06-03T12:01:30Z - chore: sync capture assets
-- `08d5064` 2026-06-03T20:01:06+08:00 - fix: initialize empty assets repository
-- `27ab929` 2026-06-03T19:37:41+08:00 - fix: isolate assets git authentication
-- `37b06d6` 2026-06-03T19:31:03+08:00 - chore: normalize GitHub avatar URLs
-- `b6a24c6` 2026-06-03T18:30:55+08:00 - fix: validate assets repository token
-- `a070c6b` 2026-06-03T15:19:32+08:00 - fix: bootstrap assets branch checkout
-- `dcddf16` 2026-06-03T15:10:54+08:00 - fix: configure assets checkout ref
-- `87e47bc` 2026-06-03T14:37:29+08:00 - chore: refine capture sync workflow
-- `36dfd4c` 2026-06-03T00:30:21+08:00 - feat: add capture functionality and integrate capture assets into views
-- `359497c` 2026-06-01T18:33:01+08:00 - 更新朋友列表中的描述，提供更准确的信息
-- `fa2bc51` 2026-05-30T19:21:59+08:00 - 修复GitHub page环境变量读取
-- `ff51af3` 2026-05-28T23:38:56+08:00 - 0
-- `e41eaea` 2026-05-28T22:27:43+08:00 - 1
-- `8ba3a79` 2026-05-28T21:52:11+08:00 - feat: add multilingual support by creating translated README files in English and Traditional Chinese
-- `acb6f6b` 2026-05-28T21:39:32+08:00 - feat: enhance markdown rendering with KaTeX support and improve UI components
-- `3888355` 2026-05-28T20:56:19+08:00 - feat: streamline deployment workflows by removing redundant pnpm setup and adding starter token check
-- `815e25b` 2026-05-28T20:38:57+08:00 - feat: update deployment workflow to use pnpm for package management
-- `903dff1` 2026-05-28T20:32:40+08:00 - feat: update color variables for improved theme consistency and styling
-- `275fd01` 2026-05-28T20:05:07+08:00 - feat: centralize site configuration and improve UI interactions
-- `dedab01` 2026-05-28T18:53:36+08:00 - refactor: remove deprecated notes and posts, update note rendering
-- `c5dc9d5` 2026-05-28T15:47:25+08:00 - Refactor views for improved layout and styling
-- `f5f4457` 2026-05-28T12:47:57+08:00 - feat: add InfraView, NotFoundView, NotesView, ProjectView, SearchView, TagDetailView, and TagsView components
-- `1da36f1` 2026-05-27T00:19:54+08:00 - 删掉文件相关导航
-- `d1cf773` 2026-05-26T21:42:51+08:00 - 优化BounceCursor和FocusView组件，重构样式和事件处理，提升性能和可维护性
-- `4651394` 2026-05-22T21:36:02+08:00 - 优化搜索栏样式以适应全宽，添加自定义插件以支持GitHub Pages的404页面处理
-- `45061ea` 2026-05-22T21:01:19+08:00 - Update package-lock.json to fix CI
-- `0fcc025` 2026-05-22T20:54:49+08:00 - 删除favicon.svg文件，更新NavButtons和SearchBar组件的样式
-- `1b0bd57` 2026-05-22T20:36:45+08:00 - Merge branch 'main' of https://github.com/dieWehmut/dieWehmut.github.io
-- `9f01aac` 2026-05-22T20:36:15+08:00 - 添加GitHub Pages部署工作流
-- `a73e9ca` 2026-05-20T19:28:35+08:00 - 优化焦点视图的鼠标悬停效果，调整粒子和樱花画布的参数，增强URL状态检查的代理功能
-- `9e6f857` 2026-05-18T21:40:08+08:00 - 优化中心圈样式
-- `2afdb3c` 2026-05-18T21:31:07+08:00 - 初步添加Focus视图
-- `80e9693` 2026-05-18T14:21:45+08:00 - 优化响应式布局：调整搜索栏、侧边栏和卡片样式以适应移动设备
-- `272dabc` 2026-05-17T22:01:27+08:00 - 添加service条目；初步调整侧边栏排版
-- `176c4ef` 2026-05-16T22:09:14+08:00 - 调整侧边栏和应用布局，更新多语言文件中的“最后更新”文本为“最近 commit”
-- `0b6b23f` 2026-05-16T22:03:16+08:00 - 重构应用结构：更新标题，调整样式，移除引导动画组件，优化侧边栏和搜索栏布局
-- `6aa3442` 2026-05-15T12:08:31+08:00 - Refactor sidebar component: remove bio and location fields from UI and localization files
-- `f8415b2` 2026-03-03T11:12:02+08:00 - 修复构建bug
-- `4ae5597` 2026-03-02T18:36:33+08:00 - 按钮样式跟新
-- `279fcad` 2026-02-28T21:21:38+08:00 - 重置光标样式
-- `a96aca2` 2026-02-28T18:16:19+08:00 - 初步重置主题样式
-- `2a1d5f5` 2026-02-28T17:01:55+08:00 - 实现自定义添加内容
-- `7feca4d` 2026-01-26T01:09:14+08:00 - 9
-- `f95a7e6` 2025-12-26T15:35:16+08:00 - 文档补充
-- `2a42acc` 2025-12-26T15:29:25+08:00 - 修复单双栏切换问题
-- `f8bc381` 2025-12-24T16:50:43+08:00 - 修复日期覆盖问题
-- `28173f2` 2025-11-04T19:48:24+08:00 - 修复GitHub api调用
-- `ef60ddb` 2025-11-04T19:07:50+08:00 - 优化样式
-- `2377026` 2025-11-04T18:39:45+08:00 - 全部自动化
-- `2caa99c` 2025-11-04T14:27:23+08:00 - pages自动化
-- `5d15bc3` 2025-11-04T13:13:18+08:00 - 补充item内容
-- `62ef8a6` 2025-10-30T21:17:42+08:00 - 添加单双栏切换按钮
-- `f961f4f` 2025-10-30T15:38:29+08:00 - 补充ba网络站
-- `0aa42c6` 2025-10-29T21:34:29+08:00 - 添加缓存
-- `a8c2e0b` 2025-10-29T20:52:31+08:00 - 修复搜索栏问题
-- `21ba28c` 2025-10-29T19:24:57+08:00 - 将GitHubActivity转移到profile
-- `9748687` 2025-10-29T18:35:23+08:00 - 优化按钮样式
-- `da708c1` 2025-10-29T15:38:45+08:00 - 添加Tools栏
-- `2bc3a7c` 2025-10-29T13:57:06+08:00 - 添加拉丁语
-- `5593106` 2025-10-29T13:24:43+08:00 - 添加纯净模式
-- `1b9986a` 2025-10-29T12:49:03+08:00 - 修复悬浮按钮bug
-- `054230f` 2025-10-29T00:10:48+08:00 - 抽出更多组件
-- `bcc7ac8` 2025-10-28T19:22:06+08:00 - 改为玻璃窗
-- `60439c2` 2025-10-28T18:28:05+08:00 - 添加多语言设置
-- `9d4c2c6` 2025-10-28T16:26:37+08:00 - 页面美化
-- `6912caa` 2025-10-28T00:18:29+08:00 - 大改一点
-- `0c00d28` 2025-10-10T14:27:47+08:00 - 0
-- `9f6594c` 2025-10-10T14:24:55+08:00 - 0
-- `a2813f0` 2025-10-01T22:00:51+08:00 - 0
-- `85fee3d` 2025-10-01T18:21:13+08:00 - 1
-- `df414a1` 2025-10-01T13:02:35+08:00 - 1
-- `4fe99a0` 2025-10-01T12:52:17+08:00 - 1
-- `e34623d` 2025-10-01T12:27:53+08:00 - 添加访客统计
-- `50554d6` 2025-09-30T23:57:11+08:00 - save
-- `fdcf965` 2025-09-30T19:01:12+08:00 - 补充CNAME
-- `1c6e334` 2025-09-30T18:53:24+08:00 - 总站迁移
-- `27627b2` 2025-09-30T15:15:11+08:00 - Added CNAME file for custom domain (hc-dsw-nexus.me)
-- `5840cbc` 2025-09-30T15:08:36+08:00 - Added CNAME file for custom domain (hc-dsw-nexus.me)
-- `66e531b` 2025-09-30T15:08:34+08:00 - Initial commit
+- 5160c20 2026-08-21T14:24:27+08:00 - fix(infra): treat only HTTP 200 as online
+- a623884 2026-08-21T14:22:22+08:00 - test(infra): require exact HTTP 200 status
+- 213b667 2026-08-21T14:21:11+08:00 - ci(template): log target lease SHA
+- 391584e 2026-08-20T21:40:48+08:00 - ci(template): guard source freshness before push
+- 6dc04e9 2026-08-20T21:34:07+08:00 - ci(template): validate Vorlage before synchronization
+- 90fefca 2026-08-20T21:18:04+08:00 - test(ci): define Vorlage sync workflow contract
+- 532fdfb 2026-08-20T21:13:13+08:00 - feat(template): validate exported repository parity
+- 2f8433a 2026-08-20T20:43:51+08:00 - test(template): require export parity validator
+- 4915e62 2026-08-20T20:38:10+08:00 - fix(template): keep exported commands and README accurate
+- 364397b 2026-08-20T20:23:36+08:00 - feat(template): export a deterministic Vorlage snapshot
+- eed6e2c 2026-08-20T19:51:25+08:00 - test(template): define deterministic export contract
+- 3e8db88 2026-08-20T19:43:24+08:00 - fix(infra): ignore generated history in integration checks
+- a7f0810 2026-08-20T19:38:17+08:00 - test(infra): cover generated history scanning
+- 6c5dd06 2026-08-20T19:33:56+08:00 - refactor: rename the template repository to Vorlage
+- 49933cd 2026-08-20T19:24:42+08:00 - test: add Vorlage identity regression
+- 3e8f351 2026-08-20T19:19:10+08:00 - docs: add Vorlage synchronization implementation plan
+- 65af6dd 2026-08-20T18:45:38+08:00 - docs: design Vorlage template synchronization
+- a4748a7 2026-08-20T17:49:41+08:00 - fix: give the template a config the compiler can check
+- 62738a0 2026-08-20T00:34:53+08:00 - feat: let the status line report the icon form it was missing
+- 816c108 2026-08-20T00:34:37+08:00 - fix: serve the console icon from the channel a CI checkout can reach
+- e809155 2026-08-19T23:41:25+08:00 - feat: give console capture the same contact sheet classic has
+- 9b327d0 2026-08-19T22:59:09+08:00 - fix: stop a theme-conditional rule from repainting the whole document
+- aaf35e3 2026-08-19T21:44:50+08:00 - feat: slide the section strip so the selection stays in the middle
+- 2ac8237 2026-08-19T21:18:43+08:00 - fix: let the row reach the headings the page cannot scroll to
+- ccccd5b 2026-08-19T21:02:23+08:00 - fix: let a heading the page was just sent to read as reached
+- 0a0e490 2026-08-19T20:30:17+08:00 - fix: point the template link at the template
+- 9641d3b 2026-08-19T20:17:03+08:00 - fix: stop the console portrait tinting itself under the cursor
+- 697bdea 2026-08-19T20:15:17+08:00 - feat: give the dark theme a name that is not a colour
+- d795ddc 2026-08-19T14:42:37+08:00 - feat: teach the console to speak every language the site does
+- af870ee 2026-08-19T12:03:13+08:00 - feat: let a click on the console portrait cycle its icon form
+- adaad35 2026-08-19T00:45:35+08:00 - feat: caption the console prompt with the state its commands own
+- 6872abe 2026-08-19T00:33:01+08:00 - feat: walk the console cursor off the progress row into the results
+- dc92aef 2026-08-18T23:22:58+08:00 - feat: pin the console progress row to the top of the page
+- b9d7972 2026-08-18T23:08:39+08:00 - fix: seat the console comment block against the content above it
+- caadf1e 2026-08-18T22:36:15+08:00 - fix: let the left and right keys steer a detail page's section row
+- d128331 2026-08-18T21:59:46+08:00 - feat: scale console thumbnails and buttons from shared tokens
+- c097566 2026-08-18T21:58:24+08:00 - feat: list the profile and template repositories in the console dashboard
+- b2aa78c 2026-08-18T21:55:58+08:00 - fix: restore the console about page's contact icons
+- 5645fa0 2026-08-18T20:35:59+08:00 - feat: draw a vim block caret on the console prompt
+- d9abf5e 2026-08-18T15:53:56+08:00 - fix: black out the dark portrait plate and shrink console section chips
+- 372178a 2026-08-18T15:21:34+08:00 - feat: grow the console portrait icon to nearly fill its plate
+- f76a991 2026-08-18T15:09:26+08:00 - feat: mark the console cursor with another scheme's accent
+- 6d51f25 2026-08-18T14:26:31+08:00 - feat: strip every rule from console mode
+- 6b19408 2026-08-18T12:27:39+08:00 - merge: fix infra binary status probing
+- 2fe08bb 2026-08-18T12:16:04+08:00 - test(infra): validate generated starter deployment
+- de6eb4a 2026-08-18T12:08:09+08:00 - test(infra): enforce production probe dispatch
+- 1b71d7c 2026-08-18T11:44:22+08:00 - fix(infra): use binary reachability on static hosting
+- ef82cb8 2026-08-18T11:37:32+08:00 - feat: inset the console portrait icon without moving its plate
+- 6f3f7a9 2026-08-18T11:36:34+08:00 - test(infra): define binary production status contract
+- 05a3105 2026-08-18T11:06:09+08:00 - feat: turn /help into a page that documents the console
+- 514cb9b 2026-08-18T09:57:33+08:00 - feat: search from the console prompt as the term is typed
+- 7e556a1 2026-08-18T08:53:48+08:00 - feat: add /posts /notes list commands and an /export article action
+- cd84f6f 2026-08-18T07:19:35+08:00 - feat: collapse the console dock once an option has been chosen
+- 28e8455 2026-08-18T07:13:19+08:00 - feat: keep console comments on the page and make /comment jump to them
+- 09a4d56 2026-08-18T02:10:20+08:00 - feat: show five console option rows in a window that rides the viewport bottom
+- 4b898e7 2026-08-18T01:51:16+08:00 - refactor: state console bar position as a percentage instead of arrows
+- bbd5f82 2026-08-18T01:27:46+08:00 - feat: reveal console sub-entries only once their parent is typed
+- 8b35951 2026-08-18T00:12:42+08:00 - refactor: retire the /doctor /config /notes /archive console commands
+- 7333cfa 2026-08-17T23:54:27+08:00 - feat: lead console friend rows with an avatar instead of the raw id
+- 9080dca 2026-08-17T23:48:52+08:00 - refactor: stop echoing each console page's own route above its content
+- 009bf58 2026-08-17T23:15:24+08:00 - feat: preview theme and color while the cursor roams the options
+- 320e4b3 2026-08-17T23:15:12+08:00 - feat: report theme and color in the console runtime panel
+- 6438ae8 2026-08-17T22:28:10+08:00 - chore: ignore local claude worktrees
+- 9094f64 2026-08-17T22:26:17+08:00 - style: align the console prompt caret with every option row
+- a944005 2026-08-17T22:09:40+08:00 - feat: align selected console output with the top of the page
+- de175d4 2026-08-17T21:46:26+08:00 - fix: unbreak build by dropping the png import from site config
+- 502ff81 2026-08-17T21:43:33+08:00 - refactor: scroll the console with the whole document
+- ded705d 2026-08-17T21:06:03+08:00 - feat: widen monochrome contrast and tie heart cursors to accent
+- e488913 2026-08-17T20:19:31+08:00 - Merge branch 'worktree-monochrome-schemes'
+- b29ff54 2026-08-17T20:12:51+08:00 - test: pin the scheme label and preview swatch
+- d30be27 2026-08-17T20:08:06+08:00 - feat: use terminal mark for console toggle
+- 4d49d85 2026-08-17T20:05:05+08:00 - refactor: hide root slash from console menu
+- 590c629 2026-08-17T20:02:38+08:00 - feat: make console portrait configurable
+- f17c4d5 2026-08-17T19:56:32+08:00 - feat: add console title and classic switch
+- 19ad2b6 2026-08-17T19:50:37+08:00 - fix: flow console prompt after results
+- d93f0f2 2026-08-17T19:46:11+08:00 - fix: restore console tag navigation
+- 96e913d 2026-08-17T19:46:04+08:00 - test: chain the color scheme suite into test:console
+- 57d2f3d 2026-08-17T19:42:29+08:00 - fix: keep the scheme swatch visible on the light theme
+- a7ba1ae 2026-08-17T19:42:29+08:00 - feat: add white and black monochrome color schemes
+- 7dbff48 2026-08-17T19:35:46+08:00 - fix: restore console capture context
+- 8179293 2026-08-17T18:12:03+08:00 - test: align color scheme suite with sibling conventions
+- b09f380 2026-08-17T17:56:50+08:00 - fix: bound console capture previews
+- de76c6e 2026-08-17T17:44:34+08:00 - refactor: derive color scheme guard from the registry
+- 82ea8ce 2026-08-17T17:41:55+08:00 - refactor: compact and pin console overview
+- 4bfb581 2026-08-17T16:53:02+08:00 - feat: replace console month arrows with date tabs
+- 78f6ed1 2026-08-17T16:47:21+08:00 - feat: make console menus cyclic and reversible
+- 7a87303 2026-08-17T16:00:04+08:00 - refactor: remove obsolete console commands
+- 601413e 2026-08-17T15:31:53+08:00 - fix: flush console portrait and open panels downward
+- 45c8036 2026-08-17T15:31:52+08:00 - test: lock console thirds and downward panels
+- 2987614 2026-08-17T14:41:22+08:00 - fix: isolate console chrome and comments
+- bc3d3ef 2026-08-17T14:41:22+08:00 - feat: dock console input and reveal output
+- 9a84399 2026-08-17T14:41:21+08:00 - feat: add rich console overview header
+- 08e911b 2026-08-17T14:24:58+08:00 - refactor: share home stats and footer data
+- 94ba27a 2026-08-17T14:12:49+08:00 - feat: wire explicit console comments
+- e9dad01 2026-08-17T14:12:48+08:00 - feat: add console root and canonical home route
+- 5749c49 2026-08-17T14:03:31+08:00 - feat: define shared site overview model
+- 66d52ea 2026-08-17T14:03:30+08:00 - feat: define explicit console comment state
+- 4094d17 2026-08-17T12:57:18+08:00 - test: define console v2 contracts
+- a81e64b 2026-08-17T05:14:11+08:00 - fix: constrain console command workspace
+- 2a8b46d 2026-08-17T05:10:13+08:00 - fix: respect console route feature flags
+- 65fbdcc 2026-08-17T04:35:19+08:00 - fix: ignore unknown console data targets
+- 78fcc9e 2026-08-17T04:34:53+08:00 - fix: stabilize console viewport and keyboard flow
+- 3bba123 2026-08-17T04:34:33+08:00 - fix: preserve console document and search actions
+- cc4b746 2026-08-17T03:47:29+08:00 - fix: complete console empty and section navigation
+- 9a78f7e 2026-08-17T03:34:49+08:00 - style: stabilize console typography
+- bb31704 2026-08-17T03:29:13+08:00 - fix: preserve console route parity
+- 4083d83 2026-08-17T03:19:07+08:00 - fix: complete console keyboard navigation
+- 4c65f8f 2026-08-17T03:06:57+08:00 - fix: preserve console route controls
+- 865bcd8 2026-08-17T02:44:39+08:00 - fix: track console result viewport scrolling
+- 9124e1c 2026-08-17T02:41:09+08:00 - fix: align console comments and footer
+- 24d0a91 2026-08-17T02:40:22+08:00 - feat: move console document navigation above content
+- ac675a0 2026-08-17T02:37:12+08:00 - feat: add console capture timeline and detail
+- 461f55d 2026-08-17T02:36:14+08:00 - fix: stabilize console month entry rendering
+- fcec073 2026-08-17T02:31:15+08:00 - style: flatten console route layouts
+- 4c56e25 2026-08-17T02:29:12+08:00 - feat: add console search result table
+- 1bf44a8 2026-08-17T02:27:17+08:00 - fix: disable page progress decoration in console
+- 1165df3 2026-08-17T02:25:22+08:00 - feat: add console not-found result
+- b26f3d7 2026-08-17T02:25:12+08:00 - fix: reset console panel on shell remount
+- f07d84f 2026-08-17T02:22:24+08:00 - fix: remove hidden console controls from tab order
+- 713f9d8 2026-08-17T02:20:53+08:00 - feat: add console about contact panel
+- 908d62d 2026-08-17T02:19:31+08:00 - style: normalize shared console result rows
+- 1806299 2026-08-17T02:17:20+08:00 - feat: add console friends table
+- 0d066f7 2026-08-17T02:11:00+08:00 - fix: avoid double decoding console route params
+- 19b99ab 2026-08-17T02:10:20+08:00 - feat: add console project table
+- 5e940fe 2026-08-17T02:04:49+08:00 - feat: add console infrastructure table
+- 86a1266 2026-08-17T01:59:44+08:00 - feat: add console tag detail timeline
+- d39dbd4 2026-08-17T01:58:15+08:00 - feat: add nested console command selectors
+- 1a7ba99 2026-08-17T01:52:14+08:00 - feat: add console home month navigation
+- 8c873d8 2026-08-17T01:48:10+08:00 - feat: add console tag index
+- 5c29edd 2026-08-17T01:45:10+08:00 - fix: normalize console setting commands
+- 918b163 2026-08-17T01:41:31+08:00 - refactor: isolate display mode resolution
+- 0897d96 2026-08-17T01:32:50+08:00 - test: specify display mode persistence contract
+- 9b8d4f8 2026-08-17T01:31:19+08:00 - feat: apply console language commands
+- 53ff725 2026-08-17T01:28:39+08:00 - feat: add horizontal console section navigation
+- df64240 2026-08-17T01:22:09+08:00 - fix: preserve literal capture ids during lookup
+- 96dc327 2026-08-17T01:19:35+08:00 - feat: add console monthly archive navigation
+- 17bd2a3 2026-08-17T01:13:39+08:00 - fix: execute console suggestions on selection
+- ad97f2d 2026-08-17T01:09:21+08:00 - fix: preserve case-sensitive console route ids
+- 91e8b4b 2026-08-17T01:06:46+08:00 - fix: initialize console mode before mount
+- a63e548 2026-08-17T01:04:32+08:00 - fix: suppress decorative effects in console mode
+- 5e4e69f 2026-08-17T01:01:03+08:00 - feat: add desktop console mode control
+- 870be5b 2026-08-17T00:58:17+08:00 - feat: mount desktop Nexus Console shell
+- aabf104 2026-08-17T00:49:42+08:00 - feat: add console shell and settings panels
+- 6e0d4ab 2026-08-17T00:42:32+08:00 - fix: keep desktop-first mode across mobile visits
+- d767e0e 2026-08-17T00:40:57+08:00 - feat: add console session command execution
+- 40bf9df 2026-08-17T00:35:56+08:00 - feat: persist desktop console display mode
+- fe859ab 2026-08-17T00:35:37+08:00 - feat: add console command registry
+- 1aae246 2026-08-17T00:32:50+08:00 - test: specify console command registry
+- c8a1c22 2026-08-17T00:25:39+08:00 - feat: add console command and timeline core
+- 0105092 2026-08-17T00:17:54+08:00 - test: specify console command and timeline contracts
+- b83e727 2026-08-16T20:21:39+08:00 - fix(markdown): handle speaker clicks on svg icons
+- 905c058 2026-08-15T01:08:22+08:00 - fix(navigation): follow article hashes after async render
+- 425feeb 2026-08-14T23:58:18+08:00 - refactor(markdown): generate stable heading anchors
+- 0a3330f 2026-08-14T23:28:47+08:00 - feat(pdf): preserve vocabulary rows and theme colors
+- 22264a2 2026-08-14T23:17:26+08:00 - feat(markdown): add vocabulary pronunciation playback
+- 2d9a12b 2026-08-14T21:46:21+08:00 - 添加agentrouter codex配置
+- 6baeadf 2026-08-14T21:42:16+08:00 - docs(reading): mark key phrases with underline
+- e4fecd6 2026-08-14T21:27:44+08:00 - test(markdown): add rendering regression checks
+- 4ccac80 2026-08-14T21:22:28+08:00 - fix(markdown): restore underlines and theme-relative colors
+- 6d2542e 2026-08-14T18:59:17+08:00 - 添加外刊md
+- cdc3bda 2026-08-14T00:43:33+08:00 - feat(pdf): 标题更突出、引用竖线变细、目录美化、链接补全绝对地址；网页引用与标题同步优化
+- bb30946 2026-08-14T00:18:47+08:00 - feat(pdf): 导出 PDF 增加目录、元信息分组与标签、代码语言头、引用强调条，排版贴近网页
+- 977ecf8 2026-08-14T00:01:46+08:00 - fix(notes): 笔记 updated 时间大小写不敏感取 git 历史，Notes 卡片显示更新时间
+- 6107fc6 2026-08-13T23:58:22+08:00 - feat(pdf): 改用 pdfmake 自研生成 PDF，配色跟随当前主题
+- 6024e57 2026-08-13T23:06:40+08:00 - fix(breadcrumb): 移动端面包屑只显示两级路由，隐藏当前章节
+- 15f3156 2026-08-13T22:42:28+08:00 - feat(breadcrumb): 文章页最右侧新增 PDF 导出按钮
+- c339ba8 2026-08-13T22:37:36+08:00 - feat(breadcrumb): 面包屑跟随滚动进度显示当前章节
+- fdc0575 2026-08-13T22:31:45+08:00 - perf(markdown): 大文章渐进分块渲染，加载时显示圆圈动画
+- 832edf7 2026-08-13T22:18:06+08:00 - style(scrollbar): 全局滚动条再细一点
+- 96a7a46 2026-08-13T22:02:26+08:00 - perf(infra): 轨道旋转改为 CSS 合成器动画并平滑外环路径
+- f8aff98 2026-08-11T14:11:55+08:00 - perf(giscus): 评论区重挂推迟到空闲时段，避免卡住页面过渡
+- f3fdd4b 2026-08-11T14:10:10+08:00 - perf(router): 加快页面切换：瞬时回顶、悬停预取、缩短过渡时长
+- 3271ba1 2026-08-11T13:59:33+08:00 - style(cursor): 切向流线再细一点、再长一点
+- 2f7e271 2026-08-11T13:59:03+08:00 - feat(cursor): 点环与流线仅在动态背景开启时显示
+- d3b3674 2026-08-11T13:58:48+08:00 - fix(friends): 补全 AkiMisaka 友链的 https 协议前缀
+- 0e1ba48 2026-08-09T23:55:18+08:00 - feat(friends): 添加新朋友链接和描述 fix(generated): 更新文档的更新时间
+- ef7ef69 2026-07-18T19:50:34+08:00 - style(cursor): 流线更细更长并用贝塞尔弯曲，不再笔直
+- aa37467 2026-07-18T19:42:01+08:00 - feat(cursor): 每条弹性链最外点旋转时拖细小切向流线，颜色一致
+- 93ed5ec 2026-07-18T19:32:06+08:00 - feat(cursor): 光标点环静止时缓慢自旋
+- 9d8370f 2026-07-18T01:41:18+08:00 - fix(infra): 仅 HTTP 200 判为 online，其余一律 offline，移除 no-cors 误判兜底
+- b358ebf 2026-07-18T01:32:15+08:00 - perf(infra): 节流轨道动画重算，消除 /infra 页光标卡顿
+- 7c7fe00 2026-07-17T23:21:07+08:00 - perf(layout): 优化页面切换过渡，快速淡出+平滑淡入更丝滑
+- 30248e7 2026-07-17T23:17:00+08:00 - docs(about): Copyright 声明采用 CC BY-SA 4.0 许可协议
+- 07e3bfa 2026-07-17T23:16:37+08:00 - style(infra): 固定 online 为绿色、offline 为红色，不随主题配色变化
+- b379baa 2026-07-17T22:47:34+08:00 - feat(theme): 打开网页时随机选定配色
+- d2b3f2d 2026-07-17T22:11:09+08:00 - perf(BounceCursor): 点环改用脏矩形清除，消除鼠标移动卡顿
+- f632577 2026-07-17T21:39:51+08:00 - feat(theme): 新增全局粉色配色方案
+- 7e3724f 2026-07-17T21:33:10+08:00 - feat(BounceCursor): 点环颜色跟随当前主题 accent 色
+- 11542e8 2026-07-15T21:35:46+08:00 - 小补
+- 75045d4 2026-07-15T21:34:31+08:00 - harness自进化初探
+- 2c333ca 2026-07-12T15:18:20+08:00 - fix(cardGroups): decouple page-list limit from capture-image preview limit
+- 0fe5c1d 2026-07-12T15:06:11+08:00 - revert(cardGroups): restore CARD_GROUP_LIMIT back to 9
+- 5509939 2026-07-12T15:02:54+08:00 - feat(ScrollSpySidebar): bidirectional scroll sync with page content
+- 6e824eb 2026-07-12T14:46:38+08:00 - fix(markdown): mind map node visibility on light theme
+- c51244e 2026-07-12T14:45:25+08:00 - feat(ProjectListItem): add icons, only websites show Open button
+- be984b8 2026-07-12T14:44:21+08:00 - fix(cardGroups): remove card group limit to render all content on every page
+- 6ea007a 2026-07-12T14:43:24+08:00 - fix(MarkdownContent): render all content synchronously instead of progressively
+- 282dc3a 2026-07-10T22:21:30+08:00 - feat(article): restructure article header meta with CC BY-SA license
+- 3112767 2026-07-10T22:21:21+08:00 - style(FloatButton): smooth panel expand/collapse with staggered animations
+- 2d374fd 2026-07-10T22:21:13+08:00 - feat(i18n): add project category translations in 6 languages
+- 01a65f6 2026-07-10T22:20:50+08:00 - fix(search): show all search results instead of capping at 9
+- 5e3ba36 2026-07-10T20:28:22+08:00 - 添加Tauri文档
+- 0034caf 2026-07-09T21:21:03+08:00 - Add configurable site color schemes
+- 48d32dc 2026-07-09T21:01:57+08:00 - Show overflow counts on limited cards
+- e024d0b 2026-07-09T20:50:27+08:00 - Update pve setup packages
+- 6e7fcff 2026-07-09T20:25:50+08:00 - Limit card previews and preload navigation
+- dd25835 2026-07-09T19:02:44+08:00 - docs: update template guide
+- bdae720 2026-07-09T08:29:16Z - chore: sync capture assets
+- 380c2c5 2026-07-09T16:28:27+08:00 - feat: add cognitiveScience note and emit docs-meta.json on asset sync
+- 3533f1c 2026-07-09T15:10:05+08:00 - infra: load service icons at runtime from diesw-assets
+- 8765dad 2026-07-09T11:09:42+08:00 - revert: drop monogatari 404 redirect from user site
+- 1d17749 2026-07-09T10:29:05+08:00 - feat: guide monogatari deep links from the 404 fallback
+- 9e87d0b 2026-07-08T21:54:29+08:00 - fix(mobile): pin header calendar button to the right edge
+- 78b8965 2026-07-08T20:42:24+08:00 - perf: cache sakura petal gradients and split vendor chunks
+- 8f9d3a7 2026-07-08T20:20:53+08:00 - feat(project): add Templates category with starter repos
+- c6df6b0 2026-07-08T20:12:13+08:00 - chore: sync docs metadata timestamps
+- 5135e73 2026-07-07T22:40:51+08:00 - docs: update agent and pve notes
+- dddc7ca 2026-07-07T22:39:44+08:00 - fix(infra): animate orbit nodes
+- 088d7af 2026-07-07T21:55:26+08:00 - fix(infra): stabilize orbit layout
+- 316b5e3 2026-07-07T20:37:09+08:00 - feat(infra): refine icons and orbit status
+- 0c423a5 2026-07-04T13:41:27Z - chore: sync capture assets
+- 6e85f91 2026-07-04T21:41:01+08:00 - 完善文档
+- 02b51d7 2026-07-04T21:31:55+08:00 - fix: limit capture preview grid
+- 9384d1c 2026-06-18T14:32:46+08:00 - fix(docs): remove \tag{} and 概念： prefixes from computingMethod notes
+- b0f7f67 2026-06-18T14:23:30+08:00 - fix(dev): anchor HMR scroll restore to render completion
+- 7b421a3 2026-06-17T22:32:57+08:00 - perf(markdown): paint first chunk immediately, drain rest in batches
+- 13505d6 2026-06-17T22:25:21+08:00 - fix(scroll-spy): reliable TOC jump and active auto-follow
+- 77e5f31 2026-06-17T14:08:28Z - chore: sync capture assets
+- bbc2d18 2026-06-17T22:07:05+08:00 - feat(ui): label preview card timestamp as "Updated"
+- 17ad5e3 2026-06-16T15:26:56+08:00 - fix(dev): preserve scroll position during markdown HMR
+- 7bbaf84 2026-06-16T12:07:43+08:00 - style(markdown): visualize heading-anchor TOC lists as cards
+- c5072fa 2026-06-16T11:58:17+08:00 - feat(dev): swap full-reload md HMR for granular cache bust
+- 31187fa 2026-06-16T11:46:59+08:00 - fix(markdown): restore KaTeX SVG vertical alignment
+- c8ef304 2026-06-16T11:40:08+08:00 - style(markdown): keep code toolbar on a single row on mobile
+- b996f69 2026-06-16T11:36:05+08:00 - style(markdown): tighten code block toolbar to button height
+- 67deea8 2026-06-16T11:27:51+08:00 - feat(preview): keep markdown line breaks in summary cards
+- a441a93 2026-06-16T11:05:16+08:00 - feat(dev): hot-reload markdown sources during dev
+- 7831730 2026-06-16T10:35:41+08:00 - 统一小驼峰命名
+- f53ff05 2026-06-16T00:21:42+08:00 - ci(starter): auto-update repo description & homepage on sync
+- 96984d5 2026-06-16T00:20:12+08:00 - docs(starter): highlight Sandkasten + Uptime Kuma integration
+- bb9da9a 2026-06-16T00:16:14+08:00 - feat(starter): ship sample infra & project data with feature flags on
+- 1ce7b3a 2026-06-16T00:14:01+08:00 - feat(infra): integrate Uptime Kuma status as primary source
+- 4646166 2026-06-15T22:12:08+08:00 - 补充文档
+- f252416 2026-06-15T22:06:56+08:00 - fix(markdown): pin gutter widths so rendered and edit modes align
+- 9184067 2026-06-15T21:59:33+08:00 - fix(markdown): make fold chevron clickable and bigger
+- 52133dc 2026-06-15T21:53:37+08:00 - fix(markdown): keep fold chevron visible after sanitization
+- e6a5ef6 2026-06-15T21:21:31+08:00 - style(markdown): match Monaco fold chevron size and shape
+- 1097038 2026-06-15T21:16:14+08:00 - feat(markdown): add inline fold chevrons to rendered code blocks
+- a45f63f 2026-06-15T21:07:01+08:00 - revert(markdown): restore line numbers and Monaco folding controls
+- e8436fd 2026-06-15T20:48:56+08:00 - fix(markdown): align code start position and add collapse toggle
+- 623dd54 2026-06-15T20:20:59+08:00 - style: align code position between rendered and edit modes
+- 10db96f 2026-06-15T19:56:47+08:00 - style: paint iframe render scrollbars with site accent green
+- fe7dee4 2026-06-15T19:53:47+08:00 - fix: stop auto-scrolling after run/render finishes
+- a1c998f 2026-06-15T19:49:26+08:00 - fix: skip 'GitHub 登录中' state when already authenticated
+- 060ccea 2026-06-15T19:47:41+08:00 - style: align code block visuals between rendered and edit modes
+- 493a010 2026-06-15T19:42:26+08:00 - style: drop heavy shadows under light theme
+- fa4dd36 2026-06-15T19:30:10+08:00 - fix: restore dynamic background visibility under content layer
+- 5ae9e31 2026-06-15T19:04:46+08:00 - 更新文档
+- 1819fb8 2026-06-14T16:57:09Z - style: add mesh background to view area
+- 05c5fc7 2026-06-14T16:54:10Z - perf: speed up markdown editor activation
+- 1fd1d48 2026-06-14T16:36:30Z - feat: gate markdown code runners
+- 839e504 2026-06-14T14:16:00Z - Make Sandkasten examples more realistic
+- 9ca6a4b 2026-06-14T14:15:45Z - Render markdown code blocks lighter
+- 91de74f 2026-06-14T12:47:38Z - Block markdown shortcut keys
+- e727984 2026-06-14T12:22:59Z - Reduce run-all markdown output churn
+- 0a211d0 2026-06-14T12:19:17Z - Render markdown code blocks with read-only Monaco
+- 6c9edf3 2026-06-14T10:56:18Z - fix: send runner requests as json
+- 50bf9f6 2026-06-14T07:31:33Z - chore: refresh Sandkasten doc metadata
+- ff9bcbb 2026-06-14T07:30:42Z - feat: add Monaco markdown code editor
+- e86866f 2026-06-14T07:30:07Z - chore: prepare Monaco markdown editor build
+- bdcac1d 2026-06-14T04:34:03Z - Keep Octave only and speed batch runs
+- 827f951 2026-06-14T03:10:18Z - Improve Sandkasten login gating and runner polling
+- 3685b6a 2026-06-14T02:46:01Z - Update content stat labels
+- fbb159e 2026-06-14T02:07:19Z - Improve Sandkasten rendering UX and smoke coverage
+- f75c8b6 2026-06-13T17:37:10Z - fix: tolerate missing private capture assets
+- bcd5870 2026-06-13T17:31:27Z - chore: refresh sandkasten doc metadata
+- e2e0200 2026-06-13T17:31:11Z - test: verify sandkasten doc examples
+- 2dcce87 2026-06-13T06:23:38Z - fix: align sandkasten document runners
+- 4823aad 2026-06-13T14:03:44+08:00 - feat: expand code runner to full language set, add renderable output, add ScrollSpySidebar to search page
+- 796bd5f 2026-06-13T13:39:44+08:00 - 补充backend参考
+- 77a4084 2026-06-13T13:37:40+08:00 - docs: add full Sandkasten runtime test post, update code runner section
+- ebac497 2026-06-13T13:28:22+08:00 - docs: expand README, fix about.md links, sync template title
+- 05079df 2026-06-11T14:00:49Z - Revert "feat: add runtimes landing route"
+- 6bc9612 2026-06-11T13:33:20Z - feat: add runtimes landing route
+- 19d3207 2026-06-11T12:48:50Z - test: smoke code runner without preflight
+- aeedcc9 2026-06-11T12:46:31Z - perf: wait for short code runs in one request
+- 4c82de3 2026-06-11T12:44:05Z - perf: avoid code runner CORS preflight
+- d0847dd 2026-06-11T12:29:53Z - fix: redact backend paths in code runner output
+- be6e951 2026-06-11T19:58:51+08:00 - fix: expand infra outer nodes horizontally
+- 6c4f876 2026-06-11T19:47:24+08:00 - fix: tighten infra outer orbit radius
+- e436ec1 2026-06-11T19:43:36+08:00 - feat: refine infra orbit layout
+- c86458e 2026-06-11T19:42:47+08:00 - refactor: remove redundant page headings
+- 9104d46 2026-06-11T19:41:54+08:00 - docs: update infra and setup notes
+- 52534ed 2026-06-11T16:17:20+08:00 - 添加最后更新显示
+- 18a9f00 2026-06-11T15:44:12+08:00 - feat: add last updated timestamp to generated documentation and views
+- 5257400 2026-06-11T15:27:22+08:00 - Refactor timeline display in CaptureView, HomeView, NotesView, TagDetailView, and TagsView
+- 5c4d0e6 2026-06-10T23:53:29+08:00 - fix: order tag detail entries by date
+- 16f0857 2026-06-10T22:22:54+08:00 - feat: update .gitignore to include additional image formats and remove obsolete assets
+- 3f6ddd7 2026-06-10T22:03:34+08:00 - feat: add infrastructure asset syncing and update InfraView component
+- 8b77aea 2026-06-10T22:03:18+08:00 - Remove obsolete image files and update documentation structure
+- b5f84dc 2026-06-10T13:07:07Z - feat: attach files to runnable code blocks
+- a1cfd5b 2026-06-10T12:41:46Z - feat: use sandkasten backend code runner only
+- 9461839 2026-06-09T06:13:11Z - feat: add sandkasten backend runner mode
+- 0c42f4a 2026-06-09T13:19:28+08:00 - feat: add word count and reading minutes to posts and notes
+- 53c3126 2026-06-09T10:30:31+08:00 - feat: add Go source normalization for comments and strings in runCode
+- 1c7a2a7 2026-06-09T10:00:46+08:00 - Merge branch 'main' of https://github.com/dieWehmut/dieWehmut.github.io
+- 11799a2 2026-06-09T10:00:43+08:00 - feat: add markdown documentation generation and improve content loading
+- 0e99974 2026-06-08T15:20:47Z - chore: sync capture assets
+- c93e35d 2026-06-08T23:19:45+08:00 - fix go examples runner issues
+- 5a5ddc8 2026-06-08T21:06:19+08:00 - fix: update title in go-learning.md to reflect correct terminology
+- ae61831 2026-06-08T00:18:34+08:00 - Update site metadata and docs
+- cc58d8c 2026-06-08T00:18:14+08:00 - Optimize content previews and routes
+- 55d9a9f 2026-06-08T00:17:49+08:00 - Improve markdown media runtime
+- 6499e52 2026-06-08T00:17:11+08:00 - Add generated study note captures
+- 6d3c409 2026-06-07T22:38:29+08:00 - Resolve capture asset URLs under base path
+- b1ba617 2026-06-07T22:04:10+08:00 - Show markdown source images by default
+- 7a18a56 2026-06-07T21:42:16+08:00 - Style editable markdown blocks
+- de76da0 2026-06-07T21:42:04+08:00 - Add editable markdown code and math blocks
+- 2e9925b 2026-06-05T22:59:52+08:00 - Tighten desktop content spacing
+- bce958b 2026-06-05T22:51:24+08:00 - Apply mobile capture grid sizing to list
+- ef184e5 2026-06-05T22:41:51+08:00 - Use two-column mobile capture detail for pairs
+- 95b8739 2026-06-05T22:39:01+08:00 - Scope capture detail thumbnail layout to mobile
+- fee70f0 2026-06-05T22:33:54+08:00 - Make capture detail thumbnails square
+- 74d1646 2026-06-05T22:29:08+08:00 - Restore capture scroll after comments
+- 1469b69 2026-06-05T22:12:39+08:00 - Show capture detail images in three columns
+- 1b00dcd 2026-06-05T22:03:31+08:00 - Group capture comments by timestamp
+- 0427dde 2026-06-05T19:40:58+08:00 - Split capture giscus configuration
+- 4205580 2026-06-05T19:38:31+08:00 - Add capture detail comments view
+- c961934 2026-06-04T20:57:41+08:00 - docs: clarify site and starter readmes
+- 8fcc5bc 2026-06-04T20:52:57+08:00 - feat: refine layout and starter export
+- bd05709 2026-06-04T00:04:39+08:00 - chore: update starter naming and license
+- 7e64af2 2026-06-03T23:15:20+08:00 - fix: update starter template sync
+- 903984a 2026-06-03T22:05:02+08:00 - feat: animate floating settings button
+- cd65285 2026-06-03T22:04:56+08:00 - feat: add calendar icon to project dates
+- de39ac6 2026-06-03T20:33:11+08:00 - fix: sync capture assets from assets repository
+- 1fc484a 2026-06-03T12:01:30Z - chore: sync capture assets
+- 08d5064 2026-06-03T20:01:06+08:00 - fix: initialize empty assets repository
+- 27ab929 2026-06-03T19:37:41+08:00 - fix: isolate assets git authentication
+- 37b06d6 2026-06-03T19:31:03+08:00 - chore: normalize GitHub avatar URLs
+- b6a24c6 2026-06-03T18:30:55+08:00 - fix: validate assets repository token
+- a070c6b 2026-06-03T15:19:32+08:00 - fix: bootstrap assets branch checkout
+- dcddf16 2026-06-03T15:10:54+08:00 - fix: configure assets checkout ref
+- 87e47bc 2026-06-03T14:37:29+08:00 - chore: refine capture sync workflow
+- 36dfd4c 2026-06-03T00:30:21+08:00 - feat: add capture functionality and integrate capture assets into views
+- 359497c 2026-06-01T18:33:01+08:00 - 更新朋友列表中的描述，提供更准确的信息
+- fa2bc51 2026-05-30T19:21:59+08:00 - 修复GitHub page环境变量读取
+- ff51af3 2026-05-28T23:38:56+08:00 - 0
+- e41eaea 2026-05-28T22:27:43+08:00 - 1
+- 8ba3a79 2026-05-28T21:52:11+08:00 - feat: add multilingual support by creating translated README files in English and Traditional Chinese
+- acb6f6b 2026-05-28T21:39:32+08:00 - feat: enhance markdown rendering with KaTeX support and improve UI components
+- 3888355 2026-05-28T20:56:19+08:00 - feat: streamline deployment workflows by removing redundant pnpm setup and adding starter token check
+- 815e25b 2026-05-28T20:38:57+08:00 - feat: update deployment workflow to use pnpm for package management
+- 903dff1 2026-05-28T20:32:40+08:00 - feat: update color variables for improved theme consistency and styling
+- 275fd01 2026-05-28T20:05:07+08:00 - feat: centralize site configuration and improve UI interactions
+- dedab01 2026-05-28T18:53:36+08:00 - refactor: remove deprecated notes and posts, update note rendering
+- c5dc9d5 2026-05-28T15:47:25+08:00 - Refactor views for improved layout and styling
+- f5f4457 2026-05-28T12:47:57+08:00 - feat: add InfraView, NotFoundView, NotesView, ProjectView, SearchView, TagDetailView, and TagsView components
+- 1da36f1 2026-05-27T00:19:54+08:00 - 删掉文件相关导航
+- d1cf773 2026-05-26T21:42:51+08:00 - 优化BounceCursor和FocusView组件，重构样式和事件处理，提升性能和可维护性
+- 4651394 2026-05-22T21:36:02+08:00 - 优化搜索栏样式以适应全宽，添加自定义插件以支持GitHub Pages的404页面处理
+- 45061ea 2026-05-22T21:01:19+08:00 - Update package-lock.json to fix CI
+- 0fcc025 2026-05-22T20:54:49+08:00 - 删除favicon.svg文件，更新NavButtons和SearchBar组件的样式
+- 1b0bd57 2026-05-22T20:36:45+08:00 - Merge branch 'main' of https://github.com/dieWehmut/dieWehmut.github.io
+- 9f01aac 2026-05-22T20:36:15+08:00 - 添加GitHub Pages部署工作流
+- a73e9ca 2026-05-20T19:28:35+08:00 - 优化焦点视图的鼠标悬停效果，调整粒子和樱花画布的参数，增强URL状态检查的代理功能
+- 9e6f857 2026-05-18T21:40:08+08:00 - 优化中心圈样式
+- 2afdb3c 2026-05-18T21:31:07+08:00 - 初步添加Focus视图
+- 80e9693 2026-05-18T14:21:45+08:00 - 优化响应式布局：调整搜索栏、侧边栏和卡片样式以适应移动设备
+- 272dabc 2026-05-17T22:01:27+08:00 - 添加service条目；初步调整侧边栏排版
+- 176c4ef 2026-05-16T22:09:14+08:00 - 调整侧边栏和应用布局，更新多语言文件中的“最后更新”文本为“最近 commit”
+- 0b6b23f 2026-05-16T22:03:16+08:00 - 重构应用结构：更新标题，调整样式，移除引导动画组件，优化侧边栏和搜索栏布局
+- 6aa3442 2026-05-15T12:08:31+08:00 - Refactor sidebar component: remove bio and location fields from UI and localization files
+- f8415b2 2026-03-03T11:12:02+08:00 - 修复构建bug
+- 4ae5597 2026-03-02T18:36:33+08:00 - 按钮样式跟新
+- 279fcad 2026-02-28T21:21:38+08:00 - 重置光标样式
+- a96aca2 2026-02-28T18:16:19+08:00 - 初步重置主题样式
+- 2a1d5f5 2026-02-28T17:01:55+08:00 - 实现自定义添加内容
+- 7feca4d 2026-01-26T01:09:14+08:00 - 9
+- f95a7e6 2025-12-26T15:35:16+08:00 - 文档补充
+- 2a42acc 2025-12-26T15:29:25+08:00 - 修复单双栏切换问题
+- f8bc381 2025-12-24T16:50:43+08:00 - 修复日期覆盖问题
+- 28173f2 2025-11-04T19:48:24+08:00 - 修复GitHub api调用
+- ef60ddb 2025-11-04T19:07:50+08:00 - 优化样式
+- 2377026 2025-11-04T18:39:45+08:00 - 全部自动化
+- 2caa99c 2025-11-04T14:27:23+08:00 - pages自动化
+- 5d15bc3 2025-11-04T13:13:18+08:00 - 补充item内容
+- 62ef8a6 2025-10-30T21:17:42+08:00 - 添加单双栏切换按钮
+- f961f4f 2025-10-30T15:38:29+08:00 - 补充ba网络站
+- 0aa42c6 2025-10-29T21:34:29+08:00 - 添加缓存
+- a8c2e0b 2025-10-29T20:52:31+08:00 - 修复搜索栏问题
+- 21ba28c 2025-10-29T19:24:57+08:00 - 将GitHubActivity转移到profile
+- 9748687 2025-10-29T18:35:23+08:00 - 优化按钮样式
+- da708c1 2025-10-29T15:38:45+08:00 - 添加Tools栏
+- 2bc3a7c 2025-10-29T13:57:06+08:00 - 添加拉丁语
+- 5593106 2025-10-29T13:24:43+08:00 - 添加纯净模式
+- 1b9986a 2025-10-29T12:49:03+08:00 - 修复悬浮按钮bug
+- 054230f 2025-10-29T00:10:48+08:00 - 抽出更多组件
+- bcc7ac8 2025-10-28T19:22:06+08:00 - 改为玻璃窗
+- 60439c2 2025-10-28T18:28:05+08:00 - 添加多语言设置
+- 9d4c2c6 2025-10-28T16:26:37+08:00 - 页面美化
+- 6912caa 2025-10-28T00:18:29+08:00 - 大改一点
+- 0c00d28 2025-10-10T14:27:47+08:00 - 0
+- 9f6594c 2025-10-10T14:24:55+08:00 - 0
+- a2813f0 2025-10-01T22:00:51+08:00 - 0
+- 85fee3d 2025-10-01T18:21:13+08:00 - 1
+- df414a1 2025-10-01T13:02:35+08:00 - 1
+- 4fe99a0 2025-10-01T12:52:17+08:00 - 1
+- e34623d 2025-10-01T12:27:53+08:00 - 添加访客统计
+- 50554d6 2025-09-30T23:57:11+08:00 - save
+- fdcf965 2025-09-30T19:01:12+08:00 - 补充CNAME
+- 1c6e334 2025-09-30T18:53:24+08:00 - 总站迁移
+- 27627b2 2025-09-30T15:15:11+08:00 - Added CNAME file for custom domain (hc-dsw-nexus.me)
+- 5840cbc 2025-09-30T15:08:36+08:00 - Added CNAME file for custom domain (hc-dsw-nexus.me)
+- 66e531b 2025-09-30T15:08:34+08:00 - Initial commit
