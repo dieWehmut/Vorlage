@@ -1,13 +1,14 @@
 ---
 title: Development Log
-date: 2026/08/21 21:25
+date: 2026/08/21 22:41
 tags: [devlog, commit]
 ---
 
 # Development Log
 
-Generated from source commit `7514d8553297e1e1a03eeae8699efbcc2698ac2c`.
+Generated from source commit `3c8dee5dbb2762fcf9da740c43c3a568573431db`.
 
+- 3c8dee5 2026-08-21T22:42:45+08:00 - fix: publish strict Infra status snapshots
 - 7514d85 2026-08-21T21:25:57+08:00 - fix: harden progress rail and template regression
 - d3c52d3 2026-08-21T20:58:15+08:00 - test(infra): cover strict local proxy status
 - f709cb4 2026-08-21T20:57:32+08:00 - docs(deploy): document Infra probe configuration
