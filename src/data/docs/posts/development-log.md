@@ -1,13 +1,15 @@
 ---
 title: Development Log
-date: 2026/08/21 22:41
+date: 2026/08/24 23:09
 tags: [devlog, commit]
 ---
 
 # Development Log
 
-Generated from source commit `3c8dee5dbb2762fcf9da740c43c3a568573431db`.
+Generated from source commit `39bcdcd209279a5cc72e3a19a4f256c4045c22a9`.
 
+- 39bcdcd 2026-08-24T23:09:09+08:00 - delete goLearning.md as it is no longer needed for the project
+- b2a8666 2026-08-24T22:18:30+08:00 - feat: let the classic desktop shell run as one column
 - 3c8dee5 2026-08-21T22:42:45+08:00 - fix: publish strict Infra status snapshots
 - 7514d85 2026-08-21T21:25:57+08:00 - fix: harden progress rail and template regression
 - d3c52d3 2026-08-21T20:58:15+08:00 - test(infra): cover strict local proxy status
