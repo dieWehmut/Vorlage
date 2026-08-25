@@ -1,13 +1,15 @@
 ---
 title: Development Log
-date: 2026/08/24 23:09
+date: 2026/08/25 11:08
 tags: [devlog, commit]
 ---
 
 # Development Log
 
-Generated from source commit `39bcdcd209279a5cc72e3a19a4f256c4045c22a9`.
+Generated from source commit `e9397bd57b1e34cb0268a33bbcecfea63ea9d3a3`.
 
+- e9397bd 2026-08-25T11:08:07+08:00 - fix: let the column swap collapse as smoothly as it expands
+- 0c8e7cd 2026-08-25T11:07:20+08:00 - fix: give the comment frame its cursor back
 - 39bcdcd 2026-08-24T23:09:09+08:00 - delete goLearning.md as it is no longer needed for the project
 - b2a8666 2026-08-24T22:18:30+08:00 - feat: let the classic desktop shell run as one column
 - 3c8dee5 2026-08-21T22:42:45+08:00 - fix: publish strict Infra status snapshots
