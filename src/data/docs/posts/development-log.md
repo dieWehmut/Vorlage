@@ -1,13 +1,14 @@
 ---
 title: Development Log
-date: 2026/08/25 11:30
+date: 2026/08/25 11:37
 tags: [devlog, commit]
 ---
 
 # Development Log
 
-Generated from source commit `2a097fdca3f97d98d850ed5c0c2bf40267a43a43`.
+Generated from source commit `3b5ea2e495c634def427bafbb055e50742ddf436`.
 
+- 3b5ea2e 2026-08-25T11:37:32+08:00 - fix: give the float button its back-to-top back
 - 2a097fd 2026-08-25T11:30:31+08:00 - feat: let a desktop code block take the whole viewport
 - e9397bd 2026-08-25T11:08:07+08:00 - fix: let the column swap collapse as smoothly as it expands
 - 0c8e7cd 2026-08-25T11:07:20+08:00 - fix: give the comment frame its cursor back
