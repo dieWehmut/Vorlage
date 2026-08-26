@@ -1,13 +1,14 @@
 ---
 title: Development Log
-date: 2026/08/26 20:37
+date: 2026/08/26 20:45
 tags: [devlog, commit]
 ---
 
 # Development Log
 
-Generated from source commit `306c898ea1897624ae0f53033e001d47baac48f6`.
+Generated from source commit `c5f401bf18f0e5977811ceb805b517661f89eebb`.
 
+- c5f401b 2026-08-26T20:45:52+08:00 - fix: keep comments cursor usable with pointer effects
 - 306c898 2026-08-26T20:37:57+08:00 - docs: plan note rendering and pdf preview fixes
 - 3b5ea2e 2026-08-25T11:37:32+08:00 - fix: give the float button its back-to-top back
 - 2a097fd 2026-08-25T11:30:31+08:00 - feat: let a desktop code block take the whole viewport
