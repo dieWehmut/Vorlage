@@ -1,13 +1,14 @@
 ---
 title: Development Log
-date: 2026/08/25 11:37
+date: 2026/08/26 20:37
 tags: [devlog, commit]
 ---
 
 # Development Log
 
-Generated from source commit `3b5ea2e495c634def427bafbb055e50742ddf436`.
+Generated from source commit `306c898ea1897624ae0f53033e001d47baac48f6`.
 
+- 306c898 2026-08-26T20:37:57+08:00 - docs: plan note rendering and pdf preview fixes
 - 3b5ea2e 2026-08-25T11:37:32+08:00 - fix: give the float button its back-to-top back
 - 2a097fd 2026-08-25T11:30:31+08:00 - feat: let a desktop code block take the whole viewport
 - e9397bd 2026-08-25T11:08:07+08:00 - fix: let the column swap collapse as smoothly as it expands
