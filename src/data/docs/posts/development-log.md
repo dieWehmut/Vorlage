@@ -1,13 +1,14 @@
 ---
 title: Development Log
-date: 2026/08/26 20:45
+date: 2026/08/26 22:36
 tags: [devlog, commit]
 ---
 
 # Development Log
 
-Generated from source commit `c5f401bf18f0e5977811ceb805b517661f89eebb`.
+Generated from source commit `adb4ee8ea989790ad5cf58f7a87438b5e14bda2d`.
 
+- adb4ee8 2026-08-26T22:36:40+08:00 - fix: render mermaid and math notes reliably
 - c5f401b 2026-08-26T20:45:52+08:00 - fix: keep comments cursor usable with pointer effects
 - 306c898 2026-08-26T20:37:57+08:00 - docs: plan note rendering and pdf preview fixes
 - 3b5ea2e 2026-08-25T11:37:32+08:00 - fix: give the float button its back-to-top back
