@@ -1,13 +1,14 @@
 ---
 title: Development Log
-date: 2026/08/26 22:36
+date: 2026/09/02 21:38
 tags: [devlog, commit]
 ---
 
 # Development Log
 
-Generated from source commit `adb4ee8ea989790ad5cf58f7a87438b5e14bda2d`.
+Generated from source commit `58981684e373b38a04b4ede0d3ee690c235b5bad`.
 
+- 5898168 2026-09-02T21:38:30+08:00 - fix: normalize mermaid subgraph titles
 - adb4ee8 2026-08-26T22:36:40+08:00 - fix: render mermaid and math notes reliably
 - c5f401b 2026-08-26T20:45:52+08:00 - fix: keep comments cursor usable with pointer effects
 - 306c898 2026-08-26T20:37:57+08:00 - docs: plan note rendering and pdf preview fixes
