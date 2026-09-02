@@ -1,13 +1,16 @@
 ---
 title: Development Log
-date: 2026/09/02 21:38
+date: 2026/09/02 22:52
 tags: [devlog, commit]
 ---
 
 # Development Log
 
-Generated from source commit `58981684e373b38a04b4ede0d3ee690c235b5bad`.
+Generated from source commit `9e594b67aceff10f3daf9af4ee2c83c78ea78378`.
 
+- 9e594b6 2026-09-02T22:52:30+08:00 - feat: organize copied document images
+- afc96f4 2026-09-02T22:51:09+08:00 - feat: open article pdf previews in a new window
+- fcc4c22 2026-09-02T22:50:25+08:00 - fix: render article pdf in a worker
 - 5898168 2026-09-02T21:38:30+08:00 - fix: normalize mermaid subgraph titles
 - adb4ee8 2026-08-26T22:36:40+08:00 - fix: render mermaid and math notes reliably
 - c5f401b 2026-08-26T20:45:52+08:00 - fix: keep comments cursor usable with pointer effects
