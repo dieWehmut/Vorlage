@@ -1,13 +1,14 @@
 ---
 title: Development Log
-date: 2026/09/02 22:52
+date: 2026/09/02 23:25
 tags: [devlog, commit]
 ---
 
 # Development Log
 
-Generated from source commit `9e594b67aceff10f3daf9af4ee2c83c78ea78378`.
+Generated from source commit `18f94bcf69c4b660a10321dfc59f0a80c75da911`.
 
+- 18f94bc 2026-09-02T23:25:08+08:00 - fix: sync capture metadata after image moves
 - 9e594b6 2026-09-02T22:52:30+08:00 - feat: organize copied document images
 - afc96f4 2026-09-02T22:51:09+08:00 - feat: open article pdf previews in a new window
 - fcc4c22 2026-09-02T22:50:25+08:00 - fix: render article pdf in a worker
