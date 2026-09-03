@@ -1,13 +1,14 @@
 ---
 title: Development Log
-date: 2026/09/03 10:57
+date: 2026/09/03 14:17
 tags: [devlog, commit]
 ---
 
 # Development Log
 
-Generated from source commit `c280f08188fc9760e2440d6dd0cb6a679635dddd`.
+Generated from source commit `69ff7325af7af36fd3c87e8f387a6d54198f96b7`.
 
+- 69ff732 2026-09-03T14:17:02+08:00 - fix: preserve markdown scroll on reload
 - c280f08 2026-09-03T10:57:14+08:00 - Add new Markdown documents and implement scroll restoration for Markdown views
 - 18f94bc 2026-09-02T23:25:08+08:00 - fix: sync capture metadata after image moves
 - 9e594b6 2026-09-02T22:52:30+08:00 - feat: organize copied document images
