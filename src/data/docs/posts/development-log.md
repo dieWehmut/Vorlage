@@ -1,13 +1,14 @@
 ---
 title: Development Log
-date: 2026/09/04 10:27
+date: 2026/09/11 17:37
 tags: [devlog, commit]
 ---
 
 # Development Log
 
-Generated from source commit `629eb6212433aff11041e3f95259a6b34db2840b`.
+Generated from source commit `f64cb419e10d40a6b683bf3ccef2bb1b7fbbe4bc`.
 
+- f64cb41 2026-09-11T17:37:38+08:00 - perf: prepare complete article PDFs in the background
 - 629eb62 2026-09-04T10:27:54+08:00 - fix: wait for complete markdown before pdf export
 - 69ff732 2026-09-03T14:17:02+08:00 - fix: preserve markdown scroll on reload
 - c280f08 2026-09-03T10:57:14+08:00 - Add new Markdown documents and implement scroll restoration for Markdown views
