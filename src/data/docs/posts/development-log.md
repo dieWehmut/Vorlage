@@ -1,13 +1,15 @@
 ---
 title: Development Log
-date: 2026/09/14 17:29
+date: 2026/09/14 21:52
 tags: [devlog, commit]
 ---
 
 # Development Log
 
-Generated from source commit `f4b3fe92aead2eb279a2cae4e45e554f60e815bd`.
+Generated from source commit `2328c4ed7ea603e570f034ba57bc33ebe1c02f03`.
 
+- 2328c4e 2026-09-14T21:52:05+08:00 - fix: 修正 Orchester 的最后修改日期
+- 0421b84 2026-09-14T21:51:12+08:00 - feat: 更新文档和工具信息，添加数字信号处理相关图像
 - f4b3fe9 2026-09-14T17:29:59+08:00 - perf: prebuild PDFs after article route changes
 - 4a2dcc0 2026-09-14T17:21:41+08:00 - test: support Windows line endings in asset watcher checks
 - 78c0a27 2026-09-14T17:12:55+08:00 - feat: add project website links
