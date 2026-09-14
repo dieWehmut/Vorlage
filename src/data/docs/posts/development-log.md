@@ -1,13 +1,14 @@
 ---
 title: Development Log
-date: 2026/09/14 17:12
+date: 2026/09/14 17:21
 tags: [devlog, commit]
 ---
 
 # Development Log
 
-Generated from source commit `78c0a27d1a366a41a3e773fb06517980a727df82`.
+Generated from source commit `4a2dcc07bc12a35b520583f5a2307a1ee89655f5`.
 
+- 4a2dcc0 2026-09-14T17:21:41+08:00 - test: support Windows line endings in asset watcher checks
 - 78c0a27 2026-09-14T17:12:55+08:00 - feat: add project website links
 - eba838a 2026-09-14T17:08:43+08:00 - feat: add Orchester agent category
 - 03d2ee5 2026-09-14T17:00:44+08:00 - test: align color cursors with dynamic mode
