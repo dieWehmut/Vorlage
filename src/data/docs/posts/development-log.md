@@ -1,13 +1,14 @@
 ---
 title: Development Log
-date: 2026/09/14 16:56
+date: 2026/09/14 17:00
 tags: [devlog, commit]
 ---
 
 # Development Log
 
-Generated from source commit `4837b12ae71db5934f176fc0b54e5518341bdafd`.
+Generated from source commit `03d2ee52004e9be0db2a09f9db96d534fa50ce9d`.
 
+- 03d2ee5 2026-09-14T17:00:44+08:00 - test: align color cursors with dynamic mode
 - 4837b12 2026-09-14T16:58:40+08:00 - fix: scope cursor effects and fullscreen editor
 - 62e6fd9 2026-09-14T08:33:04Z - chore: sync capture assets
 - b95e13b 2026-09-11T18:08:00+08:00 - fix: avoid redundant document asset rebuilds
