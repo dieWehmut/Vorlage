@@ -1,13 +1,14 @@
 ---
 title: Development Log
-date: 2026/09/14 17:00
+date: 2026/09/14 17:08
 tags: [devlog, commit]
 ---
 
 # Development Log
 
-Generated from source commit `03d2ee52004e9be0db2a09f9db96d534fa50ce9d`.
+Generated from source commit `eba838a1c23aac21c52b16e332c3c1d9cf099679`.
 
+- eba838a 2026-09-14T17:08:43+08:00 - feat: add Orchester agent category
 - 03d2ee5 2026-09-14T17:00:44+08:00 - test: align color cursors with dynamic mode
 - 4837b12 2026-09-14T16:58:40+08:00 - fix: scope cursor effects and fullscreen editor
 - 62e6fd9 2026-09-14T08:33:04Z - chore: sync capture assets
