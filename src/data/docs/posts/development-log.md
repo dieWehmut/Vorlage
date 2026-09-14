@@ -1,13 +1,18 @@
 ---
 title: Development Log
-date: 2026/09/11 17:37
+date: 2026/09/14 16:56
 tags: [devlog, commit]
 ---
 
 # Development Log
 
-Generated from source commit `f64cb419e10d40a6b683bf3ccef2bb1b7fbbe4bc`.
+Generated from source commit `4837b12ae71db5934f176fc0b54e5518341bdafd`.
 
+- 4837b12 2026-09-14T16:58:40+08:00 - fix: scope cursor effects and fullscreen editor
+- 62e6fd9 2026-09-14T08:33:04Z - chore: sync capture assets
+- b95e13b 2026-09-11T18:08:00+08:00 - fix: avoid redundant document asset rebuilds
+- 2adf6a3 2026-09-11T09:48:40Z - chore: sync capture assets
+- 8ee0ede 2026-09-11T17:47:34+08:00 - fix: publish document images under canonical asset folders
 - f64cb41 2026-09-11T17:37:38+08:00 - perf: prepare complete article PDFs in the background
 - 629eb62 2026-09-04T10:27:54+08:00 - fix: wait for complete markdown before pdf export
 - 69ff732 2026-09-03T14:17:02+08:00 - fix: preserve markdown scroll on reload
