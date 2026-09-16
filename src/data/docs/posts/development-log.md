@@ -1,13 +1,16 @@
 ---
 title: Development Log
-date: 2026/09/14 21:52
+date: 2026/09/16 20:45
 tags: [devlog, commit]
 ---
 
 # Development Log
 
-Generated from source commit `2328c4ed7ea603e570f034ba57bc33ebe1c02f03`.
+Generated from source commit `293daaa535254fc9b5b90d61d7dd17c87abde0e2`.
 
+- 293daaa 2026-09-16T20:45:30+08:00 - fix(pdf): anchor contents entries on a text node
+- 46119f7 2026-09-16T20:44:22+08:00 - fix(pdf): pair display math only at block boundaries
+- fc8886b 2026-09-16T20:40:59+08:00 - ﻿docs(template): name the example repository in the README
 - 2328c4e 2026-09-14T21:52:05+08:00 - fix: 修正 Orchester 的最后修改日期
 - 0421b84 2026-09-14T21:51:12+08:00 - feat: 更新文档和工具信息，添加数字信号处理相关图像
 - f4b3fe9 2026-09-14T17:29:59+08:00 - perf: prebuild PDFs after article route changes
