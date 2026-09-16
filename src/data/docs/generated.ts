@@ -22,7 +22,7 @@ export const generatedDocMeta: GeneratedDocMeta[] = [
       "devlog",
       "commit"
     ],
-    "summary": "Development Log\nGenerated from source commit 293daaa535254fc9b5b90d61d7dd17c87abde0e2.\n293daaa 2026-09-16T20:45:30+08...",
+    "summary": "Development Log\nGenerated from source commit e0b00a144b43bfefb4b1e332e4360b817b331962.\ne0b00a1 2026-09-16T20:58:47+08...",
     "wordCount": 6469,
     "readingMinutes": 17,
     "updated": "2026/09/16 20:45",
