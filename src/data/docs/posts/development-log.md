@@ -1,13 +1,14 @@
 ---
 title: Development Log
-date: 2026/09/21 21:52
+date: 2026/09/21 22:08
 tags: [devlog, commit]
 ---
 
 # Development Log
 
-Generated from source commit `87d16d2a45209ef4655b0b3d330327543a238fa8`.
+Generated from source commit `f499a876e3c615dc0e8db20045c2a4945a5c707e`.
 
+- f499a87 2026-09-21T22:08:13+08:00 - Fix markdown header formatting in yjango.md
 - 87d16d2 2026-09-21T21:52:58+08:00 - 1
 - 9568e00 2026-09-21T21:48:51+08:00 - 1
 - e0b00a1 2026-09-16T20:58:47+08:00 - fix(pdf): anchor contents entries on a text node
