@@ -1,13 +1,19 @@
 ---
 title: Development Log
-date: 2026/09/24 11:02
+date: 2026/09/25 19:21
 tags: [devlog, commit]
 ---
 
 # Development Log
 
-Generated from source commit `469f79e76f0a54c75aad2421d12273d595acd6ea`.
+Generated from source commit `9b0d7807770bb144d9208c82a9277c9d645f3bfb`.
 
+- 9b0d780 2026-09-25T19:21:40+08:00 - test(console): match the cycle order without assuming LF
+- 3f7163d 2026-09-25T19:11:47+08:00 - merge: console portrait gallery and the yjango gallery fix
+- 65ae45b 2026-09-25T19:03:21+08:00 - chore(data): regenerate metadata after the yjango image fix
+- af27f95 2026-09-25T19:02:55+08:00 - fix(capture): publish every gallery entry a document still ships
+- 1f8847b 2026-09-25T17:22:55+08:00 - 更新 yjango.md，替换图片路径并增加关于抽象层级和模型选择的讨论
+- 32012e7 2026-09-25T16:43:58+08:00 - feat: give the console portrait a gallery of ten colourways
 - 469f79e 2026-09-24T11:02:06+08:00 - 更新 yjango.md，增加关于模型预测与经验预测的讨论，扩展学习与记忆的关系
 - 83225b7 2026-09-23T21:11:59+08:00 - 更新 yjango.md，增加关于异星球物理法则和社会法则的讨论，扩展学习与生存的关系
 - d1dcba6 2026-09-23T20:59:36+08:00 - 更新 yjango.md 内容，调整标题格式，修正部分语句，增加新章节
