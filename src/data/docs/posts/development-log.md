@@ -1,13 +1,14 @@
 ---
 title: Development Log
-date: 2026/09/25 19:21
+date: 2026/09/25 23:41
 tags: [devlog, commit]
 ---
 
 # Development Log
 
-Generated from source commit `9b0d7807770bb144d9208c82a9277c9d645f3bfb`.
+Generated from source commit `66b2915cf6933d34882d057ff2e234d6b0b62f74`.
 
+- 66b2915 2026-09-25T23:41:08+08:00 - fix(markdown): let levels four and five read as headings
 - 9b0d780 2026-09-25T19:21:40+08:00 - test(console): match the cycle order without assuming LF
 - 3f7163d 2026-09-25T19:11:47+08:00 - merge: console portrait gallery and the yjango gallery fix
 - 65ae45b 2026-09-25T19:03:21+08:00 - chore(data): regenerate metadata after the yjango image fix
