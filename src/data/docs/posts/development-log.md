@@ -1,13 +1,14 @@
 ---
 title: Development Log
-date: 2026/09/26 12:25
+date: 2026/09/26 14:41
 tags: [devlog, commit]
 ---
 
 # Development Log
 
-Generated from source commit `f80716dc4f21dfc98f2520a60adbd23715e21587`.
+Generated from source commit `4cff0e4a79822c5715bc123208f1c8f3980025e2`.
 
+- 4cff0e4 2026-09-26T14:41:00+08:00 - fix(yjango): update word count and reading minutes; refine section headings and add new content
 - f80716d 2026-09-26T12:25:43+08:00 - fix(breadcrumb): stop repeating the article title as its section
 - fe3bb2e 2026-09-26T12:25:32+08:00 - fix(outline): list every heading level the article renders
 - 66b2915 2026-09-25T23:41:08+08:00 - fix(markdown): let levels four and five read as headings

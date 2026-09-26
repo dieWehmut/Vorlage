@@ -17,15 +17,15 @@ export const generatedDocMeta: GeneratedDocMeta[] = [
     "id": "development-log",
     "type": "post",
     "title": "Development Log",
-    "date": "2026/09/26 12:25",
+    "date": "2026/09/26 14:41",
     "tags": [
       "devlog",
       "commit"
     ],
-    "summary": "Development Log\nGenerated from source commit f80716dc4f21dfc98f2520a60adbd23715e21587.\nf80716d 2026-09-26T12:25:43+08...",
-    "wordCount": 6766,
+    "summary": "Development Log\nGenerated from source commit 4cff0e4a79822c5715bc123208f1c8f3980025e2.\n4cff0e4 2026-09-26T14:41:00+08...",
+    "wordCount": 6787,
     "readingMinutes": 17,
-    "updated": "2026/09/26 12:25",
+    "updated": "2026/09/26 14:41",
     "path": "./posts/development-log.md"
   },
   {
@@ -40,7 +40,7 @@ export const generatedDocMeta: GeneratedDocMeta[] = [
     "summary": "Hello World\nWelcome to your new Vorlage site. Edit or replace this post to get started.\nThis template supports GitHub...",
     "wordCount": 38,
     "readingMinutes": 1,
-    "updated": "2026/09/26 12:25",
+    "updated": "2026/09/26 14:41",
     "path": "./posts/hello-world.md"
   },
   {
@@ -54,7 +54,7 @@ export const generatedDocMeta: GeneratedDocMeta[] = [
     "summary": "This is a sample note. Replace it with your own content.",
     "wordCount": 11,
     "readingMinutes": 1,
-    "updated": "2026/09/26 12:25",
+    "updated": "2026/09/26 14:41",
     "path": "./notes/sample-note.md"
   }
 ] as GeneratedDocMeta[]
