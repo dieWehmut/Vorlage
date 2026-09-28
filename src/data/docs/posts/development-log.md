@@ -1,13 +1,14 @@
 ---
 title: Development Log
-date: 2026/09/27 21:05
+date: 2026/09/28 23:14
 tags: [devlog, commit]
 ---
 
 # Development Log
 
-Generated from source commit `205ac689f129bdf48ba1f50e911a20c2a7a7ad3d`.
+Generated from source commit `89af914b48b686604855669dcab35acc3ef16cdc`.
 
+- 89af914 2026-09-28T23:14:16+08:00 - fix(yjango): update word count and reading minutes; add new section on autonomy and cognition
 - 205ac68 2026-09-27T21:05:36+08:00 - Update yjango.md
 - 4cff0e4 2026-09-26T14:41:00+08:00 - fix(yjango): update word count and reading minutes; refine section headings and add new content
 - f80716d 2026-09-26T12:25:43+08:00 - fix(breadcrumb): stop repeating the article title as its section
