@@ -1,13 +1,14 @@
 ---
 title: Development Log
-date: 2026/10/11 17:32
+date: 2026/10/11 18:50
 tags: [devlog, commit]
 ---
 
 # Development Log
 
-Generated from source commit `133b55eee422dd7885db96801e5e0873c936d019`.
+Generated from source commit `470f3c1e386f3309b9a82f24ca49730e3cb02487`.
 
+- 470f3c1 2026-10-11T18:50:27+08:00 - refactor(friends): infer every GitHub profile from the avatar or site
 - 133b55e 2026-10-11T17:32:21+08:00 - feat(friends): open each friend's GitHub profile from the name
 - b2b7586 2026-09-29T14:12:21+08:00 - Update yjango.md
 - 89af914 2026-09-28T23:14:16+08:00 - fix(yjango): update word count and reading minutes; add new section on autonomy and cognition
