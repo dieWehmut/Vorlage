@@ -1,13 +1,14 @@
 ---
 title: Development Log
-date: 2026/10/25 11:01
+date: 2026/10/25 12:46
 tags: [devlog, commit]
 ---
 
 # Development Log
 
-Generated from source commit `b3e19e6ec76378cb49d6999694bcda0c51bba6b9`.
+Generated from source commit `0c462361e225e5a74e1279dbec8f68cb475bfd7d`.
 
+- 0c46236 2026-10-25T12:46:59+08:00 - feat(site): serve the website list from GitHub Pages
 - b3e19e6 2026-10-25T11:01:10+08:00 - style(console): read console mode in the classic shell font
 - 470f3c1 2026-10-11T18:50:27+08:00 - refactor(friends): infer every GitHub profile from the avatar or site
 - 133b55e 2026-10-11T17:32:21+08:00 - feat(friends): open each friend's GitHub profile from the name
